@@ -17,9 +17,12 @@ export class AuthService {
       });
 
       if (existUser) {
-        throw new HttpException(
-          'Пользователь с таким email уже зарегистрирован',
-          HttpStatus.BAD_REQUEST,
+        return new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Пользователь с таким email уже зарегистрирован',
+          },
+          400,
         );
       }
       const hashedPassword = hashSync(createUserDto.password, genSaltSync(10));
@@ -36,13 +39,10 @@ export class AuthService {
     } catch (err) {
       console.log(err);
       throw new HttpException(
-        'Непредвиденная ошибка',
+        'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    return {
-      message: 'sign up',
-    };
   }
 
   login() {
