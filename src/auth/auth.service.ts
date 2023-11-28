@@ -1,8 +1,9 @@
-import { genSaltSync, hashSync } from 'bcrypt';
+import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/dto/create-user-dto';
-import { User } from 'src/interfaces/User';
+import { User, UserWithTokens } from 'src/interfaces/User';
 import { PrismaService } from 'src/providers/prisma.service';
+import { LoginUserDto } from 'src/dto/login-user-dto';
 
 @Injectable()
 export class AuthService {
@@ -45,9 +46,52 @@ export class AuthService {
     }
   }
 
-  login() {
-    return {
-      message: 'login',
-    };
+  async login(
+    loginUserDto: LoginUserDto,
+  ): Promise<UserWithTokens | { message: string }> {
+    try {
+      const existUser = await this.prismaService.user.findFirst({
+        where: { username: loginUserDto.username },
+      });
+
+      if (!existUser) {
+        return new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Пользователь с таким именем не зарегестрирован',
+          },
+          400,
+        );
+      }
+
+      const isPasswordValid = compareSync(
+        loginUserDto.password,
+        existUser.password,
+      );
+
+      if (!isPasswordValid) {
+        return new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Неверный логин или пароль',
+          },
+          400,
+        );
+      }
+
+      return {
+        tokens: {
+          refreshToken: '123',
+          acccesToken: '1234',
+        },
+        user: existUser,
+      };
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

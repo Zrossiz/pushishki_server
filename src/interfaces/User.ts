@@ -7,3 +7,11 @@ export interface User {
   updatedAt: Date;
   role: string;
 }
+
+export interface UserWithTokens {
+  tokens: {
+    refreshToken: string;
+    acccesToken: string;
+  };
+  user: User;
+}
