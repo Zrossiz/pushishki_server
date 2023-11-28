@@ -1,4 +1,4 @@
-export interface User {
+export interface IUser {
   id: number;
   email: string;
   username: string;
@@ -8,10 +8,10 @@ export interface User {
   role: string;
 }
 
-export interface UserWithTokens {
+export interface IUserWithTokens {
   tokens: {
     refreshToken: string;
     acccesToken: string;
   };
-  user: User;
+  user: IUser;
 }

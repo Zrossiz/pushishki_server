@@ -1,7 +1,7 @@
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/dto/create-user-dto';
-import { User, UserWithTokens } from 'src/interfaces/User';
+import { IUser, IUserWithTokens } from 'src/interfaces/User';
 import { PrismaService } from 'src/providers/prisma.service';
 import { LoginUserDto } from 'src/dto/login-user-dto';
 
@@ -11,7 +11,7 @@ export class AuthService {
 
   async registration(
     createUserDto: CreateUserDto,
-  ): Promise<User | { message: string }> {
+  ): Promise<IUser | { message: string }> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { email: createUserDto.email },
@@ -48,7 +48,7 @@ export class AuthService {
 
   async login(
     loginUserDto: LoginUserDto,
-  ): Promise<UserWithTokens | { message: string }> {
+  ): Promise<IUserWithTokens | { message: string }> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: loginUserDto.username },

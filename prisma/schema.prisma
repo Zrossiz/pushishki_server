@@ -15,12 +15,12 @@ model User {
   email     String   @unique
   username  String
   password  String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
   role      String
   Token     Token[]
   Review    Review[]
   Orders    Orders[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -38,10 +38,10 @@ model Country {
   id        Int       @id @default(autoincrement())
   title     String
   image     String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
   Brand     Brand[]
   Product   Product[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   @@map("countries")
 }
@@ -52,37 +52,36 @@ model Brand {
   title       String
   image       String
   description String
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
   Product     Product[]
   country     Country   @relation(fields: [countryId], references: [id])
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("brands")
 }
 
 model Product {
-  id                   Int               @id @default(autoincrement())
-  categoryId           Int               @map("category_id")
-  brandId              Int               @map("brand_id")
-  countryId            Int               @map("country_id")
-  title                String
-  description          String
-  articul              String
-  gearbox              String
-  battery              String
-  maximum_load         String
-  assembled_model_size String
-  model_sizeIn_package String
-  video                String
-  createdAt            DateTime          @default(now()) @map("created_at")
-  updatedAt            DateTime          @updatedAt @map("updated_at")
-  country              Country           @relation(fields: [countryId], references: [id])
-  brand                Brand             @relation(fields: [brandId], references: [id])
-  category             Category          @relation(fields: [categoryId], references: [id])
-  ordersId             Int?
-  Orders               Orders[]
-  Review               Review[]
-  Product_variant      Product_variant[]
+  id                 Int               @id @default(autoincrement())
+  categoryId         Int               @map("category_id")
+  brandId            Int               @map("brand_id")
+  countryId          Int               @map("country_id")
+  title              String
+  description        String
+  articul            String
+  gearbox            String
+  battery            String
+  maximumLoad        String            @map("maximum_load")
+  assembledModelSize String            @map("assembled_model_size")
+  modelSizeInPackage String            @map("model_size_in_package")
+  video              String
+  country            Country           @relation(fields: [countryId], references: [id])
+  brand              Brand             @relation(fields: [brandId], references: [id])
+  category           Category          @relation(fields: [categoryId], references: [id])
+  Orders             Orders[]
+  Review             Review[]
+  Product_variant    Product_variant[]
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
 
   @@map("products")
 }
@@ -106,23 +105,22 @@ model Review {
   title       String
   description String
   rating      Int
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
   user        User     @relation(fields: [userId], references: [id])
   product     Product  @relation(fields: [productId], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("reviews")
 }
 
 model Category {
   id          Int       @id @default(autoincrement())
-  productId   Int       @map("product_id")
   title       String
   description String
   image       String
+  Product     Product[]
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
-  Product     Product[]
 
   @@map("categories")
 }
@@ -142,6 +140,8 @@ model Orders {
   Product           Product         @relation(fields: [productId], references: [id])
   User              User            @relation(fields: [userId], references: [id])
   product_variantId Int
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
 
   @@map("orders")
 }
