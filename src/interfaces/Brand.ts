@@ -7,3 +7,8 @@ export interface IBrand {
   updatedAt: Date;
   createdAt: Date;
 }
+
+export interface IBrandWithLength {
+  length: number;
+  data: IBrand[];
+}
