@@ -87,13 +87,19 @@ model Product {
 }
 
 model Product_variant {
-  id        Int      @id @default(autoincrement())
-  productId Int      @map("product_id")
-  color     String
-  price     Int
-  images    String
-  product   Product  @relation(fields: [productId], references: [id])
-  Orders    Orders[]
+  id                 Int      @id @default(autoincrement())
+  productId          Int      @map("product_id")
+  title              String
+  description        String
+  articul            String
+  gearbox            String
+  battery            String
+  maximumLoad        String   @map("maximum_load")
+  assembledModelSize String   @map("assembled_model_size")
+  modelSizeInPackage String   @map("model_size_in_package")
+  video              String
+  product            Product  @relation(fields: [productId], references: [id])
+  Orders             Orders[]
 
   @@map("product_variants")
 }
