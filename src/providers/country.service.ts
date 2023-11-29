@@ -10,21 +10,29 @@ export class CountryService {
   async create(
     createCountryDto: CreateCountryDto,
   ): Promise<ICountry | { message: string }> {
-    const existCountry = await this.prismaService.country.findFirst({
-      where: { title: createCountryDto.title },
-    });
+    try {
+      const existCountry = await this.prismaService.country.findFirst({
+        where: { title: createCountryDto.title },
+      });
 
-    if (existCountry) {
-      return new HttpException(
-        'Страна с таким названием уже создана',
-        HttpStatus.BAD_REQUEST,
+      if (existCountry) {
+        return new HttpException(
+          'Страна с таким названием уже создана',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const country = await this.prismaService.country.create({
+        data: createCountryDto,
+      });
+
+      return country;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    const country = await this.prismaService.country.create({
-      data: createCountryDto,
-    });
-
-    return country;
   }
 }

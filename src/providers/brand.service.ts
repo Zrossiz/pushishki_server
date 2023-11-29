@@ -10,21 +10,29 @@ export class BrandService {
   async create(
     createBrandDto: CreateBrandDto,
   ): Promise<IBrand | { message: string }> {
-    const existBrand = await this.prismaService.brand.findFirst({
-      where: { title: createBrandDto.title },
-    });
+    try {
+      const existBrand = await this.prismaService.brand.findFirst({
+        where: { title: createBrandDto.title },
+      });
 
-    if (existBrand) {
-      return new HttpException(
-        'Бренд с таким названием уже существует',
-        HttpStatus.BAD_REQUEST,
+      if (existBrand) {
+        return new HttpException(
+          'Бренд с таким названием уже существует',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const brand = await this.prismaService.brand.create({
+        data: createBrandDto,
+      });
+
+      return brand;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    const brand = await this.prismaService.brand.create({
-      data: createBrandDto,
-    });
-
-    return brand;
   }
 }

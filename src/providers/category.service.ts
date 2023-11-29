@@ -10,21 +10,29 @@ export class CategoryService {
   async create(
     createCategoryDto: CreateCategoryDto,
   ): Promise<ICategory | { message: string }> {
-    const existCategory = await this.prismaService.category.findFirst({
-      where: { title: createCategoryDto.title },
-    });
+    try {
+      const existCategory = await this.prismaService.category.findFirst({
+        where: { title: createCategoryDto.title },
+      });
 
-    if (existCategory) {
-      return new HttpException(
-        'Категория с таким названием уже существует',
-        HttpStatus.BAD_REQUEST,
+      if (existCategory) {
+        return new HttpException(
+          'Категория с таким названием уже существует',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const category = await this.prismaService.category.create({
+        data: createCategoryDto,
+      });
+
+      return category;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    const category = await this.prismaService.category.create({
-      data: createCategoryDto,
-    });
-
-    return category;
   }
 }
