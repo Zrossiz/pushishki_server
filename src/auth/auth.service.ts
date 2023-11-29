@@ -1,9 +1,8 @@
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from 'src/dto/create-user-dto';
-import { IUser, IUserWithTokens } from 'src/interfaces/User';
 import { PrismaService } from 'src/providers/prisma.service';
-import { LoginUserDto } from 'src/dto/login-user-dto';
+import { CreateUserDto, LoginUserDto } from 'src/dto';
+import { IUser, IUserWithTokens } from 'src/interfaces';
 
 @Injectable()
 export class AuthService {
