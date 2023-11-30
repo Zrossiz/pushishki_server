@@ -68,12 +68,9 @@ export class CountryService {
 
   async delete(slug: string): Promise<ICountry | { message: string }> {
     try {
-      console.log(slug);
       const country: ICountry = await this.prismaService.country.findFirst({
         where: { slug: slug },
       });
-
-      console.log(country);
 
       if (!country) {
         return new HttpException(
