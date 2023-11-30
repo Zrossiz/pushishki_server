@@ -1,4 +1,4 @@
-export function generateSlug(phrase) {
+export function generateSlug(phrase: string) {
   // Заменяем пробелы на тире
   let slug = phrase.replace(/\s+/g, '-');
 

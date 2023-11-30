@@ -3,6 +3,7 @@ import { PrismaService } from './prisma.service';
 import { CreateCountryDto } from 'src/dto';
 import { ICountry, ICountryWithLength } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
+import { UpdateCountryDto } from 'src/dto/update/update-country-dto';
 
 @Injectable()
 export class CountryService {
@@ -18,6 +19,78 @@ export class CountryService {
       };
 
       return data;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getOne(slug: string): Promise<ICountry | { message: string }> {
+    try {
+      const country: ICountry = await this.prismaService.country.findFirst({
+        where: { slug: slug },
+      });
+
+      if (!country) {
+        return new HttpException(
+          `Страна ${slug} не найдена`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      return country;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async update(
+    slug: string,
+    updateCountryDto: UpdateCountryDto,
+  ): Promise<ICountry | { message: string }> {
+    try {
+      const country: ICountry = await this.prismaService.country.findFirst({
+        where: { slug: slug },
+      });
+
+      if (!country) {
+        return new HttpException(
+          `Страна ${slug} не найдена`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const updatedSlug: string = generateSlug(
+        updateCountryDto.title,
+      ).toLowerCase();
+
+      const countryData = {
+        title: updateCountryDto.title,
+        slug: updatedSlug,
+        image: updateCountryDto.image,
+      };
+
+      Object.keys(countryData).forEach((key) => {
+        if (countryData[key] === undefined) {
+          delete countryData[key];
+        }
+      });
+
+      const updatedCountry = await this.prismaService.country.update({
+        where: {
+          id: country.id,
+        },
+        data: countryData,
+      });
+
+      return updatedCountry;
     } catch (err) {
       console.log(err);
       throw new HttpException(

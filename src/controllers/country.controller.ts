@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateCountryDto } from 'src/dto/create/create-country-dto';
+import { UpdateCountryDto } from 'src/dto/update/update-country-dto';
 import { CountryService } from 'src/providers/country.service';
 
 @Controller('country')
@@ -9,6 +10,19 @@ export class CountryController {
   @Get('')
   async getAll() {
     return await this.countryService.getAll();
+  }
+
+  @Get(':slug')
+  async getOne(@Param('slug') slug: string) {
+    return this.countryService.getOne(slug);
+  }
+
+  @Post(':slug')
+  async update(
+    @Param('slug') slug: string,
+    @Body() updateCountryDto: UpdateCountryDto,
+  ) {
+    return this.countryService.update(slug, updateCountryDto);
   }
 
   @Post('')
