@@ -11,3 +11,8 @@ export interface IProduct {
   updatedAt: Date;
   createdAt: Date;
 }
+
+export interface IProductWithLength {
+  length: number;
+  data: IProduct[];
+}
