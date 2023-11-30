@@ -5,3 +5,8 @@ export interface ICountry {
   updatedAt: Date;
   createdAt: Date;
 }
+
+export interface ICountryWithLength {
+  length: number;
+  data: ICountry[];
+}
