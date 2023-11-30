@@ -124,8 +124,8 @@ model Review {
 model Category {
   id          Int       @id @default(autoincrement())
   title       String
-  description String
   slug        String
+  description String
   image       String
   Product     Product[]
   createdAt   DateTime  @default(now()) @map("created_at")
