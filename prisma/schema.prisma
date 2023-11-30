@@ -18,7 +18,7 @@ model User {
   role      String
   Token     Token[]
   Review    Review[]
-  Orders    Orders[]
+  Basket    Basket[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -77,7 +77,7 @@ model Product {
   country            Country           @relation(fields: [countryId], references: [id])
   brand              Brand             @relation(fields: [brandId], references: [id])
   category           Category          @relation(fields: [categoryId], references: [id])
-  Orders             Orders[]
+  Basket             Basket[]
   Review             Review[]
   Product_variant    Product_variant[]
   createdAt          DateTime          @default(now()) @map("created_at")
@@ -99,7 +99,7 @@ model Product_variant {
   modelSizeInPackage String   @map("model_size_in_package")
   video              String
   product            Product  @relation(fields: [productId], references: [id])
-  Orders             Orders[]
+  Basket             Basket[]
 
   @@map("product_variants")
 }
@@ -131,23 +131,38 @@ model Category {
   @@map("categories")
 }
 
-model Orders {
-  id                Int             @id @default(autoincrement())
-  userId            Int             @map("user_id")
-  productId         Int             @map("product_id")
-  variantId         Int             @map("variant_id")
-  name              String
-  lastname          String
-  secondname        String
-  phone             String
-  count             Int
-  price             Int
-  Product_variant   Product_variant @relation(fields: [product_variantId], references: [id])
-  Product           Product         @relation(fields: [productId], references: [id])
-  User              User            @relation(fields: [userId], references: [id])
-  product_variantId Int
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @updatedAt @map("updated_at")
+model Basket {
+  id              Int             @id @default(autoincrement())
+  userId          Int             @map("user_id")
+  productId       Int             @map("product_id")
+  variantId       Int             @map("variant_id")
+  orderId         Int?            @map("order_id")
+  name            String
+  lastname        String
+  secondname      String
+  phone           String
+  count           Int
+  price           Int
+  Product_variant Product_variant @relation(fields: [variantId], references: [id])
+  Product         Product         @relation(fields: [productId], references: [id])
+  User            User            @relation(fields: [userId], references: [id])
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  Order           Order?          @relation(fields: [orderId], references: [id])
+
+  @@map("basket")
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  orderId    Basket[]
+  name       String
+  lastname   String
+  secondname String
+  phone      String
+  price      Int
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("orders")
 }

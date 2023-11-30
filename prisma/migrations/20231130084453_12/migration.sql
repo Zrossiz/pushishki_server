@@ -67,9 +67,15 @@ CREATE TABLE "products" (
 CREATE TABLE "product_variants" (
     "id" SERIAL NOT NULL,
     "product_id" INTEGER NOT NULL,
-    "color" TEXT NOT NULL,
-    "price" INTEGER NOT NULL,
-    "images" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "articul" TEXT NOT NULL,
+    "gearbox" TEXT NOT NULL,
+    "battery" TEXT NOT NULL,
+    "maximum_load" TEXT NOT NULL,
+    "assembled_model_size" TEXT NOT NULL,
+    "model_size_in_package" TEXT NOT NULL,
+    "video" TEXT NOT NULL,
 
     CONSTRAINT "product_variants_pkey" PRIMARY KEY ("id")
 );
@@ -91,7 +97,6 @@ CREATE TABLE "reviews" (
 -- CreateTable
 CREATE TABLE "categories" (
     "id" SERIAL NOT NULL,
-    "product_id" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "image" TEXT NOT NULL,
@@ -102,18 +107,32 @@ CREATE TABLE "categories" (
 );
 
 -- CreateTable
-CREATE TABLE "orders" (
+CREATE TABLE "basket" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "variant_id" INTEGER NOT NULL,
+    "order_id" INTEGER,
     "name" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "secondname" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "count" INTEGER NOT NULL,
     "price" INTEGER NOT NULL,
-    "product_variantId" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "basket_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "orders" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "lastname" TEXT NOT NULL,
+    "secondname" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -151,10 +170,13 @@ ALTER TABLE "reviews" ADD CONSTRAINT "reviews_user_id_fkey" FOREIGN KEY ("user_i
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "orders" ADD CONSTRAINT "orders_product_variantId_fkey" FOREIGN KEY ("product_variantId") REFERENCES "product_variants"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "basket" ADD CONSTRAINT "basket_variant_id_fkey" FOREIGN KEY ("variant_id") REFERENCES "product_variants"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "orders" ADD CONSTRAINT "orders_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "basket" ADD CONSTRAINT "basket_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "basket" ADD CONSTRAINT "basket_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "basket" ADD CONSTRAINT "basket_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE SET NULL ON UPDATE CASCADE;
