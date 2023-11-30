@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateCountryDto } from 'src/dto';
-import { ICountry, ICountryWithLength } from 'src/interfaces';
+import { ICountry, ICountryWithLength, IProduct } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 import { UpdateCountryDto } from 'src/dto/update/update-country-dto';
 
@@ -42,6 +42,33 @@ export class CountryService {
       }
 
       return country;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getProductsBySlug(slug: string) {
+    try {
+      const country: ICountry = await this.prismaService.country.findFirst({
+        where: { slug: slug },
+      });
+
+      if (!country) {
+        return new HttpException(
+          `Страна ${slug} не найдена`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const products: IProduct[] = await this.prismaService.product.findMany({
+        where: { countryId: country.id },
+      });
+
+      return products;
     } catch (err) {
       console.log(err);
       throw new HttpException(

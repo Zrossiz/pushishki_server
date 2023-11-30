@@ -25,6 +25,11 @@ export class CountryController {
     return this.countryService.update(slug, updateCountryDto);
   }
 
+  @Get(':slug/products')
+  async getProductsBySlug(@Param('slug') slug: string) {
+    return this.countryService.getProductsBySlug(slug);
+  }
+
   @Post('')
   async create(@Body() createCountryDto: CreateCountryDto) {
     return await this.countryService.create(createCountryDto);
