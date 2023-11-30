@@ -66,21 +66,24 @@ export class CountryService {
     }
   }
 
-  async delete(countryId: number): Promise<ICountry | { message: string }> {
+  async delete(slug: string): Promise<ICountry | { message: string }> {
     try {
+      console.log(slug);
       const country: ICountry = await this.prismaService.country.findFirst({
-        where: { id: countryId },
+        where: { slug: slug },
       });
+
+      console.log(country);
 
       if (!country) {
         return new HttpException(
-          `Страна с id: ${countryId} не найдена`,
+          `Страна ${slug} не найдена`,
           HttpStatus.BAD_REQUEST,
         );
       }
 
       const deletedCountry: ICountry = await this.prismaService.country.delete({
-        where: { id: countryId },
+        where: { id: country.id },
       });
 
       return deletedCountry;

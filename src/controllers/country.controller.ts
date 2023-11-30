@@ -16,8 +16,8 @@ export class CountryController {
     return await this.countryService.create(createCountryDto);
   }
 
-  @Delete(':id')
-  async delete(@Param('id') countryId: string) {
-    return await this.countryService.delete(+countryId);
+  @Delete(':slug')
+  async delete(@Param('slug') slug: string) {
+    return await this.countryService.delete(slug);
   }
 }
