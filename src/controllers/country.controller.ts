@@ -11,7 +11,7 @@ export class CountryController {
     return await this.countryService.getAll();
   }
 
-  @Post('create')
+  @Post('')
   async create(@Body() createCountryDto: CreateCountryDto) {
     return await this.countryService.create(createCountryDto);
   }

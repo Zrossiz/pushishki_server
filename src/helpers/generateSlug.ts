@@ -36,6 +36,7 @@ export function generateSlug(phrase) {
   slug = slug.replace(/э/g, 'e');
   slug = slug.replace(/ю/g, 'yu');
   slug = slug.replace(/я/g, 'ya');
+  slug = slug.replace(/С/g, 's');
 
   return slug;
 }
