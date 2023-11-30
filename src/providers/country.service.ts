@@ -11,9 +11,11 @@ export class CountryService {
     createCountryDto: CreateCountryDto,
   ): Promise<ICountry | { message: string }> {
     try {
-      const existCountry = await this.prismaService.country.findFirst({
-        where: { title: createCountryDto.title },
-      });
+      const existCountry: ICountry = await this.prismaService.country.findFirst(
+        {
+          where: { title: createCountryDto.title },
+        },
+      );
 
       if (existCountry) {
         return new HttpException(
@@ -22,7 +24,7 @@ export class CountryService {
         );
       }
 
-      const country = await this.prismaService.country.create({
+      const country: ICountry = await this.prismaService.country.create({
         data: createCountryDto,
       });
 

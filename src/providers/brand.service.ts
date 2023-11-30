@@ -12,7 +12,7 @@ export class BrandService {
     createBrandDto: CreateBrandDto,
   ): Promise<IBrand | { message: string }> {
     try {
-      const existBrand = await this.prismaService.brand.findFirst({
+      const existBrand: IBrand = await this.prismaService.brand.findFirst({
         where: { title: createBrandDto.title },
       });
 
@@ -23,7 +23,7 @@ export class BrandService {
         );
       }
 
-      const brand = await this.prismaService.brand.create({
+      const brand: IBrand = await this.prismaService.brand.create({
         data: createBrandDto,
       });
 
@@ -39,7 +39,7 @@ export class BrandService {
 
   async getAll(): Promise<IBrandWithLength | { message: string }> {
     try {
-      const brands = await this.prismaService.brand.findMany();
+      const brands: IBrand[] = await this.prismaService.brand.findMany();
 
       if (brands.length === 0) {
         return new HttpException(
@@ -48,7 +48,7 @@ export class BrandService {
         );
       }
 
-      const data = {
+      const data: IBrandWithLength = {
         length: brands.length,
         data: brands,
       };
@@ -74,7 +74,7 @@ export class BrandService {
         }
       });
 
-      const updatedBrand = await this.prismaService.brand.update({
+      const updatedBrand: IBrand = await this.prismaService.brand.update({
         where: {
           id: brandId,
         },
@@ -93,7 +93,7 @@ export class BrandService {
 
   async delete(brandId: number): Promise<IBrand | { message: string }> {
     try {
-      const deletedBrand = await this.prismaService.brand.delete({
+      const deletedBrand: IBrand = await this.prismaService.brand.delete({
         where: { id: brandId },
       });
 

@@ -11,9 +11,10 @@ export class CategoryService {
     createCategoryDto: CreateCategoryDto,
   ): Promise<ICategory | { message: string }> {
     try {
-      const existCategory = await this.prismaService.category.findFirst({
-        where: { title: createCategoryDto.title },
-      });
+      const existCategory: ICategory =
+        await this.prismaService.category.findFirst({
+          where: { title: createCategoryDto.title },
+        });
 
       if (existCategory) {
         return new HttpException(
@@ -22,7 +23,7 @@ export class CategoryService {
         );
       }
 
-      const category = await this.prismaService.category.create({
+      const category: ICategory = await this.prismaService.category.create({
         data: createCategoryDto,
       });
 
