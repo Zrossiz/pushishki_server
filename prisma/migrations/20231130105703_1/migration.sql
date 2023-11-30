@@ -22,6 +22,7 @@ CREATE TABLE "tokens" (
 CREATE TABLE "countries" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -34,6 +35,7 @@ CREATE TABLE "brands" (
     "id" SERIAL NOT NULL,
     "country_id" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -99,6 +101,7 @@ CREATE TABLE "categories" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,

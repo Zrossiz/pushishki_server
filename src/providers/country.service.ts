@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateCountryDto } from 'src/dto';
 import { ICountry, ICountryWithLength } from 'src/interfaces';
+import { generateSlug } from 'src/helpers';
 
 @Injectable()
 export class CountryService {
@@ -43,8 +44,16 @@ export class CountryService {
         );
       }
 
+      const slug = generateSlug(createCountryDto.title).toLowerCase();
+
+      const countryData = {
+        title: createCountryDto.title,
+        slug,
+        image: createCountryDto.image,
+      };
+
       const country: ICountry = await this.prismaService.country.create({
-        data: createCountryDto,
+        data: countryData,
       });
 
       return country;

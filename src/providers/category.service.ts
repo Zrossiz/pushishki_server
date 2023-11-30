@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateCategoryDto } from 'src/dto';
 import { ICategory } from 'src/interfaces';
+import { generateSlug } from 'src/helpers';
 
 @Injectable()
 export class CategoryService {
@@ -23,8 +24,17 @@ export class CategoryService {
         );
       }
 
+      const slug = generateSlug(createCategoryDto.title).toLowerCase();
+
+      const categoryData = {
+        title: createCategoryDto.title,
+        description: createCategoryDto.description,
+        slug,
+        image: createCategoryDto.image,
+      };
+
       const category: ICategory = await this.prismaService.category.create({
-        data: createCategoryDto,
+        data: categoryData,
       });
 
       return category;

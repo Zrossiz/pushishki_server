@@ -37,6 +37,7 @@ model Token {
 model Country {
   id        Int       @id @default(autoincrement())
   title     String
+  slug      String
   image     String
   Brand     Brand[]
   Product   Product[]
@@ -50,6 +51,7 @@ model Brand {
   id          Int       @id @default(autoincrement())
   countryId   Int       @map("country_id")
   title       String
+  slug        String
   image       String
   description String
   Product     Product[]
@@ -123,6 +125,7 @@ model Category {
   id          Int       @id @default(autoincrement())
   title       String
   description String
+  slug        String
   image       String
   Product     Product[]
   createdAt   DateTime  @default(now()) @map("created_at")

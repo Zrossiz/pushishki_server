@@ -3,6 +3,7 @@ import { PrismaService } from './prisma.service';
 import { CreateBrandDto } from 'src/dto';
 import { IBrand, IBrandWithLength } from 'src/interfaces';
 import { UpdateBrandDto } from 'src/dto/update/update-brand-dto';
+import { generateSlug } from 'src/helpers';
 
 @Injectable()
 export class BrandService {
@@ -23,8 +24,18 @@ export class BrandService {
         );
       }
 
+      const slug = generateSlug(createBrandDto.title).toLowerCase();
+
+      const brandData = {
+        countryId: createBrandDto.countryId,
+        title: createBrandDto.title,
+        slug,
+        image: createBrandDto.image,
+        description: createBrandDto.description,
+      };
+
       const brand: IBrand = await this.prismaService.brand.create({
-        data: createBrandDto,
+        data: brandData,
       });
 
       return brand;
