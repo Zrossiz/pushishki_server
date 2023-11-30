@@ -1,7 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateCountryDto } from 'src/dto';
-import { ICountry, ICountryWithLength, IProduct } from 'src/interfaces';
+import {
+  ICountry,
+  ICountryWithLength,
+  IProduct,
+  IProductWithLength,
+} from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 import { UpdateCountryDto } from 'src/dto/update/update-country-dto';
 
@@ -51,7 +56,9 @@ export class CountryService {
     }
   }
 
-  async getProductsBySlug(slug: string) {
+  async getProductsBySlug(
+    slug: string,
+  ): Promise<IProductWithLength | { message: string }> {
     try {
       const country: ICountry = await this.prismaService.country.findFirst({
         where: { slug: slug },
@@ -68,7 +75,12 @@ export class CountryService {
         where: { countryId: country.id },
       });
 
-      return products;
+      const populatedProducts: IProductWithLength = {
+        length: products.length,
+        data: products,
+      };
+
+      return populatedProducts;
     } catch (err) {
       console.log(err);
       throw new HttpException(
