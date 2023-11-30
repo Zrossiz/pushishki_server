@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateCountryDto } from 'src/dto/create-country-dto';
+import { CreateCountryDto } from 'src/dto/create/create-country-dto';
 import { CountryService } from 'src/providers/country.service';
 
 @Controller('country')

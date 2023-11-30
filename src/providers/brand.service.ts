@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateBrandDto } from 'src/dto';
 import { IBrand, IBrandWithLength } from 'src/interfaces';
-import { UpdateBrandDto } from 'src/dto/update-brand-dto';
+import { UpdateBrandDto } from 'src/dto/update/update-brand-dto';
 
 @Injectable()
 export class BrandService {
