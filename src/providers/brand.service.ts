@@ -79,9 +79,30 @@ export class BrandService {
     brandId: number,
   ): Promise<IBrand | { message: string }> {
     try {
-      Object.keys(updateBrandDto).forEach((key) => {
-        if (updateBrandDto[key] === undefined) {
-          delete updateBrandDto[key];
+      const brand: IBrand = await this.prismaService.brand.findFirst({
+        where: { id: brandId },
+      });
+
+      if (!brand) {
+        return new HttpException(
+          `Бренд с id: ${brandId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const slug: string = generateSlug(updateBrandDto.title).toLowerCase();
+
+      const brandData = {
+        countryId: updateBrandDto.countryId,
+        title: updateBrandDto.title,
+        slug,
+        image: updateBrandDto.image,
+        description: updateBrandDto.description,
+      };
+
+      Object.keys(brandData).forEach((key) => {
+        if (brandData[key] === undefined) {
+          delete brandData[key];
         }
       });
 
@@ -89,7 +110,7 @@ export class BrandService {
         where: {
           id: brandId,
         },
-        data: updateBrandDto,
+        data: brandData,
       });
 
       return updatedBrand;

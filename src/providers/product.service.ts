@@ -58,7 +58,7 @@ export class ProductService {
     if (!product) {
       return new HttpException(
         `Товар с id: ${productId} не найден`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.BAD_REQUEST,
       );
     }
 
