@@ -93,6 +93,17 @@ export class BrandService {
 
   async delete(brandId: number): Promise<IBrand | { message: string }> {
     try {
+      const brand: IBrand = await this.prismaService.brand.delete({
+        where: { id: brandId },
+      });
+
+      if (!brand) {
+        return new HttpException(
+          `Бренд с id: ${brandId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const deletedBrand: IBrand = await this.prismaService.brand.delete({
         where: { id: brandId },
       });

@@ -49,6 +49,19 @@ export class ProductService {
     productId: number,
     updateProductDto: UpdateProductDto,
   ): Promise<IProduct | { message: string }> {
+    const product: IProduct = await this.prismaService.product.findFirst({
+      where: {
+        id: productId,
+      },
+    });
+
+    if (!product) {
+      return new HttpException(
+        `Товар с id: ${productId} не найден`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     Object.keys(updateProductDto).forEach((key) => {
       if (updateProductDto[key] === undefined) {
         delete updateProductDto[key];
