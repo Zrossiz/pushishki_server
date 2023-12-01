@@ -1,7 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateBrandDto } from 'src/dto';
-import { IBrand, IBrandWithLength } from 'src/interfaces';
+import {
+  IBrand,
+  IBrandWithLength,
+  IProduct,
+  IProductWithLength,
+} from 'src/interfaces';
 import { UpdateBrandDto } from 'src/dto/update/update-brand-dto';
 import { generateSlug } from 'src/helpers';
 
@@ -143,6 +148,40 @@ export class BrandService {
       });
 
       return deletedBrand;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getProductsBySlug(
+    slug: string,
+  ): Promise<IProductWithLength | { message: string }> {
+    try {
+      const brand: IBrand = await this.prismaService.brand.findFirst({
+        where: { slug },
+      });
+
+      if (!brand) {
+        return new HttpException(
+          `Бренд ${slug} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const products: IProduct[] = await this.prismaService.product.findMany({
+        where: { brandId: brand.id },
+      });
+
+      const populatedData: IProductWithLength = {
+        length: products.length,
+        data: products,
+      };
+
+      return populatedData;
     } catch (err) {
       console.log(err);
       throw new HttpException(
