@@ -11,6 +11,11 @@ export class BrandController {
     return await this.brandService.getAll();
   }
 
+  @Get('/:slug')
+  async getOne(@Param('slug') slug: string) {
+    return await this.brandService.getOne(slug);
+  }
+
   @Post('')
   async create(@Body() createBrandDto: CreateBrandDto) {
     return await this.brandService.create(createBrandDto);

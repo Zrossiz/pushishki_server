@@ -76,6 +76,7 @@ model Product {
   assembledModelSize String            @map("assembled_model_size")
   modelSizeInPackage String            @map("model_size_in_package")
   video              String
+  preview            String
   country            Country           @relation(fields: [countryId], references: [id])
   brand              Brand             @relation(fields: [brandId], references: [id])
   category           Category          @relation(fields: [categoryId], references: [id])

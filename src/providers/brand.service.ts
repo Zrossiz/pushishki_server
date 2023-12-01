@@ -79,6 +79,29 @@ export class BrandService {
     }
   }
 
+  async getOne(slug: string): Promise<IBrand | { message: string }> {
+    try {
+      const brand = await this.prismaService.brand.findFirst({
+        where: { slug },
+      });
+
+      if (!brand) {
+        return new HttpException(
+          `Бренд ${slug} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      return brand;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async update(
     updateBrandDto: UpdateBrandDto,
     slug: string,
