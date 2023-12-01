@@ -16,16 +16,16 @@ export class BrandController {
     return await this.brandService.create(createBrandDto);
   }
 
-  @Post('/:id')
+  @Post('/:slug')
   async update(
-    @Param('id') brandId: string,
+    @Param('slug') slug: string,
     @Body() updateBrandDto: UpdateBrandDto,
   ) {
-    return await this.brandService.update(updateBrandDto, +brandId);
+    return await this.brandService.update(updateBrandDto, slug);
   }
 
-  @Delete('/:id')
-  async delete(@Param('id') brandId: string) {
-    return await this.brandService.delete(+brandId);
+  @Delete('/:slug')
+  async delete(@Param('slug') slug: string) {
+    return await this.brandService.delete(slug);
   }
 }

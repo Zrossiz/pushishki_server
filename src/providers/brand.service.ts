@@ -76,26 +76,28 @@ export class BrandService {
 
   async update(
     updateBrandDto: UpdateBrandDto,
-    brandId: number,
+    slug: string,
   ): Promise<IBrand | { message: string }> {
     try {
       const brand: IBrand = await this.prismaService.brand.findFirst({
-        where: { id: brandId },
+        where: { slug: slug },
       });
 
       if (!brand) {
         return new HttpException(
-          `Бренд с id: ${brandId} не найден`,
+          `Бренд ${slug} не найден`,
           HttpStatus.BAD_REQUEST,
         );
       }
 
-      const slug: string = generateSlug(updateBrandDto.title).toLowerCase();
+      const updatedSlug: string = generateSlug(
+        updateBrandDto.title,
+      ).toLowerCase();
 
       const brandData = {
         countryId: updateBrandDto.countryId,
         title: updateBrandDto.title,
-        slug,
+        slug: updatedSlug,
         image: updateBrandDto.image,
         description: updateBrandDto.description,
       };
@@ -108,7 +110,7 @@ export class BrandService {
 
       const updatedBrand: IBrand = await this.prismaService.brand.update({
         where: {
-          id: brandId,
+          id: brand.id,
         },
         data: brandData,
       });
@@ -123,21 +125,21 @@ export class BrandService {
     }
   }
 
-  async delete(brandId: number): Promise<IBrand | { message: string }> {
+  async delete(slug: string): Promise<IBrand | { message: string }> {
     try {
-      const brand: IBrand = await this.prismaService.brand.delete({
-        where: { id: brandId },
+      const brand: IBrand = await this.prismaService.brand.findFirst({
+        where: { slug },
       });
 
       if (!brand) {
         return new HttpException(
-          `Бренд с id: ${brandId} не найден`,
+          `Бренд ${slug} не найден`,
           HttpStatus.BAD_REQUEST,
         );
       }
 
       const deletedBrand: IBrand = await this.prismaService.brand.delete({
-        where: { id: brandId },
+        where: { id: brand.id },
       });
 
       return deletedBrand;
