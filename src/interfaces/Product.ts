@@ -8,6 +8,7 @@ export interface IProduct {
   assembledModelSize: string;
   modelSizeInPackage: string;
   video: string;
+  preview: string;
   updatedAt: Date;
   createdAt: Date;
 }
