@@ -17,11 +17,21 @@ export class CategoryController {
     return await this.categoryService.getAll();
   }
 
+  @Get(':slug')
+  async getOne(@Param('slug') slug: string) {
+    return await this.categoryService.getOne(slug);
+  }
+
   @Post(':slug')
   async update(
     @Param('slug') slug: string,
     @Body() updateCategory: UpdateCategoryDto,
   ) {
     return await this.categoryService.update(updateCategory, slug);
+  }
+
+  @Get(':slug/products')
+  async getProductsBySlug(@Param('slug') slug: string) {
+    return await this.categoryService.getProductsBySlug(slug);
   }
 }

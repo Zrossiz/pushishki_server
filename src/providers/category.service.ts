@@ -1,7 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateCategoryDto } from 'src/dto';
-import { ICategory, ICategoryWithLength } from 'src/interfaces';
+import {
+  ICategory,
+  ICategoryWithLength,
+  IProduct,
+  IProductWithLength,
+} from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 import { UpdateCategoryDto } from 'src/dto/update/update-category-dto';
 
@@ -107,6 +112,57 @@ export class CategoryService {
         });
 
       return updatedCategory;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getOne(slug: string): Promise<ICategory | { message: string }> {
+    try {
+      const category: ICategory = await this.prismaService.category.findFirst({
+        where: { slug },
+      });
+
+      if (!category) {
+        return new HttpException(
+          `Категория ${slug} не найдена`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      return category;
+    } catch (err) {}
+  }
+
+  async getProductsBySlug(
+    slug: string,
+  ): Promise<IProductWithLength | { message: string }> {
+    try {
+      const category: ICategory = await this.prismaService.category.findFirst({
+        where: { slug },
+      });
+
+      if (!category) {
+        return new HttpException(
+          `Категория ${slug} не найдена`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const products: IProduct[] = await this.prismaService.product.findMany({
+        where: { categoryId: category.id },
+      });
+
+      const populatedData: IProductWithLength = {
+        length: products.length,
+        data: products,
+      };
+
+      return populatedData;
     } catch (err) {
       console.log(err);
       throw new HttpException(
