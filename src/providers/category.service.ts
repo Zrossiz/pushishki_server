@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateCategoryDto } from 'src/dto';
-import { ICategory } from 'src/interfaces';
+import { ICategory, ICategoryWithLength } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 
 @Injectable()
@@ -38,6 +38,26 @@ export class CategoryService {
       });
 
       return category;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getAll(): Promise<ICategoryWithLength | { message: string }> {
+    try {
+      const categories: ICategory[] =
+        await this.prismaService.category.findMany();
+
+      const populatedData: ICategoryWithLength = {
+        length: categories.length,
+        data: categories,
+      };
+
+      return populatedData;
     } catch (err) {
       console.log(err);
       throw new HttpException(

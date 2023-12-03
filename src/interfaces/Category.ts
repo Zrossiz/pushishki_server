@@ -7,3 +7,8 @@ export interface ICategory {
   updatedAt: Date;
   createdAt: Date;
 }
+
+export interface ICategoryWithLength {
+  length: number;
+  data: ICategory[];
+}

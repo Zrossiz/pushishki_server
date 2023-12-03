@@ -48,4 +48,8 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
   video: string;
+
+  @IsNotEmpty()
+  @IsString()
+  preview: string;
 }

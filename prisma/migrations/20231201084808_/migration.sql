@@ -59,6 +59,7 @@ CREATE TABLE "products" (
     "assembled_model_size" TEXT NOT NULL,
     "model_size_in_package" TEXT NOT NULL,
     "video" TEXT NOT NULL,
+    "preview" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -77,6 +78,7 @@ CREATE TABLE "product_variants" (
     "maximum_load" TEXT NOT NULL,
     "assembled_model_size" TEXT NOT NULL,
     "model_size_in_package" TEXT NOT NULL,
+    "images" TEXT[],
     "video" TEXT NOT NULL,
 
     CONSTRAINT "product_variants_pkey" PRIMARY KEY ("id")
