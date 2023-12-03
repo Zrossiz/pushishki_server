@@ -118,14 +118,12 @@ export class BrandService {
         );
       }
 
-      const updatedSlug: string = generateSlug(
-        updateBrandDto.title,
-      ).toLowerCase();
-
       const brandData = {
         countryId: updateBrandDto.countryId,
         title: updateBrandDto.title,
-        slug: updatedSlug,
+        slug: updateBrandDto.title
+          ? generateSlug(updateBrandDto.title).toLowerCase()
+          : brand.slug,
         image: updateBrandDto.image,
         description: updateBrandDto.description,
       };

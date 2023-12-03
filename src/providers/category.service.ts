@@ -88,7 +88,7 @@ export class CategoryService {
       const categoryData = {
         title: updateCategoryDto.title,
         slug: updateCategoryDto.title
-          ? generateSlug(updateCategoryDto.title)
+          ? generateSlug(updateCategoryDto.title).toLowerCase()
           : existCategory.slug,
         description: updateCategoryDto.description,
         image: updateCategoryDto.image,

@@ -106,13 +106,11 @@ export class CountryService {
         );
       }
 
-      const updatedSlug: string = generateSlug(
-        updateCountryDto.title,
-      ).toLowerCase();
-
       const countryData = {
         title: updateCountryDto.title,
-        slug: updatedSlug,
+        slug: updateCountryDto.title
+          ? generateSlug(updateCountryDto.title).toLowerCase()
+          : country.slug,
         image: updateCountryDto.image,
       };
 
