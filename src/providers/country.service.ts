@@ -58,6 +58,7 @@ export class CountryService {
 
   async getProductsBySlug(
     slug: string,
+    page: number,
   ): Promise<IProductWithLength | { message: string }> {
     try {
       const country: ICountry = await this.prismaService.country.findFirst({
@@ -71,16 +72,25 @@ export class CountryService {
         );
       }
 
+      const skip: number = page ? (page - 1) * 10 : 0;
+
+      const totalPages: number = Math.ceil(
+        (await this.prismaService.product.count()) / 10,
+      );
+
       const products: IProduct[] = await this.prismaService.product.findMany({
+        take: 10,
         where: { countryId: country.id },
+        skip,
       });
 
-      const populatedProducts: IProductWithLength = {
+      const populatedData: IProductWithLength = {
         length: products.length,
+        totalPages,
         data: products,
       };
 
-      return populatedProducts;
+      return populatedData;
     } catch (err) {
       console.log(err);
       throw new HttpException(

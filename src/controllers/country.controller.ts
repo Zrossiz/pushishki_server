@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateCountryDto } from 'src/dto/create/create-country-dto';
 import { UpdateCountryDto } from 'src/dto/update/update-country-dto';
 import { CountryService } from 'src/providers/country.service';
@@ -26,8 +34,11 @@ export class CountryController {
   }
 
   @Get(':slug/products')
-  async getProductsBySlug(@Param('slug') slug: string) {
-    return this.countryService.getProductsBySlug(slug);
+  async getProductsBySlug(
+    @Param('slug') slug: string,
+    @Query('page') page: number,
+  ) {
+    return this.countryService.getProductsBySlug(slug, page);
   }
 
   @Post('')

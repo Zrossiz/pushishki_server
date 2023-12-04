@@ -26,16 +26,28 @@ export class ProductService {
     }
   }
 
-  async getAll(): Promise<IProductWithLength | { message: string }> {
+  async getAll(
+    page: number,
+  ): Promise<IProductWithLength | { message: string }> {
     try {
-      const products: IProduct[] = await this.prismaService.product.findMany();
+      const skip: number = page ? (page - 1) * 10 : 0;
 
-      const data: IProductWithLength = {
+      const totalPages: number = Math.ceil(
+        (await this.prismaService.product.count()) / 10,
+      );
+
+      const products: IProduct[] = await this.prismaService.product.findMany({
+        take: 10,
+        skip,
+      });
+
+      const populatedData: IProductWithLength = {
         length: products.length,
+        totalPages,
         data: products,
       };
 
-      return data;
+      return populatedData;
     } catch (err) {
       console.log(err);
       throw new HttpException(

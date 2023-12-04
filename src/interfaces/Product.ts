@@ -15,5 +15,6 @@ export interface IProduct {
 
 export interface IProductWithLength {
   length: number;
+  totalPages: number;
   data: IProduct[];
 }

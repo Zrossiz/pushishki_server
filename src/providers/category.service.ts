@@ -140,6 +140,7 @@ export class CategoryService {
 
   async getProductsBySlug(
     slug: string,
+    page: number,
   ): Promise<IProductWithLength | { message: string }> {
     try {
       const category: ICategory = await this.prismaService.category.findFirst({
@@ -153,12 +154,21 @@ export class CategoryService {
         );
       }
 
+      const skip: number = page ? (page - 1) * 10 : 0;
+
+      const totalPages: number = Math.ceil(
+        (await this.prismaService.product.count()) / 10,
+      );
+
       const products: IProduct[] = await this.prismaService.product.findMany({
+        take: 10,
         where: { categoryId: category.id },
+        skip,
       });
 
       const populatedData: IProductWithLength = {
         length: products.length,
+        totalPages,
         data: products,
       };
 

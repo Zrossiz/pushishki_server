@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateProductDto } from 'src/dto/create/create-product-dto';
 import { UpdateProductDto } from 'src/dto/update/update-product-dto';
 import { ProductService } from 'src/providers/product.service';
@@ -8,8 +8,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('')
-  async getAll() {
-    return await this.productService.getAll();
+  async getAll(@Query('page') page: number) {
+    return await this.productService.getAll(page);
   }
 
   @Get(':id')

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateCategoryDto } from 'src/dto';
 import { UpdateCategoryDto } from 'src/dto/update/update-category-dto';
 import { CategoryService } from 'src/providers/category.service';
@@ -31,7 +31,10 @@ export class CategoryController {
   }
 
   @Get(':slug/products')
-  async getProductsBySlug(@Param('slug') slug: string) {
-    return await this.categoryService.getProductsBySlug(slug);
+  async getProductsBySlug(
+    @Param('slug') slug: string,
+    @Query('page') page: number,
+  ) {
+    return await this.categoryService.getProductsBySlug(slug, page);
   }
 }

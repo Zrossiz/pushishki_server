@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateBrandDto, UpdateBrandDto } from 'src/dto';
 import { BrandService } from 'src/providers/brand.service';
 
@@ -22,8 +30,11 @@ export class BrandController {
   }
 
   @Get('/:slug/products')
-  async getProductsBySlug(@Param('slug') slug: string) {
-    return this.brandService.getProductsBySlug(slug);
+  async getProductsBySlug(
+    @Param('slug') slug: string,
+    @Query('page') page: number,
+  ) {
+    return this.brandService.getProductsBySlug(slug, page);
   }
 
   @Post('/:slug')
