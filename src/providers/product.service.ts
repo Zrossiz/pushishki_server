@@ -45,6 +45,29 @@ export class ProductService {
     }
   }
 
+  async getOne(productId: number): Promise<IProduct | { message: string }> {
+    try {
+      const product: IProduct = await this.prismaService.product.findFirst({
+        where: { id: productId },
+      });
+
+      if (!product) {
+        return new HttpException(
+          `Товар с id ${productId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      return product;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async update(
     productId: number,
     updateProductDto: UpdateProductDto,
