@@ -10,6 +10,9 @@ import { BrandModule } from './modules/brand.module';
 import { CountryController } from './controllers/country.controller';
 import { CountryModule } from './modules/country.module';
 import { CategoryModule } from './modules/category.module';
+import { ReviewController } from './controllers/review.controller';
+import { ReviewModule } from './modules/review.module';
+import { ReviewService } from './providers/review.service';
 
 @Module({
   imports: [
@@ -20,8 +23,14 @@ import { CategoryModule } from './modules/category.module';
     BrandModule,
     CountryModule,
     CategoryModule,
+    ReviewModule,
   ],
-  controllers: [AuthController, UserController, CountryController],
-  providers: [UserService],
+  controllers: [
+    AuthController,
+    UserController,
+    CountryController,
+    ReviewController,
+  ],
+  providers: [UserService, ReviewService],
 })
 export class AppModule {}
