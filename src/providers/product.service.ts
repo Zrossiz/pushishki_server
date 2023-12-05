@@ -84,33 +84,41 @@ export class ProductService {
     productId: number,
     updateProductDto: UpdateProductDto,
   ): Promise<IProduct | { message: string }> {
-    const product: IProduct = await this.prismaService.product.findFirst({
-      where: {
-        id: productId,
-      },
-    });
+    try {
+      const product: IProduct = await this.prismaService.product.findFirst({
+        where: {
+          id: productId,
+        },
+      });
 
-    if (!product) {
-      return new HttpException(
-        `Товар с id: ${productId} не найден`,
-        HttpStatus.BAD_REQUEST,
+      if (!product) {
+        return new HttpException(
+          `Товар с id: ${productId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      Object.keys(updateProductDto).forEach((key) => {
+        if (updateProductDto[key] === undefined) {
+          delete updateProductDto[key];
+        }
+      });
+
+      const updatedProduct: IProduct = await this.prismaService.product.update({
+        where: {
+          id: productId,
+        },
+        data: updateProductDto,
+      });
+
+      return updatedProduct;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    Object.keys(updateProductDto).forEach((key) => {
-      if (updateProductDto[key] === undefined) {
-        delete updateProductDto[key];
-      }
-    });
-
-    const updatedProduct: IProduct = await this.prismaService.product.update({
-      where: {
-        id: productId,
-      },
-      data: updateProductDto,
-    });
-
-    return updatedProduct;
   }
 
   async delete(productId: number): Promise<IProduct | { message: string }> {
