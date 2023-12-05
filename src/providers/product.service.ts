@@ -112,4 +112,31 @@ export class ProductService {
 
     return updatedProduct;
   }
+
+  async delete(productId: number): Promise<IProduct | { message: string }> {
+    try {
+      const product: IProduct = await this.prismaService.product.findFirst({
+        where: { id: productId },
+      });
+
+      if (!product) {
+        return new HttpException(
+          `Товар ${productId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const deletedProduct: IProduct = await this.prismaService.product.delete({
+        where: { id: product.id },
+      });
+
+      return deletedProduct;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
