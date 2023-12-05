@@ -135,4 +135,31 @@ export class ReviewService {
       );
     }
   }
+
+  async delete(reviewId: number): Promise<IReview | { message: string }> {
+    try {
+      const review: IReview = await this.prismaService.review.findFirst({
+        where: { id: reviewId },
+      });
+
+      if (!review) {
+        return new HttpException(
+          `Отзыв ${reviewId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const deletedReview: IReview = await this.prismaService.review.delete({
+        where: { id: reviewId },
+      });
+
+      return deletedReview;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
