@@ -13,6 +13,8 @@ import { CategoryModule } from './modules/category.module';
 import { ReviewController } from './controllers/review.controller';
 import { ReviewModule } from './modules/review.module';
 import { ReviewService } from './providers/review.service';
+import { ProductVariantController } from './controllers/product-variant.controller';
+import { ProductVariantModule } from './modules/product-variant.module';
 
 @Module({
   imports: [
@@ -24,12 +26,14 @@ import { ReviewService } from './providers/review.service';
     CountryModule,
     CategoryModule,
     ReviewModule,
+    ProductVariantModule,
   ],
   controllers: [
     AuthController,
     UserController,
     CountryController,
     ReviewController,
+    ProductVariantController,
   ],
   providers: [UserService, ReviewService],
 })
