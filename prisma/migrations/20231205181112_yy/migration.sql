@@ -88,10 +88,11 @@ CREATE TABLE "product_variants" (
 CREATE TABLE "reviews" (
     "id" SERIAL NOT NULL,
     "product_id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
+    "active" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -114,7 +115,6 @@ CREATE TABLE "categories" (
 -- CreateTable
 CREATE TABLE "basket" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
     "product_id" INTEGER NOT NULL,
     "variant_id" INTEGER NOT NULL,
     "order_id" INTEGER,
@@ -169,9 +169,6 @@ ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("
 ALTER TABLE "product_variants" ADD CONSTRAINT "product_variants_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviews" ADD CONSTRAINT "reviews_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -179,9 +176,6 @@ ALTER TABLE "basket" ADD CONSTRAINT "basket_variant_id_fkey" FOREIGN KEY ("varia
 
 -- AddForeignKey
 ALTER TABLE "basket" ADD CONSTRAINT "basket_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "basket" ADD CONSTRAINT "basket_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "basket" ADD CONSTRAINT "basket_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE SET NULL ON UPDATE CASCADE;
