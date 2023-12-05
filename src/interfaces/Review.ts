@@ -6,3 +6,9 @@ export interface IReview {
   description: string;
   rating: number;
 }
+
+export interface IReviewWithLength {
+  length: number;
+  totalPages: number;
+  data: IReview[];
+}

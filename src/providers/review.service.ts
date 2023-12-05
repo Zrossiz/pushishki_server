@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateReviewDto } from 'src/dto/create/create-review-dto';
-import { IReview } from 'src/interfaces';
+import { IProduct, IReview, IReviewWithLength } from 'src/interfaces';
 import { UpdateReviewDto } from 'src/dto/update/update-review-dto';
 
 @Injectable()
@@ -61,6 +61,53 @@ export class ReviewService {
       });
 
       return updatedReview;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getAllReviewsByProduct(
+    productId: number,
+    page: number,
+  ): Promise<IReviewWithLength | { message: string }> {
+    try {
+      const product: IProduct = await this.prismaService.product.findFirst({
+        where: { id: productId },
+      });
+
+      if (!product) {
+        return new HttpException(
+          `Товар с id: ${productId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const skip: number = page ? (page - 1) * 10 : 0;
+
+      const reviewByProduct: IReview[] =
+        await this.prismaService.review.findMany({
+          where: { productId },
+        });
+
+      const totalPages: number = Math.ceil(reviewByProduct.length / 10);
+
+      const reviews: IReview[] = await this.prismaService.review.findMany({
+        take: 10,
+        where: { productId },
+        skip,
+      });
+
+      const populatedData: IReviewWithLength = {
+        length: reviews.length,
+        totalPages,
+        data: reviews,
+      };
+
+      return populatedData;
     } catch (err) {
       console.log(err);
       throw new HttpException(
