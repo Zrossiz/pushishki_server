@@ -26,7 +26,7 @@ export class CountryService {
       return data;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -49,7 +49,7 @@ export class CountryService {
       return country;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -93,7 +93,7 @@ export class CountryService {
       return populatedData;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -140,7 +140,7 @@ export class CountryService {
       return updatedCountry;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -179,7 +179,7 @@ export class CountryService {
       return country;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -206,7 +206,7 @@ export class CountryService {
       return deletedCountry;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );

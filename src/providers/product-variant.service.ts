@@ -23,7 +23,7 @@ export class ProductVariantService {
       return productVariants;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );

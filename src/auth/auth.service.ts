@@ -38,7 +38,7 @@ export class AuthService {
       return newUser;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -87,7 +87,7 @@ export class AuthService {
       };
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );

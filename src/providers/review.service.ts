@@ -26,7 +26,7 @@ export class ReviewService {
       return review;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -63,7 +63,7 @@ export class ReviewService {
       return updatedReview;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -110,7 +110,7 @@ export class ReviewService {
       return populatedData;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );

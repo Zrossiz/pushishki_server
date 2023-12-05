@@ -46,7 +46,7 @@ export class BrandService {
       return brand;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -72,7 +72,7 @@ export class BrandService {
       return data;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -95,7 +95,7 @@ export class BrandService {
       return brand;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -144,7 +144,7 @@ export class BrandService {
       return updatedBrand;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -171,7 +171,7 @@ export class BrandService {
       return deletedBrand;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -215,7 +215,7 @@ export class BrandService {
       return populatedData;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
+      return new HttpException(
         'Ошибка сервера',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
