@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Get, Query } from '@nestjs/common';
+import { Body, Controller, Param, Post, Get, Query, Put } from '@nestjs/common';
 import { CreateReviewDto } from 'src/dto/create/create-review-dto';
 import { UpdateReviewDto } from 'src/dto/update/update-review-dto';
 import { ReviewService } from 'src/providers/review.service';
@@ -18,6 +18,11 @@ export class ReviewController {
     @Body() updateReviewDto: UpdateReviewDto,
   ) {
     return await this.reviewService.update(+reviewId, updateReviewDto);
+  }
+
+  @Put(':id')
+  async switchActiveReview(@Param('id') reviewId: number) {
+    return await this.reviewService.switchActiveReview(+reviewId);
   }
 
   @Get('/product/:id')

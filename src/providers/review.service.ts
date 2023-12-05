@@ -97,7 +97,7 @@ export class ReviewService {
 
       const reviews: IReview[] = await this.prismaService.review.findMany({
         take: 10,
-        where: { productId },
+        where: { productId, active: true },
         skip,
       });
 
@@ -108,6 +108,25 @@ export class ReviewService {
       };
 
       return populatedData;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async switchActiveReview(
+    reviewId: number,
+  ): Promise<IReview | { message: string }> {
+    try {
+      const updatedReview: IReview = await this.prismaService.review.update({
+        where: { id: reviewId },
+        data: { active: true },
+      });
+
+      return updatedReview;
     } catch (err) {
       console.log(err);
       return new HttpException(
