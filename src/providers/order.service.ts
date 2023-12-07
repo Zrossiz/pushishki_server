@@ -57,4 +57,24 @@ export class OrderService {
       );
     }
   }
+
+  async getOne(orderId: number) {
+    try {
+      const order = await this.prismaService.order.findFirst({
+        where: { id: orderId },
+      });
+
+      if (!order) {
+        return new HttpException('Заказ не найден', HttpStatus.BAD_REQUEST);
+      }
+
+      return order;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
