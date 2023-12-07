@@ -6,7 +6,7 @@ import { ProductVariantService } from 'src/providers/product-variant.service';
 export class ProductVariantController {
   constructor(private readonly productVariantService: ProductVariantService) {}
 
-  @Get(':id')
+  @Get('product/:id')
   async getAllVariantsByProduct(@Param('id') productId: string) {
     return await this.productVariantService.getAllVariantsByProduct(+productId);
   }
