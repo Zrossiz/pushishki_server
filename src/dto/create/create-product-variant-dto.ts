@@ -38,6 +38,10 @@ export class CreateProductVariantDto {
   modelSizeInPackage: string;
 
   @IsNotEmpty()
+  @IsString()
+  color: string;
+
+  @IsNotEmpty()
   images: string[];
 
   @IsNotEmpty()

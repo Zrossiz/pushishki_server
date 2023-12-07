@@ -8,6 +8,7 @@ export interface IProductVariant {
   maximumLoad: string;
   assembledModelSize: string;
   modelSizeInPackage: string;
+  color: string;
   images: string[];
   video: string;
 }
