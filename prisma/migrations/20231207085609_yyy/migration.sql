@@ -78,6 +78,7 @@ CREATE TABLE "product_variants" (
     "maximum_load" TEXT NOT NULL,
     "assembled_model_size" TEXT NOT NULL,
     "model_size_in_package" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
     "images" TEXT[],
     "video" TEXT NOT NULL,
 

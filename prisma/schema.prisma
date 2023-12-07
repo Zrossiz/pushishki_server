@@ -98,6 +98,7 @@ model Product_variant {
   maximumLoad        String   @map("maximum_load")
   assembledModelSize String   @map("assembled_model_size")
   modelSizeInPackage String   @map("model_size_in_package")
+  color              String
   images             String[]
   video              String
   product            Product  @relation(fields: [productId], references: [id])
