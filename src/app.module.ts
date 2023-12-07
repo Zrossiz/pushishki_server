@@ -18,6 +18,9 @@ import { ProductVariantModule } from './modules/product-variant.module';
 import { OrderController } from './controllers/order.controller';
 import { OrderService } from './providers/order.service';
 import { OrderModule } from './modules/order.module';
+import { BasketService } from './providers/basket.service';
+import { BasketController } from './controllers/basket.controller';
+import { BasketModule } from './modules/basket.module';
 
 @Module({
   imports: [
@@ -31,6 +34,7 @@ import { OrderModule } from './modules/order.module';
     ReviewModule,
     ProductVariantModule,
     OrderModule,
+    BasketModule,
   ],
   controllers: [
     AuthController,
@@ -39,7 +43,8 @@ import { OrderModule } from './modules/order.module';
     ReviewController,
     ProductVariantController,
     OrderController,
+    BasketController,
   ],
-  providers: [UserService, ReviewService, OrderService],
+  providers: [UserService, ReviewService, OrderService, BasketService],
 })
 export class AppModule {}
