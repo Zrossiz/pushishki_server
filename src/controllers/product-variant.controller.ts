@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateProductVariantDto } from 'src/dto/create/create-product-variant-dto';
+import { UpdateProductVariantDto } from 'src/dto/update/create-product-variant-dto';
 import { ProductVariantService } from 'src/providers/product-variant.service';
 
 @Controller('product-variant')
@@ -9,6 +10,17 @@ export class ProductVariantController {
   @Get('product/:id')
   async getAllVariantsByProduct(@Param('id') productId: string) {
     return await this.productVariantService.getAllVariantsByProduct(+productId);
+  }
+
+  @Post(':id')
+  async update(
+    @Param('id') productVariantId: string,
+    @Body() updateProductVariantDto: UpdateProductVariantDto,
+  ) {
+    return await this.productVariantService.update(
+      +productVariantId,
+      updateProductVariantDto,
+    );
   }
 
   @Delete(':id')

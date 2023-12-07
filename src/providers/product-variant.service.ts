@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateProductVariantDto } from 'src/dto/create/create-product-variant-dto';
 import { IProduct, IProductVariant } from 'src/interfaces';
+import { UpdateProductVariantDto } from 'src/dto/update/create-product-variant-dto';
 
 @Injectable()
 export class ProductVariantService {
@@ -27,6 +28,45 @@ export class ProductVariantService {
       });
 
     return productVariant;
+  }
+
+  async update(
+    productVariantId: number,
+    updateProductVariantDto: UpdateProductVariantDto,
+  ): Promise<IProductVariant | { message: string }> {
+    try {
+      const productVariant: IProductVariant =
+        await this.prismaService.product_variant.findFirst({
+          where: { id: productVariantId },
+        });
+
+      if (!productVariant) {
+        return new HttpException(
+          `Вариант продукта ${productVariantId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      Object.keys(updateProductVariantDto).forEach((key) => {
+        if (updateProductVariantDto[key] === undefined) {
+          delete updateProductVariantDto[key];
+        }
+      });
+
+      const updatedProductVariant: IProductVariant =
+        await this.prismaService.product_variant.update({
+          where: { id: productVariantId },
+          data: updateProductVariantDto,
+        });
+
+      return updatedProductVariant;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async delete(
