@@ -1,6 +1,5 @@
 export interface IOrder {
   id: number;
-  orderId: number;
   name: string;
   lastname: string;
   secondname: string;
