@@ -8,3 +8,9 @@ export interface IOrder {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IOrderWithLength {
+  length: number;
+  totalPages: number;
+  data: IOrder[];
+}
