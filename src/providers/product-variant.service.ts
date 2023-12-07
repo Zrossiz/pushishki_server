@@ -128,11 +128,10 @@ export class ProductVariantService {
 
   async getAllVariantsByProduct(productId: number) {
     try {
-      const productVariants = await this.prismaService.product_variant.findMany(
-        {
+      const productVariants: IProductVariant[] =
+        await this.prismaService.product_variant.findMany({
           where: { productId },
-        },
-      );
+        });
 
       if (!productVariants) {
         return new HttpException(

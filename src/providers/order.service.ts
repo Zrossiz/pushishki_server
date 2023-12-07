@@ -58,9 +58,9 @@ export class OrderService {
     }
   }
 
-  async getOne(orderId: number) {
+  async getOne(orderId: number): Promise<IOrder | { message: string }> {
     try {
-      const order = await this.prismaService.order.findFirst({
+      const order: IOrder = await this.prismaService.order.findFirst({
         where: { id: orderId },
       });
 
@@ -78,7 +78,7 @@ export class OrderService {
     }
   }
 
-  async delete(orderId: number) {
+  async delete(orderId: number): Promise<IOrder | { message: string }> {
     try {
       const order: IOrder = await this.prismaService.order.findFirst({
         where: { id: orderId },
