@@ -15,6 +15,9 @@ import { ReviewModule } from './modules/review.module';
 import { ReviewService } from './providers/review.service';
 import { ProductVariantController } from './controllers/product-variant.controller';
 import { ProductVariantModule } from './modules/product-variant.module';
+import { OrderController } from './controllers/order.controller';
+import { OrderService } from './providers/order.service';
+import { OrderModule } from './modules/order.module';
 
 @Module({
   imports: [
@@ -27,6 +30,7 @@ import { ProductVariantModule } from './modules/product-variant.module';
     CategoryModule,
     ReviewModule,
     ProductVariantModule,
+    OrderModule,
   ],
   controllers: [
     AuthController,
@@ -34,7 +38,8 @@ import { ProductVariantModule } from './modules/product-variant.module';
     CountryController,
     ReviewController,
     ProductVariantController,
+    OrderController,
   ],
-  providers: [UserService, ReviewService],
+  providers: [UserService, ReviewService, OrderService],
 })
 export class AppModule {}
