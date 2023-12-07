@@ -77,4 +77,28 @@ export class OrderService {
       );
     }
   }
+
+  async delete(orderId: number) {
+    try {
+      const order: IOrder = await this.prismaService.order.findFirst({
+        where: { id: orderId },
+      });
+
+      if (!order) {
+        return new HttpException('Заказ не найден', HttpStatus.BAD_REQUEST);
+      }
+
+      const deletedOrder: IOrder = await this.prismaService.order.delete({
+        where: { id: orderId },
+      });
+
+      return deletedOrder;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

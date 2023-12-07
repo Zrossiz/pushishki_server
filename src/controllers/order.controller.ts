@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateOrderDto } from 'src/dto';
 import { OrderService } from 'src/providers/order.service';
 
@@ -19,5 +27,10 @@ export class OrderController {
   @Get(':id')
   async getOne(@Param('id') orderId: string) {
     return await this.orderService.getOne(+orderId);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') orderId: string) {
+    return await this.orderService.delete(+orderId);
   }
 }
