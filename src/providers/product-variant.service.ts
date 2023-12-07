@@ -100,6 +100,32 @@ export class ProductVariantService {
     }
   }
 
+  async getOne(
+    productVariantId: number,
+  ): Promise<IProductVariant | { message: string }> {
+    try {
+      const productVariant: IProductVariant =
+        await this.prismaService.product_variant.findFirst({
+          where: { id: productVariantId },
+        });
+
+      if (!productVariant) {
+        return new HttpException(
+          `Вариант продукта ${productVariantId} не найден`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      return productVariant;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async getAllVariantsByProduct(productId: number) {
     try {
       const productVariants = await this.prismaService.product_variant.findMany(

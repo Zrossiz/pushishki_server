@@ -12,6 +12,11 @@ export class ProductVariantController {
     return await this.productVariantService.getAllVariantsByProduct(+productId);
   }
 
+  @Get(':id')
+  async getOne(@Param('id') productVariantId: string) {
+    return await this.productVariantService.getOne(+productVariantId);
+  }
+
   @Post(':id')
   async update(
     @Param('id') productVariantId: string,
