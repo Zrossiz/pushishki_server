@@ -20,6 +20,11 @@ export class ProductController {
     return await this.productService.getAll(page);
   }
 
+  @Get('search')
+  async search(@Query('page') page: number, @Query('search') search: string) {
+    return await this.productService.find(search, page);
+  }
+
   @Get(':id')
   async getOne(@Param('id') productId: string) {
     return await this.productService.getOne(+productId);

@@ -147,4 +147,45 @@ export class ProductService {
       );
     }
   }
+
+  async find(
+    search: string,
+    page: number,
+  ): Promise<IProductWithLength | { message: string }> {
+    try {
+      const skip: number = page ? (page - 1) * 10 : 0;
+
+      const totalPages: number = Math.ceil(
+        (await this.prismaService.product.count()) / 10,
+      );
+
+      const products: IProduct[] = await this.prismaService.product.findMany({
+        where: {
+          title: {
+            contains: search,
+          },
+        },
+        take: 10,
+        skip,
+      });
+
+      if (!products) {
+        return new HttpException('Ничего не найдено', HttpStatus.BAD_REQUEST);
+      }
+
+      const populatedData: IProductWithLength = {
+        length: products.length,
+        totalPages,
+        data: products,
+      };
+
+      return populatedData;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
