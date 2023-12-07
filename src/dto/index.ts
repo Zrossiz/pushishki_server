@@ -6,3 +6,4 @@ export * from './login-user-dto';
 export * from './create/create-category-dto';
 export * from './update/update-brand-dto';
 export * from './create/create-order-dto';
+export * from './update/update-order-dto';

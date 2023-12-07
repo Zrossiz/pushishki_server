@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { CreateOrderDto } from 'src/dto';
+import { CreateOrderDto, UpdateOrderDto } from 'src/dto';
 import { IOrder, IOrderWithLength } from 'src/interfaces';
 
 @Injectable()
@@ -23,6 +23,32 @@ export class OrderService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async update(
+    orderId: number,
+    updateOrderDto: UpdateOrderDto,
+  ): Promise<IOrder | { message: string }> {
+    const order: IOrder = await this.prismaService.order.findFirst({
+      where: { id: orderId },
+    });
+
+    if (!order) {
+      return new HttpException('Заказ не найден', HttpStatus.BAD_REQUEST);
+    }
+
+    Object.keys(updateOrderDto).forEach((key) => {
+      if (updateOrderDto[key] === undefined) {
+        delete updateOrderDto[key];
+      }
+    });
+
+    const updatedOrder: IOrder = await this.prismaService.order.update({
+      where: { id: orderId },
+      data: updateOrderDto,
+    });
+
+    return updatedOrder;
   }
 
   async getAll(page: number): Promise<IOrderWithLength | { message: string }> {
