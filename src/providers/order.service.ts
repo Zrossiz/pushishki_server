@@ -30,7 +30,7 @@ export class OrderService {
       const skip: number = page ? (page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(
-        (await this.prismaService.product.count()) / 10,
+        (await this.prismaService.order.count()) / 10,
       );
 
       const orders: IOrder[] = await this.prismaService.order.findMany({
