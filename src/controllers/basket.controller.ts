@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, Get } from '@nestjs/common';
 import { CreateBasketDto } from 'src/dto/create/create-basket-dto';
 import { BasketService } from 'src/providers/basket.service';
 
@@ -9,5 +9,10 @@ export class BasketController {
   @Post('')
   async create(@Body() createBasketDto: CreateBasketDto) {
     return await this.basketService.create(createBasketDto);
+  }
+
+  @Get(':id')
+  async getBasketsByOrderId(@Param('id') orderId: string) {
+    return await this.basketService.getBasketsByOrderId(+orderId);
   }
 }
