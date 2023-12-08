@@ -25,6 +25,11 @@ export class ProductController {
     return await this.productService.find(search, page);
   }
 
+  @Get('bestsellers')
+  async getBestsellers() {
+    return await this.productService.getBestsellers();
+  }
+
   @Get(':id')
   async getOne(@Param('id') productId: string) {
     return await this.productService.getOne(+productId);

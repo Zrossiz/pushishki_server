@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -52,4 +52,12 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
   preview: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  bestseller: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  new: boolean;
 }

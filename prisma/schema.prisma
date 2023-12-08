@@ -75,6 +75,8 @@ model Product {
   modelSizeInPackage String            @map("model_size_in_package")
   video              String
   preview            String
+  bestseller         Boolean           @default(false)
+  new                Boolean           @default(false)
   country            Country           @relation(fields: [countryId], references: [id])
   brand              Brand             @relation(fields: [brandId], references: [id])
   category           Category          @relation(fields: [categoryId], references: [id])

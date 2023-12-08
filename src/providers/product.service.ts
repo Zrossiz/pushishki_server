@@ -80,6 +80,26 @@ export class ProductService {
     }
   }
 
+  async getBestsellers(): Promise<IProduct[] | { message: string }> {
+    try {
+      const products: IProduct[] = await this.prismaService.product.findMany({
+        where: { bestseller: true },
+      });
+
+      if (!products) {
+        return new HttpException('Ничего не найдено', HttpStatus.BAD_REQUEST);
+      }
+
+      return products;
+    } catch (err) {
+      console.log(err);
+      return new HttpException(
+        'Ошибка сервера',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async update(
     productId: number,
     updateProductDto: UpdateProductDto,

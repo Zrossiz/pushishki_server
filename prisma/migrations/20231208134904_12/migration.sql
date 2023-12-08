@@ -60,6 +60,8 @@ CREATE TABLE "products" (
     "model_size_in_package" TEXT NOT NULL,
     "video" TEXT NOT NULL,
     "preview" TEXT NOT NULL,
+    "bestseller" BOOLEAN NOT NULL DEFAULT false,
+    "new" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -118,7 +120,7 @@ CREATE TABLE "basket" (
     "id" SERIAL NOT NULL,
     "product_id" INTEGER NOT NULL,
     "variant_id" INTEGER NOT NULL,
-    "order_id" INTEGER,
+    "order_id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "secondname" TEXT NOT NULL,
@@ -179,4 +181,4 @@ ALTER TABLE "basket" ADD CONSTRAINT "basket_variant_id_fkey" FOREIGN KEY ("varia
 ALTER TABLE "basket" ADD CONSTRAINT "basket_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "basket" ADD CONSTRAINT "basket_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "basket" ADD CONSTRAINT "basket_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
