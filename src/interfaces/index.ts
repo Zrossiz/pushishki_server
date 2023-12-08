@@ -6,3 +6,4 @@ export * from './Category';
 export * from './Review';
 export * from './ProductVariant';
 export * from './Order';
+export * from './Basket';

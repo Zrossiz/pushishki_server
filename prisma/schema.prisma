@@ -139,7 +139,7 @@ model Basket {
   id              Int             @id @default(autoincrement())
   productId       Int             @map("product_id")
   variantId       Int             @map("variant_id")
-  orderId         Int?            @map("order_id")
+  orderId         Int             @map("order_id")
   name            String
   lastname        String
   secondname      String
