@@ -30,6 +30,11 @@ export class ProductController {
     return await this.productService.getBestsellers();
   }
 
+  @Get('new')
+  async getNewProducts() {
+    return await this.productService.getNewProducts();
+  }
+
   @Get(':id')
   async getOne(@Param('id') productId: string) {
     return await this.productService.getOne(+productId);
