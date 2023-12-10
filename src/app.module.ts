@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
-import { UserService } from './providers/user.service';
+import { UserService } from './user/user.service';
 import { UserController } from './controllers/user.controller';
 import { UserModule } from './modules/user.module';
-import { PrismaModule } from './modules/prisma.module';
+import { PrismaModule } from './prisma/prisma.module';
 import { ProductModule } from './product/product.module';
 import { BrandModule } from './brand/brand.module';
 import { CountryController } from './country/country.controller';
@@ -17,7 +17,7 @@ import { ProductVariantController } from './product-variant/product-variant.cont
 import { ProductVariantModule } from './product-variant/product-variant.module';
 import { OrderController } from './order/order.controller';
 import { OrderService } from './order/order.service';
-import { OrderModule } from './modules/order.module';
+import { OrderModule } from './order/order.module';
 import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
