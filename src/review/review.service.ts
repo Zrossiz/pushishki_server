@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateReviewDto } from 'src/review/dto/create-review-dto';
-import { IProduct, IReview, IReviewWithLength } from 'src/interfaces';
+import { IReviewWithLength } from 'src/interfaces';
 import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
+import { Product, Review } from '@prisma/client';
 
 @Injectable()
 export class ReviewService {
@@ -10,9 +11,9 @@ export class ReviewService {
 
   async create(
     createReviewDto: CreateReviewDto,
-  ): Promise<IReview | { message: string }> {
+  ): Promise<Review | { message: string }> {
     try {
-      const review: IReview = await this.prismaService.review.create({
+      const review: Review = await this.prismaService.review.create({
         data: createReviewDto,
       });
 
@@ -36,9 +37,9 @@ export class ReviewService {
   async update(
     reviewId: number,
     updateReviewDto: UpdateReviewDto,
-  ): Promise<IReview | { message: string }> {
+  ): Promise<Review | { message: string }> {
     try {
-      const review: IReview = await this.prismaService.review.findFirst({
+      const review: Review = await this.prismaService.review.findFirst({
         where: { id: reviewId },
       });
 
@@ -55,7 +56,7 @@ export class ReviewService {
         }
       });
 
-      const updatedReview: IReview = await this.prismaService.review.update({
+      const updatedReview: Review = await this.prismaService.review.update({
         where: { id: reviewId },
         data: updateReviewDto,
       });
@@ -75,7 +76,7 @@ export class ReviewService {
     page: number,
   ): Promise<IReviewWithLength | { message: string }> {
     try {
-      const product: IProduct = await this.prismaService.product.findFirst({
+      const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
       });
 
@@ -88,14 +89,14 @@ export class ReviewService {
 
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const reviewByProduct: IReview[] =
+      const reviewByProduct: Review[] =
         await this.prismaService.review.findMany({
           where: { productId },
         });
 
       const totalPages: number = Math.ceil(reviewByProduct.length / 10);
 
-      const reviews: IReview[] = await this.prismaService.review.findMany({
+      const reviews: Review[] = await this.prismaService.review.findMany({
         take: 10,
         where: { productId, active: true },
         skip,
@@ -119,9 +120,9 @@ export class ReviewService {
 
   async switchActiveReview(
     reviewId: number,
-  ): Promise<IReview | { message: string }> {
+  ): Promise<Review | { message: string }> {
     try {
-      const updatedReview: IReview = await this.prismaService.review.update({
+      const updatedReview: Review = await this.prismaService.review.update({
         where: { id: reviewId },
         data: { active: true },
       });
@@ -136,9 +137,9 @@ export class ReviewService {
     }
   }
 
-  async delete(reviewId: number): Promise<IReview | { message: string }> {
+  async delete(reviewId: number): Promise<Review | { message: string }> {
     try {
-      const review: IReview = await this.prismaService.review.findFirst({
+      const review: Review = await this.prismaService.review.findFirst({
         where: { id: reviewId },
       });
 
@@ -149,7 +150,7 @@ export class ReviewService {
         );
       }
 
-      const deletedReview: IReview = await this.prismaService.review.delete({
+      const deletedReview: Review = await this.prismaService.review.delete({
         where: { id: reviewId },
       });
 
