@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ProductVariantService } from '../providers/product-variant.service';
-import { ProductVariantController } from 'src/controllers/product-variant.controller';
+import { ProductVariantService } from './product-variant.service';
+import { ProductVariantController } from 'src/product-variant/product-variant.controller';
 import { PrismaService } from 'src/providers/prisma.service';
 
 @Module({

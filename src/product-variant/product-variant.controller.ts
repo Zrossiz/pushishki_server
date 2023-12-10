@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { CreateProductVariantDto } from 'src/dto/create/create-product-variant-dto';
-import { UpdateProductVariantDto } from 'src/dto/update/update-product-variant-dto';
-import { ProductVariantService } from 'src/providers/product-variant.service';
+import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant-dto';
+import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant-dto';
+import { ProductVariantService } from 'src/product-variant/product-variant.service';
 
 @Controller('product-variant')
 export class ProductVariantController {

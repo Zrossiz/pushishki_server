@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
-import { CreateProductVariantDto } from 'src/dto/create/create-product-variant-dto';
+import { PrismaService } from '../providers/prisma.service';
+import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant-dto';
 import { IProduct, IProductVariant } from 'src/interfaces';
-import { UpdateProductVariantDto } from 'src/dto/update/update-product-variant-dto';
+import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant-dto';
 
 @Injectable()
 export class ProductVariantService {

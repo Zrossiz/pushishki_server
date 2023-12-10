@@ -13,7 +13,7 @@ import { CategoryModule } from './category/category.module';
 import { ReviewController } from './review/review.controller';
 import { ReviewModule } from './review/review.module';
 import { ReviewService } from './review/review.service';
-import { ProductVariantController } from './controllers/product-variant.controller';
+import { ProductVariantController } from './product-variant/product-variant.controller';
 import { ProductVariantModule } from './modules/product-variant.module';
 import { OrderController } from './controllers/order.controller';
 import { OrderService } from './providers/order.service';
