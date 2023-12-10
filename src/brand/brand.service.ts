@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../providers/prisma.service';
 import { CreateBrandDto } from 'src/dto';
 import {
   IBrand,
@@ -7,7 +7,7 @@ import {
   IProduct,
   IProductWithLength,
 } from 'src/interfaces';
-import { UpdateBrandDto } from 'src/dto/update/update-brand-dto';
+import { UpdateBrandDto } from 'src/brand/dto/update-brand-dto';
 import { generateSlug } from 'src/helpers';
 
 @Injectable()

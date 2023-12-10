@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { BrandController } from '../controllers/brand.controller';
-import { BrandService } from '../providers/brand.service';
+import { BrandController } from './brand.controller';
+import { BrandService } from './brand.service';
 import { PrismaService } from 'src/providers/prisma.service';
 
 @Module({

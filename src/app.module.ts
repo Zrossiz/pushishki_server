@@ -6,7 +6,7 @@ import { UserController } from './controllers/user.controller';
 import { UserModule } from './modules/user.module';
 import { PrismaModule } from './modules/prisma.module';
 import { ProductModule } from './modules/product.module';
-import { BrandModule } from './modules/brand.module';
+import { BrandModule } from './brand/brand.module';
 import { CountryController } from './controllers/country.controller';
 import { CountryModule } from './country/country.module';
 import { CategoryModule } from './modules/category.module';
