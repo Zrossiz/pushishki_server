@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CategoryService } from '../providers/category.service';
-import { CategoryController } from 'src/controllers/category.controller';
+import { CategoryService } from './category.service';
+import { CategoryController } from 'src/category/category.controller';
 import { PrismaService } from 'src/providers/prisma.service';
 
 @Module({

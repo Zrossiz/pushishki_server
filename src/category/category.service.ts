@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../providers/prisma.service';
 import { CreateCategoryDto } from 'src/dto';
 import {
   ICategory,
@@ -8,7 +8,7 @@ import {
   IProductWithLength,
 } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
-import { UpdateCategoryDto } from 'src/dto/update/update-category-dto';
+import { UpdateCategoryDto } from 'src/category/dto/update-category-dto';
 
 @Injectable()
 export class CategoryService {
