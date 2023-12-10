@@ -1,14 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  ICategoryWithLength,
-  IProduct,
-  IProductWithLength,
-} from 'src/interfaces';
+import { ICategoryWithLength, IProductWithLength } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category-dto';
 import { CreateCategoryDto } from './dto/create-category-dto';
-import { Category } from '@prisma/client';
+import { Category, Product } from '@prisma/client';
 
 @Injectable()
 export class CategoryService {
@@ -160,7 +156,7 @@ export class CategoryService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         take: 10,
         where: { categoryId: category.id },
         skip,
