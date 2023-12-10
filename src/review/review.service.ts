@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
-import { CreateReviewDto } from 'src/dto/create/create-review-dto';
+import { PrismaService } from '../providers/prisma.service';
+import { CreateReviewDto } from 'src/review/dto/create-review-dto';
 import { IProduct, IReview, IReviewWithLength } from 'src/interfaces';
-import { UpdateReviewDto } from 'src/dto/update/update-review-dto';
+import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
 
 @Injectable()
 export class ReviewService {
