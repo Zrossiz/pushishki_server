@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateProductDto } from 'src/dto';
-import { IProduct, IProductWithLength } from 'src/interfaces';
+import { IProductWithLength } from 'src/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product-dto';
+import { Product } from '@prisma/client';
+import { CreateProductDto } from './dto/create-product-dto';
 
 @Injectable()
 export class ProductService {
@@ -10,9 +11,9 @@ export class ProductService {
 
   async create(
     createProductDto: CreateProductDto,
-  ): Promise<IProduct | { message: string }> {
+  ): Promise<Product | { message: string }> {
     try {
-      const product: IProduct = await this.prismaService.product.create({
+      const product: Product = await this.prismaService.product.create({
         data: createProductDto,
       });
 
@@ -36,7 +37,7 @@ export class ProductService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         take: 10,
         skip,
       });
@@ -57,9 +58,9 @@ export class ProductService {
     }
   }
 
-  async getOne(productId: number): Promise<IProduct | { message: string }> {
+  async getOne(productId: number): Promise<Product | { message: string }> {
     try {
-      const product: IProduct = await this.prismaService.product.findFirst({
+      const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
       });
 
@@ -80,9 +81,9 @@ export class ProductService {
     }
   }
 
-  async getBestsellers(): Promise<IProduct[] | { message: string }> {
+  async getBestsellers(): Promise<Product[] | { message: string }> {
     try {
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         where: { bestseller: true },
       });
 
@@ -100,9 +101,9 @@ export class ProductService {
     }
   }
 
-  async getNewProducts(): Promise<IProduct[] | { message: string }> {
+  async getNewProducts(): Promise<Product[] | { message: string }> {
     try {
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         where: { new: true },
       });
 
@@ -123,9 +124,9 @@ export class ProductService {
   async update(
     productId: number,
     updateProductDto: UpdateProductDto,
-  ): Promise<IProduct | { message: string }> {
+  ): Promise<Product | { message: string }> {
     try {
-      const product: IProduct = await this.prismaService.product.findFirst({
+      const product: Product = await this.prismaService.product.findFirst({
         where: {
           id: productId,
         },
@@ -144,7 +145,7 @@ export class ProductService {
         }
       });
 
-      const updatedProduct: IProduct = await this.prismaService.product.update({
+      const updatedProduct: Product = await this.prismaService.product.update({
         where: {
           id: productId,
         },
@@ -161,9 +162,9 @@ export class ProductService {
     }
   }
 
-  async delete(productId: number): Promise<IProduct | { message: string }> {
+  async delete(productId: number): Promise<Product | { message: string }> {
     try {
-      const product: IProduct = await this.prismaService.product.findFirst({
+      const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
       });
 
@@ -174,7 +175,7 @@ export class ProductService {
         );
       }
 
-      const deletedProduct: IProduct = await this.prismaService.product.delete({
+      const deletedProduct: Product = await this.prismaService.product.delete({
         where: { id: product.id },
       });
 
@@ -199,7 +200,7 @@ export class ProductService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         where: {
           title: {
             contains: search,
