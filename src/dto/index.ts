@@ -1,5 +1,5 @@
 export * from './create/create-brand-dto';
-export * from './create/create-country-dto';
+export * from '../country/dto/create-country-dto';
 export * from './create/create-product-dto';
 export * from './create/create-user-dto';
 export * from './login-user-dto';

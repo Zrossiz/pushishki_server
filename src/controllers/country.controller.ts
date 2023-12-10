@@ -7,9 +7,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateCountryDto } from 'src/dto/create/create-country-dto';
-import { UpdateCountryDto } from 'src/dto/update/update-country-dto';
-import { CountryService } from 'src/providers/country.service';
+import { CreateCountryDto } from 'src/country/dto/create-country-dto';
+import { UpdateCountryDto } from 'src/country/dto/update-country-dto';
+import { CountryService } from 'src/country/country.service';
 
 @Controller('country')
 export class CountryController {

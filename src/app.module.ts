@@ -8,7 +8,7 @@ import { PrismaModule } from './modules/prisma.module';
 import { ProductModule } from './modules/product.module';
 import { BrandModule } from './modules/brand.module';
 import { CountryController } from './controllers/country.controller';
-import { CountryModule } from './modules/country.module';
+import { CountryModule } from './country/country.module';
 import { CategoryModule } from './modules/category.module';
 import { ReviewController } from './controllers/review.controller';
 import { ReviewModule } from './modules/review.module';

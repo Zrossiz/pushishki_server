@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../providers/prisma.service';
 import { CreateCountryDto } from 'src/dto';
 import {
   ICountry,
@@ -8,7 +8,7 @@ import {
   IProductWithLength,
 } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
-import { UpdateCountryDto } from 'src/dto/update/update-country-dto';
+import { UpdateCountryDto } from 'src/country/dto/update-country-dto';
 
 @Injectable()
 export class CountryService {
