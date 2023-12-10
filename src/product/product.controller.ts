@@ -7,9 +7,9 @@ import {
   Query,
   Delete,
 } from '@nestjs/common';
-import { CreateProductDto } from 'src/dto/create/create-product-dto';
-import { UpdateProductDto } from 'src/dto/update/update-product-dto';
-import { ProductService } from 'src/providers/product.service';
+import { CreateProductDto } from 'src/product/dto/create-product-dto';
+import { UpdateProductDto } from 'src/product/dto/update-product-dto';
+import { ProductService } from 'src/product/product.service';
 
 @Controller('product')
 export class ProductController {

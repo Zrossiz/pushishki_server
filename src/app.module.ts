@@ -5,7 +5,7 @@ import { UserService } from './providers/user.service';
 import { UserController } from './controllers/user.controller';
 import { UserModule } from './modules/user.module';
 import { PrismaModule } from './modules/prisma.module';
-import { ProductModule } from './modules/product.module';
+import { ProductModule } from './product/product.module';
 import { BrandModule } from './brand/brand.module';
 import { CountryController } from './country/country.controller';
 import { CountryModule } from './country/country.module';
