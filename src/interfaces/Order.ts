@@ -1,16 +1,7 @@
-export interface IOrder {
-  id: number;
-  name: string;
-  lastname: string;
-  secondname: string;
-  phone: string;
-  price: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { Order } from '@prisma/client';
 
 export interface IOrderWithLength {
   length: number;
   totalPages: number;
-  data: IOrder[];
+  data: Order[];
 }

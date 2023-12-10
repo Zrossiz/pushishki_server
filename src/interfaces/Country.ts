@@ -1,13 +1,6 @@
-export interface ICountry {
-  id: number;
-  title: string;
-  slug: string;
-  image: string;
-  updatedAt: Date;
-  createdAt: Date;
-}
+import { Country } from '@prisma/client';
 
 export interface ICountryWithLength {
   length: number;
-  data: ICountry[];
+  data: Country[];
 }

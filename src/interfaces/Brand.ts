@@ -1,15 +1,6 @@
-export interface IBrand {
-  id: number;
-  countryId: number;
-  title: string;
-  slug: string;
-  image: string;
-  description: string;
-  updatedAt: Date;
-  createdAt: Date;
-}
+import { Brand } from '@prisma/client';
 
 export interface IBrandWithLength {
   length: number;
-  data: IBrand[];
+  data: Brand[];
 }
