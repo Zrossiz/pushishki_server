@@ -1,14 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateBrandDto } from 'src/dto';
-import {
-  IBrand,
-  IBrandWithLength,
-  IProduct,
-  IProductWithLength,
-} from 'src/interfaces';
+import { IBrandWithLength, IProduct, IProductWithLength } from 'src/interfaces';
 import { UpdateBrandDto } from 'src/brand/dto/update-brand-dto';
 import { generateSlug } from 'src/helpers';
+import { CreateBrandDto } from './dto/create-brand-dto';
+import { Brand } from '@prisma/client';
 
 @Injectable()
 export class BrandService {
@@ -16,9 +12,9 @@ export class BrandService {
 
   async create(
     createBrandDto: CreateBrandDto,
-  ): Promise<IBrand | { message: string }> {
+  ): Promise<Brand | { message: string }> {
     try {
-      const existBrand: IBrand = await this.prismaService.brand.findFirst({
+      const existBrand: Brand = await this.prismaService.brand.findFirst({
         where: { title: createBrandDto.title },
       });
 
@@ -39,7 +35,7 @@ export class BrandService {
         description: createBrandDto.description,
       };
 
-      const brand: IBrand = await this.prismaService.brand.create({
+      const brand: Brand = await this.prismaService.brand.create({
         data: brandData,
       });
 
@@ -55,7 +51,7 @@ export class BrandService {
 
   async getAll(): Promise<IBrandWithLength | { message: string }> {
     try {
-      const brands: IBrand[] = await this.prismaService.brand.findMany();
+      const brands: Brand[] = await this.prismaService.brand.findMany();
 
       if (brands.length === 0) {
         return new HttpException(
@@ -79,7 +75,7 @@ export class BrandService {
     }
   }
 
-  async getOne(slug: string): Promise<IBrand | { message: string }> {
+  async getOne(slug: string): Promise<Brand | { message: string }> {
     try {
       const brand = await this.prismaService.brand.findFirst({
         where: { slug },
@@ -105,9 +101,9 @@ export class BrandService {
   async update(
     updateBrandDto: UpdateBrandDto,
     slug: string,
-  ): Promise<IBrand | { message: string }> {
+  ): Promise<Brand | { message: string }> {
     try {
-      const brand: IBrand = await this.prismaService.brand.findFirst({
+      const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug: slug },
       });
 
@@ -134,7 +130,7 @@ export class BrandService {
         }
       });
 
-      const updatedBrand: IBrand = await this.prismaService.brand.update({
+      const updatedBrand: Brand = await this.prismaService.brand.update({
         where: {
           id: brand.id,
         },
@@ -151,9 +147,9 @@ export class BrandService {
     }
   }
 
-  async delete(slug: string): Promise<IBrand | { message: string }> {
+  async delete(slug: string): Promise<Brand | { message: string }> {
     try {
-      const brand: IBrand = await this.prismaService.brand.findFirst({
+      const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug },
       });
 
@@ -164,7 +160,7 @@ export class BrandService {
         );
       }
 
-      const deletedBrand: IBrand = await this.prismaService.brand.delete({
+      const deletedBrand: Brand = await this.prismaService.brand.delete({
         where: { id: brand.id },
       });
 
@@ -183,7 +179,7 @@ export class BrandService {
     page: number,
   ): Promise<IProductWithLength | { message: string }> {
     try {
-      const brand: IBrand = await this.prismaService.brand.findFirst({
+      const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug },
       });
 
