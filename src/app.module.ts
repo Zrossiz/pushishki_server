@@ -14,13 +14,13 @@ import { ReviewController } from './review/review.controller';
 import { ReviewModule } from './review/review.module';
 import { ReviewService } from './review/review.service';
 import { ProductVariantController } from './product-variant/product-variant.controller';
-import { ProductVariantModule } from './modules/product-variant.module';
+import { ProductVariantModule } from './product-variant/product-variant.module';
 import { OrderController } from './controllers/order.controller';
 import { OrderService } from './providers/order.service';
 import { OrderModule } from './modules/order.module';
-import { BasketService } from './providers/basket.service';
-import { BasketController } from './controllers/basket.controller';
-import { BasketModule } from './modules/basket.module';
+import { BasketService } from './basket/basket.service';
+import { BasketController } from './basket/basket.controller';
+import { BasketModule } from './basket/basket.module';
 
 @Module({
   imports: [
