@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateCategoryDto } from 'src/dto';
 import {
-  ICategory,
   ICategoryWithLength,
   IProduct,
   IProductWithLength,
 } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category-dto';
+import { CreateCategoryDto } from './dto/create-category-dto';
+import { Category } from '@prisma/client';
 
 @Injectable()
 export class CategoryService {
@@ -16,9 +16,9 @@ export class CategoryService {
 
   async create(
     createCategoryDto: CreateCategoryDto,
-  ): Promise<ICategory | { message: string }> {
+  ): Promise<Category | { message: string }> {
     try {
-      const existCategory: ICategory =
+      const existCategory: Category =
         await this.prismaService.category.findFirst({
           where: { title: createCategoryDto.title },
         });
@@ -39,7 +39,7 @@ export class CategoryService {
         image: createCategoryDto.image,
       };
 
-      const category: ICategory = await this.prismaService.category.create({
+      const category: Category = await this.prismaService.category.create({
         data: categoryData,
       });
 
@@ -55,7 +55,7 @@ export class CategoryService {
 
   async getAll(): Promise<ICategoryWithLength | { message: string }> {
     try {
-      const categories: ICategory[] =
+      const categories: Category[] =
         await this.prismaService.category.findMany();
 
       const populatedData: ICategoryWithLength = {
@@ -76,9 +76,9 @@ export class CategoryService {
   async update(
     updateCategoryDto: UpdateCategoryDto,
     slug: string,
-  ): Promise<ICategory | { message: string }> {
+  ): Promise<Category | { message: string }> {
     try {
-      const existCategory: ICategory =
+      const existCategory: Category =
         await this.prismaService.category.findFirst({
           where: { slug },
         });
@@ -105,7 +105,7 @@ export class CategoryService {
         }
       });
 
-      const updatedCategory: ICategory =
+      const updatedCategory: Category =
         await this.prismaService.category.update({
           where: { id: existCategory.id },
           data: categoryData,
@@ -121,9 +121,9 @@ export class CategoryService {
     }
   }
 
-  async getOne(slug: string): Promise<ICategory | { message: string }> {
+  async getOne(slug: string): Promise<Category | { message: string }> {
     try {
-      const category: ICategory = await this.prismaService.category.findFirst({
+      const category: Category = await this.prismaService.category.findFirst({
         where: { slug },
       });
 
@@ -143,7 +143,7 @@ export class CategoryService {
     page: number,
   ): Promise<IProductWithLength | { message: string }> {
     try {
-      const category: ICategory = await this.prismaService.category.findFirst({
+      const category: Category = await this.prismaService.category.findFirst({
         where: { slug },
       });
 
