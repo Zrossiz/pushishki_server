@@ -1,6 +1,6 @@
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/providers/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, LoginUserDto } from 'src/dto';
 import { IUser, IUserWithTokens } from 'src/interfaces';
 

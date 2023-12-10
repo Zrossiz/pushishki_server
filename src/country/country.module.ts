@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CountryService } from './country.service';
-import { PrismaService } from 'src/providers/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CountryController } from 'src/country/country.controller';
 
 @Module({
