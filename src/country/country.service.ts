@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateCountryDto } from 'src/dto';
 import {
-  ICountry,
   ICountryWithLength,
   IProduct,
   IProductWithLength,
 } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 import { UpdateCountryDto } from 'src/country/dto/update-country-dto';
+import { Country } from '@prisma/client';
+import { CreateCountryDto } from './dto/create-country-dto';
 
 @Injectable()
 export class CountryService {
@@ -16,7 +16,7 @@ export class CountryService {
 
   async getAll(): Promise<ICountryWithLength | { message: string }> {
     try {
-      const countries: ICountry[] = await this.prismaService.country.findMany();
+      const countries: Country[] = await this.prismaService.country.findMany();
 
       const data: ICountryWithLength = {
         length: countries.length,
@@ -33,9 +33,9 @@ export class CountryService {
     }
   }
 
-  async getOne(slug: string): Promise<ICountry | { message: string }> {
+  async getOne(slug: string): Promise<Country | { message: string }> {
     try {
-      const country: ICountry = await this.prismaService.country.findFirst({
+      const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },
       });
 
@@ -61,7 +61,7 @@ export class CountryService {
     page: number,
   ): Promise<IProductWithLength | { message: string }> {
     try {
-      const country: ICountry = await this.prismaService.country.findFirst({
+      const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },
       });
 
@@ -103,9 +103,9 @@ export class CountryService {
   async update(
     slug: string,
     updateCountryDto: UpdateCountryDto,
-  ): Promise<ICountry | { message: string }> {
+  ): Promise<Country | { message: string }> {
     try {
-      const country: ICountry = await this.prismaService.country.findFirst({
+      const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },
       });
 
@@ -149,13 +149,11 @@ export class CountryService {
 
   async create(
     createCountryDto: CreateCountryDto,
-  ): Promise<ICountry | { message: string }> {
+  ): Promise<Country | { message: string }> {
     try {
-      const existCountry: ICountry = await this.prismaService.country.findFirst(
-        {
-          where: { title: createCountryDto.title },
-        },
-      );
+      const existCountry: Country = await this.prismaService.country.findFirst({
+        where: { title: createCountryDto.title },
+      });
 
       if (existCountry) {
         return new HttpException(
@@ -172,7 +170,7 @@ export class CountryService {
         image: createCountryDto.image,
       };
 
-      const country: ICountry = await this.prismaService.country.create({
+      const country: Country = await this.prismaService.country.create({
         data: countryData,
       });
 
@@ -186,9 +184,9 @@ export class CountryService {
     }
   }
 
-  async delete(slug: string): Promise<ICountry | { message: string }> {
+  async delete(slug: string): Promise<Country | { message: string }> {
     try {
-      const country: ICountry = await this.prismaService.country.findFirst({
+      const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },
       });
 
@@ -199,7 +197,7 @@ export class CountryService {
         );
       }
 
-      const deletedCountry: ICountry = await this.prismaService.country.delete({
+      const deletedCountry: Country = await this.prismaService.country.delete({
         where: { id: country.id },
       });
 
