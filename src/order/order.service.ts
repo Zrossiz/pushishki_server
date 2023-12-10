@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateOrderDto, UpdateOrderDto } from 'src/dto';
-import { IOrder, IOrderWithLength } from 'src/interfaces';
+import { IOrderWithLength } from 'src/interfaces';
+import { Order } from '@prisma/client';
+import { CreateOrderDto } from './dto/create-order-dto';
+import { UpdateOrderDto } from './dto/update-order-dto';
 
 @Injectable()
 export class OrderService {
@@ -9,9 +11,9 @@ export class OrderService {
 
   async create(
     createOrderDto: CreateOrderDto,
-  ): Promise<IOrder | { message: string }> {
+  ): Promise<Order | { message: string }> {
     try {
-      const order: IOrder = await this.prismaService.order.create({
+      const order: Order = await this.prismaService.order.create({
         data: createOrderDto,
       });
 
@@ -28,8 +30,8 @@ export class OrderService {
   async update(
     orderId: number,
     updateOrderDto: UpdateOrderDto,
-  ): Promise<IOrder | { message: string }> {
-    const order: IOrder = await this.prismaService.order.findFirst({
+  ): Promise<Order | { message: string }> {
+    const order: Order = await this.prismaService.order.findFirst({
       where: { id: orderId },
     });
 
@@ -43,7 +45,7 @@ export class OrderService {
       }
     });
 
-    const updatedOrder: IOrder = await this.prismaService.order.update({
+    const updatedOrder: Order = await this.prismaService.order.update({
       where: { id: orderId },
       data: updateOrderDto,
     });
@@ -59,7 +61,7 @@ export class OrderService {
         (await this.prismaService.order.count()) / 10,
       );
 
-      const orders: IOrder[] = await this.prismaService.order.findMany({
+      const orders: Order[] = await this.prismaService.order.findMany({
         take: 10,
         skip,
       });
@@ -84,9 +86,9 @@ export class OrderService {
     }
   }
 
-  async getOne(orderId: number): Promise<IOrder | { message: string }> {
+  async getOne(orderId: number): Promise<Order | { message: string }> {
     try {
-      const order: IOrder = await this.prismaService.order.findFirst({
+      const order: Order = await this.prismaService.order.findFirst({
         where: { id: orderId },
       });
 
@@ -104,9 +106,9 @@ export class OrderService {
     }
   }
 
-  async delete(orderId: number): Promise<IOrder | { message: string }> {
+  async delete(orderId: number): Promise<Order | { message: string }> {
     try {
-      const order: IOrder = await this.prismaService.order.findFirst({
+      const order: Order = await this.prismaService.order.findFirst({
         where: { id: orderId },
       });
 
@@ -114,7 +116,7 @@ export class OrderService {
         return new HttpException('Заказ не найден', HttpStatus.BAD_REQUEST);
       }
 
-      const deletedOrder: IOrder = await this.prismaService.order.delete({
+      const deletedOrder: Order = await this.prismaService.order.delete({
         where: { id: orderId },
       });
 
