@@ -8,7 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateOrderDto, UpdateOrderDto } from 'src/dto';
-import { OrderService } from 'src/providers/order.service';
+import { OrderService } from 'src/order/order.service';
 
 @Controller('order')
 export class OrderController {

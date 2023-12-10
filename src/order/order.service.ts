@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../providers/prisma.service';
 import { CreateOrderDto, UpdateOrderDto } from 'src/dto';
 import { IOrder, IOrderWithLength } from 'src/interfaces';
 
