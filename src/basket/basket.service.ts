@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBasketDto } from 'src/basket/dto/create-basket-dto';
 
@@ -16,6 +20,9 @@ export class BasketService {
       return orders;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -29,6 +36,9 @@ export class BasketService {
       return basket;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -32,6 +33,9 @@ export class ReviewService {
       return review;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -66,6 +70,9 @@ export class ReviewService {
       return updatedReview;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -110,6 +117,9 @@ export class ReviewService {
       return populatedData;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -126,6 +136,9 @@ export class ReviewService {
       return updatedReview;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -150,6 +163,9 @@ export class ReviewService {
       return deletedReview;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

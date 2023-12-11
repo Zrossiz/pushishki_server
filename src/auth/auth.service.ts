@@ -1,5 +1,6 @@
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -45,6 +46,9 @@ export class AuthService {
       return newUser;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -91,6 +95,9 @@ export class AuthService {
       };
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

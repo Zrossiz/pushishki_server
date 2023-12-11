@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -27,6 +28,9 @@ export class CountryService {
       return data;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -47,6 +51,9 @@ export class CountryService {
       return country;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -88,6 +95,9 @@ export class CountryService {
       return populatedData;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -132,6 +142,9 @@ export class CountryService {
       return updatedCountry;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -166,6 +179,9 @@ export class CountryService {
       return country;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -190,6 +206,9 @@ export class CountryService {
       return deletedCountry;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

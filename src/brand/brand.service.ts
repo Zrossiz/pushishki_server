@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -9,7 +10,7 @@ import { IBrandWithLength, IProductWithLength } from 'src/interfaces';
 import { UpdateBrandDto } from 'src/brand/dto/update-brand-dto';
 import { generateSlug } from 'src/helpers';
 import { CreateBrandDto } from './dto/create-brand-dto';
-import { Brand, Product } from '@prisma/client';
+import { Brand, Country, Product } from '@prisma/client';
 
 @Injectable()
 export class BrandService {
@@ -19,6 +20,14 @@ export class BrandService {
     createBrandDto: CreateBrandDto,
   ): Promise<Brand | { message: string }> {
     try {
+      const existCountry: Country = await this.prismaService.country.findFirst({
+        where: { id: createBrandDto.countryId },
+      });
+
+      if (!existCountry) {
+        throw new BadRequestException('Сначала создайте страну');
+      }
+
       const existBrand: Brand = await this.prismaService.brand.findFirst({
         where: { title: createBrandDto.title },
       });
@@ -47,6 +56,9 @@ export class BrandService {
       return brand;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -70,6 +82,9 @@ export class BrandService {
       return data;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -90,6 +105,9 @@ export class BrandService {
       return brand;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -136,6 +154,9 @@ export class BrandService {
       return updatedBrand;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -160,6 +181,9 @@ export class BrandService {
       return deletedBrand;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -201,6 +225,9 @@ export class BrandService {
       return populatedData;
     } catch (err) {
       console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
