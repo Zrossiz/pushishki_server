@@ -1,8 +1,10 @@
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto, LoginUserDto } from 'src/dto';
-import { IUser, IUserWithTokens } from 'src/interfaces';
+import { IUserWithTokens } from 'src/interfaces';
+import { CreateUserDto } from 'src/user/dto/create-user-dto';
+import { User } from '@prisma/client';
+import { LoginUserDto } from 'src/user/dto/login-user-dto';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +12,7 @@ export class AuthService {
 
   async registration(
     createUserDto: CreateUserDto,
-  ): Promise<IUser | { message: string }> {
+  ): Promise<User | { message: string }> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { email: createUserDto.email },

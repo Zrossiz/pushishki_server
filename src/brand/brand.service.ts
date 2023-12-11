@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IBrandWithLength, IProduct, IProductWithLength } from 'src/interfaces';
+import { IBrandWithLength, IProductWithLength } from 'src/interfaces';
 import { UpdateBrandDto } from 'src/brand/dto/update-brand-dto';
 import { generateSlug } from 'src/helpers';
 import { CreateBrandDto } from './dto/create-brand-dto';
-import { Brand } from '@prisma/client';
+import { Brand, Product } from '@prisma/client';
 
 @Injectable()
 export class BrandService {
@@ -196,7 +196,7 @@ export class BrandService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         take: 10,
         where: { brandId: brand.id },
         skip,

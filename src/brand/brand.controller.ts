@@ -7,8 +7,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateBrandDto, UpdateBrandDto } from 'src/dto';
 import { BrandService } from 'src/brand/brand.service';
+import { CreateBrandDto } from './dto/create-brand-dto';
+import { UpdateBrandDto } from './dto/update-brand-dto';
 
 @Controller('brand')
 export class BrandController {

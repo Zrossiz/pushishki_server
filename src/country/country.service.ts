@@ -1,13 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  ICountryWithLength,
-  IProduct,
-  IProductWithLength,
-} from 'src/interfaces';
+import { ICountryWithLength, IProductWithLength } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
 import { UpdateCountryDto } from 'src/country/dto/update-country-dto';
-import { Country } from '@prisma/client';
+import { Country, Product } from '@prisma/client';
 import { CreateCountryDto } from './dto/create-country-dto';
 
 @Injectable()
@@ -78,7 +74,7 @@ export class CountryService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         take: 10,
         where: { countryId: country.id },
         skip,
