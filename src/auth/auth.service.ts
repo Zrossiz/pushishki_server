@@ -1,5 +1,10 @@
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IUserWithTokens } from 'src/interfaces';
 import { CreateUserDto } from 'src/user/dto/create-user-dto';
@@ -40,10 +45,7 @@ export class AuthService {
       return newUser;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -89,10 +91,7 @@ export class AuthService {
       };
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 }

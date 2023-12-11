@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant-dto';
 import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant-dto';
@@ -62,10 +67,7 @@ export class ProductVariantService {
       return updatedProductVariant;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -93,10 +95,7 @@ export class ProductVariantService {
       return deletedProductVariant;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -119,10 +118,7 @@ export class ProductVariantService {
       return productVariant;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -143,10 +139,7 @@ export class ProductVariantService {
       return productVariants;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 }

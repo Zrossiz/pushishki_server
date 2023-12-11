@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { IBrandWithLength, IProductWithLength } from 'src/interfaces';
 import { UpdateBrandDto } from 'src/brand/dto/update-brand-dto';
@@ -42,10 +47,7 @@ export class BrandService {
       return brand;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -68,10 +70,7 @@ export class BrandService {
       return data;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -91,10 +90,7 @@ export class BrandService {
       return brand;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -140,10 +136,7 @@ export class BrandService {
       return updatedBrand;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -167,10 +160,7 @@ export class BrandService {
       return deletedBrand;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -211,10 +201,7 @@ export class BrandService {
       return populatedData;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 }

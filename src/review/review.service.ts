@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateReviewDto } from 'src/review/dto/create-review-dto';
 import { IReviewWithLength } from 'src/interfaces';
@@ -27,10 +32,7 @@ export class ReviewService {
       return review;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -64,10 +66,7 @@ export class ReviewService {
       return updatedReview;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -111,10 +110,7 @@ export class ReviewService {
       return populatedData;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -130,10 +126,7 @@ export class ReviewService {
       return updatedReview;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -157,10 +150,7 @@ export class ReviewService {
       return deletedReview;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 }

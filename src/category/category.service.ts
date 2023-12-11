@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ICategoryWithLength, IProductWithLength } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
@@ -42,10 +47,7 @@ export class CategoryService {
       return category;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -62,10 +64,7 @@ export class CategoryService {
       return populatedData;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -110,10 +109,7 @@ export class CategoryService {
       return updatedCategory;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 
@@ -171,10 +167,7 @@ export class CategoryService {
       return populatedData;
     } catch (err) {
       console.log(err);
-      return new HttpException(
-        'Ошибка сервера',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException('Ошибка сервера');
     }
   }
 }
