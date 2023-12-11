@@ -91,7 +91,7 @@ export class BrandService {
 
   async getOne(slug: string): Promise<Brand | { message: string }> {
     try {
-      const brand = await this.prismaService.brand.findFirst({
+      const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug },
       });
 

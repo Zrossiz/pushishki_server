@@ -8,7 +8,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { IProductWithLength } from 'src/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product-dto';
-import { Product } from '@prisma/client';
+import { Brand, Category, Country, Product } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product-dto';
 
 @Injectable()
@@ -19,6 +19,30 @@ export class ProductService {
     createProductDto: CreateProductDto,
   ): Promise<Product | { message: string }> {
     try {
+      const country: Country = await this.prismaService.country.findFirst({
+        where: { id: createProductDto.countryId },
+      });
+
+      if (!country) {
+        throw new BadRequestException('Сначала создайте страну');
+      }
+
+      const brand: Brand = await this.prismaService.brand.findFirst({
+        where: { id: createProductDto.brandId },
+      });
+
+      if (!brand) {
+        throw new BadRequestException('Сначала создайте бренд');
+      }
+
+      const category: Category = await this.prismaService.category.findFirst({
+        where: { id: createProductDto.categoryId },
+      });
+
+      if (!category) {
+        throw new BadRequestException('Сначала создайте категорию');
+      }
+
       const product: Product = await this.prismaService.product.create({
         data: createProductDto,
       });
