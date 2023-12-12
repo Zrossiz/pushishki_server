@@ -62,12 +62,8 @@ export class AuthService {
       });
 
       if (!existUser) {
-        return new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Пользователь с таким именем не зарегестрирован',
-          },
-          400,
+        throw new BadRequestException(
+          'Пользователь с таким именем не зарегестрирован',
         );
       }
 

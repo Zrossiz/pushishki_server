@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -95,10 +93,7 @@ export class ProductService {
       });
 
       if (!product) {
-        return new HttpException(
-          `Товар с id ${productId} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Товар с id ${productId} не найден`);
       }
 
       return product;
@@ -118,7 +113,7 @@ export class ProductService {
       });
 
       if (!products) {
-        return new HttpException('Ничего не найдено', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException(`Ничего не найдено`);
       }
 
       return products;
@@ -138,7 +133,7 @@ export class ProductService {
       });
 
       if (!products) {
-        return new HttpException('Ничего не найдено', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException(`Ничего не найдено`);
       }
 
       return products;
@@ -163,10 +158,7 @@ export class ProductService {
       });
 
       if (!product) {
-        return new HttpException(
-          `Товар с id: ${productId} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Товар с id: ${productId} не найден`);
       }
 
       Object.keys(updateProductDto).forEach((key) => {
@@ -199,10 +191,7 @@ export class ProductService {
       });
 
       if (!product) {
-        return new HttpException(
-          `Товар ${productId} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Товар ${productId} не найден`);
       }
 
       const deletedProduct: Product = await this.prismaService.product.delete({
@@ -241,7 +230,7 @@ export class ProductService {
       });
 
       if (!products) {
-        return new HttpException('Ничего не найдено', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException(`Ничего не найдено`);
       }
 
       const populatedData: IProductWithLength = {

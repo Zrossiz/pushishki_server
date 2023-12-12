@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -33,10 +31,7 @@ export class BrandService {
       });
 
       if (existBrand) {
-        return new HttpException(
-          'Бренд с таким названием уже существует',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('Бренд с таким названием уже существует');
       }
 
       const slug = generateSlug(createBrandDto.title).toLowerCase();
@@ -68,10 +63,7 @@ export class BrandService {
       const brands: Brand[] = await this.prismaService.brand.findMany();
 
       if (brands.length === 0) {
-        return new HttpException(
-          'Упс, ничего не найдено',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('Упс, ничего не найдено');
       }
 
       const data: IBrandWithLength = {
@@ -96,10 +88,7 @@ export class BrandService {
       });
 
       if (!brand) {
-        return new HttpException(
-          `Бренд ${slug} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Бренд ${slug} не найден`);
       }
 
       return brand;
@@ -122,10 +111,7 @@ export class BrandService {
       });
 
       if (!brand) {
-        return new HttpException(
-          `Бренд ${slug} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Бренд ${slug} не найден`);
       }
 
       const brandData = {
@@ -168,10 +154,7 @@ export class BrandService {
       });
 
       if (!brand) {
-        return new HttpException(
-          `Бренд ${slug} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Бренд ${slug} не найден`);
       }
 
       const deletedBrand: Brand = await this.prismaService.brand.delete({
@@ -198,10 +181,7 @@ export class BrandService {
       });
 
       if (!brand) {
-        return new HttpException(
-          `Бренд ${slug} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Бренд ${slug} не найден`);
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;

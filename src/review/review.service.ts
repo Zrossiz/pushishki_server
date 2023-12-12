@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -24,10 +22,7 @@ export class ReviewService {
       });
 
       if (!review) {
-        return new HttpException(
-          'Ошибка при публикации отзыва',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('Ошибка при публикации отзыва');
       }
 
       return review;
@@ -50,10 +45,7 @@ export class ReviewService {
       });
 
       if (!review) {
-        return new HttpException(
-          `Отзыв ${reviewId} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('Отзыв не найден');
       }
 
       Object.keys(updateReviewDto).forEach((key) => {
@@ -87,10 +79,7 @@ export class ReviewService {
       });
 
       if (!product) {
-        return new HttpException(
-          `Товар с id: ${productId} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Товар с id: ${productId} не найден`);
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;
@@ -150,10 +139,7 @@ export class ReviewService {
       });
 
       if (!review) {
-        return new HttpException(
-          `Отзыв ${reviewId} не найден`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Отзыв ${reviewId} не найден`);
       }
 
       const deletedReview: Review = await this.prismaService.review.delete({

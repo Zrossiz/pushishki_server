@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -25,12 +23,8 @@ export class UserService {
       });
 
       if (existUser) {
-        return new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Пользователь с таким email уже зарегистрирован',
-          },
-          400,
+        throw new BadRequestException(
+          'Пользователь с таким email уже зарегистрирован',
         );
       }
       const hashedPassword = hashSync(createUserDto.password, genSaltSync(10));
@@ -62,12 +56,8 @@ export class UserService {
       });
 
       if (!existUser) {
-        return new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Пользователь с таким именем не зарегестрирован',
-          },
-          400,
+        throw new BadRequestException(
+          'Пользователь с таким именем не зарегистрирован',
         );
       }
 
@@ -77,13 +67,7 @@ export class UserService {
       );
 
       if (!isPasswordValid) {
-        return new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Неверный логин или пароль',
-          },
-          400,
-        );
+        throw new BadRequestException('Неверный логин или пароль');
       }
 
       return {

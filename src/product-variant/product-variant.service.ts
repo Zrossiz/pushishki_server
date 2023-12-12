@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -22,9 +20,8 @@ export class ProductVariantService {
     });
 
     if (!product) {
-      return new HttpException(
+      throw new BadRequestException(
         `Товар ${createProductVariantDto.productId} не найден`,
-        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -47,9 +44,8 @@ export class ProductVariantService {
         });
 
       if (!productVariant) {
-        return new HttpException(
+        throw new BadRequestException(
           `Вариант продукта ${productVariantId} не найден`,
-          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -85,9 +81,8 @@ export class ProductVariantService {
         });
 
       if (!productVariant) {
-        return new HttpException(
+        throw new BadRequestException(
           `Вариант продукта ${productVariantId} не найден`,
-          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -116,9 +111,8 @@ export class ProductVariantService {
         });
 
       if (!productVariant) {
-        return new HttpException(
+        throw new BadRequestException(
           `Вариант продукта ${productVariantId} не найден`,
-          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -140,10 +134,7 @@ export class ProductVariantService {
         });
 
       if (!productVariants) {
-        return new HttpException(
-          'Варианты продуктов не найдены',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Варианты продуктов не найдены`);
       }
 
       return productVariants;

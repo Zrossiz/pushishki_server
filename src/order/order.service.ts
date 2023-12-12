@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -42,7 +40,7 @@ export class OrderService {
     });
 
     if (!order) {
-      return new HttpException('Заказ не найден', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Заказ не найден');
     }
 
     Object.keys(updateOrderDto).forEach((key) => {
@@ -73,7 +71,7 @@ export class OrderService {
       });
 
       if (!orders) {
-        return new HttpException('Ничего не найдено', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException('Ничего не найдено');
       }
 
       const populatedData: IOrderWithLength = {
@@ -99,7 +97,7 @@ export class OrderService {
       });
 
       if (!order) {
-        return new HttpException('Заказ не найден', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException('Заказ не найден');
       }
 
       return order;
@@ -119,7 +117,7 @@ export class OrderService {
       });
 
       if (!order) {
-        return new HttpException('Заказ не найден', HttpStatus.BAD_REQUEST);
+        throw new BadRequestException('Заказ не найден');
       }
 
       const deletedOrder: Order = await this.prismaService.order.delete({

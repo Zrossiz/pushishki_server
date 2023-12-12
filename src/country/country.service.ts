@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -42,10 +40,7 @@ export class CountryService {
       });
 
       if (!country) {
-        return new HttpException(
-          `Страна ${slug} не найдена`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Страна ${slug} не найдена`);
       }
 
       return country;
@@ -68,10 +63,7 @@ export class CountryService {
       });
 
       if (!country) {
-        return new HttpException(
-          `Страна ${slug} не найдена`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Страна ${slug} не найдена`);
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;
@@ -112,10 +104,7 @@ export class CountryService {
       });
 
       if (!country) {
-        return new HttpException(
-          `Страна ${slug} не найдена`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Страна ${slug} не найдена`);
       }
 
       const countryData = {
@@ -158,10 +147,7 @@ export class CountryService {
       });
 
       if (existCountry) {
-        return new HttpException(
-          'Страна с таким названием уже создана',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('Страна с таким названием уже создана');
       }
 
       const slug = generateSlug(createCountryDto.title).toLowerCase();
@@ -193,10 +179,7 @@ export class CountryService {
       });
 
       if (!country) {
-        return new HttpException(
-          `Страна ${slug} не найдена`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Страна ${slug} не найдена`);
       }
 
       const deletedCountry: Country = await this.prismaService.country.delete({

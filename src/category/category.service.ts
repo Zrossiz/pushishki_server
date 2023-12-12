@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -26,9 +24,8 @@ export class CategoryService {
         });
 
       if (existCategory) {
-        return new HttpException(
+        throw new BadRequestException(
           'Категория с таким названием уже существует',
-          HttpStatus.BAD_REQUEST,
         );
       }
 
@@ -86,10 +83,7 @@ export class CategoryService {
         });
 
       if (!existCategory) {
-        return new HttpException(
-          `Категория ${slug} не найдена`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Категория ${slug} не найдена`);
       }
 
       const categoryData = {
@@ -130,10 +124,7 @@ export class CategoryService {
       });
 
       if (!category) {
-        return new HttpException(
-          `Категория ${slug} не найдена`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Категория ${slug} не найдена`);
       }
 
       return category;
@@ -150,10 +141,7 @@ export class CategoryService {
       });
 
       if (!category) {
-        return new HttpException(
-          `Категория ${slug} не найдена`,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException(`Категория ${slug} не найдена`);
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;
