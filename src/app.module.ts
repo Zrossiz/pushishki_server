@@ -21,6 +21,7 @@ import { OrderModule } from './order/order.module';
 import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
+import { YandexDiskService } from './yandex-disk/yandex-disk.service';
 
 @Module({
   imports: [
@@ -45,6 +46,6 @@ import { BasketModule } from './basket/basket.module';
     OrderController,
     BasketController,
   ],
-  providers: [UserService, ReviewService, OrderService, BasketService],
+  providers: [UserService, ReviewService, OrderService, BasketService, YandexDiskService],
 })
 export class AppModule {}
