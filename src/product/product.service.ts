@@ -72,7 +72,7 @@ export class ProductService {
 
       const populatedData: IProductWithLength = {
         length: products.length,
-        totalPages,
+        totalPages: products.length === 0 ? 0 : totalPages,
         data: products,
       };
 
@@ -235,7 +235,7 @@ export class ProductService {
 
       const populatedData: IProductWithLength = {
         length: products.length,
-        totalPages,
+        totalPages: products.length === 0 ? 0 : totalPages,
         data: products,
       };
 
