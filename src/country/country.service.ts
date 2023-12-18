@@ -80,7 +80,7 @@ export class CountryService {
 
       const populatedData: IProductWithLength = {
         length: products.length,
-        totalPages: length === 0 ? 0 : totalPages,
+        totalPages: products.length === 0 ? 0 : totalPages,
         data: products,
       };
 

@@ -21,6 +21,8 @@ import { OrderModule } from './order/order.module';
 import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
+import { YandexDiskController } from './yandex-disk/yandex-disk.controller';
+import { YandexDiskModule } from './yandex-disk/yandex-disk.module';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { BasketModule } from './basket/basket.module';
     ProductVariantModule,
     OrderModule,
     BasketModule,
+    YandexDiskModule,
   ],
   controllers: [
     AuthController,
@@ -44,6 +47,7 @@ import { BasketModule } from './basket/basket.module';
     ProductVariantController,
     OrderController,
     BasketController,
+    YandexDiskController,
   ],
   providers: [UserService, ReviewService, OrderService, BasketService],
 })
