@@ -22,8 +22,6 @@ import { OrderModule } from './order/order.module';
 import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
-import { YandexDiskController } from './yandex-disk/yandex-disk.controller';
-import { YandexDiskModule } from './yandex-disk/yandex-disk.module';
 
 @Module({
   imports: [
@@ -38,10 +36,7 @@ import { YandexDiskModule } from './yandex-disk/yandex-disk.module';
     ProductVariantModule,
     OrderModule,
     BasketModule,
-    YandexDiskModule,
-    MulterModule.register({
-      dest: './uploads',
-    }),
+    MulterModule.register({}),
   ],
   controllers: [
     AuthController,
@@ -51,7 +46,6 @@ import { YandexDiskModule } from './yandex-disk/yandex-disk.module';
     ProductVariantController,
     OrderController,
     BasketController,
-    YandexDiskController,
   ],
   providers: [UserService, ReviewService, OrderService, BasketService],
 })
