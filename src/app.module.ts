@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserService } from './user/user.service';
@@ -38,6 +39,9 @@ import { YandexDiskModule } from './yandex-disk/yandex-disk.module';
     OrderModule,
     BasketModule,
     YandexDiskModule,
+    MulterModule.register({
+      dest: './uploads',
+    }),
   ],
   controllers: [
     AuthController,
