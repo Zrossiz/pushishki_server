@@ -8,14 +8,12 @@ import { IProductWithLength } from 'src/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product-dto';
 import { Brand, Category, Country, Product } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product-dto';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ProductService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(
-    preview: Express.Multer.File,
     createProductDto: CreateProductDto,
   ): Promise<Product | { message: string }> {
     try {
@@ -43,30 +41,8 @@ export class ProductService {
         throw new BadRequestException('Сначала создайте категорию');
       }
 
-      const previewName = uuidv4();
-
-      const formatFile = preview.originalname.split('.');
-
-      preview.originalname = `upload/${previewName}.${formatFile[1]}`;
-
       const product: Product = await this.prismaService.product.create({
-        data: {
-          title: createProductDto.title,
-          description: createProductDto.description,
-          articul: createProductDto.articul,
-          gearbox: createProductDto.gearbox,
-          battery: createProductDto.battery,
-          assembledModelSize: createProductDto.assembledModelSize,
-          video: createProductDto.video,
-          maximumLoad: createProductDto.maximumLoad,
-          brandId: Number(createProductDto.brandId),
-          categoryId: Number(createProductDto.categoryId),
-          countryId: Number(createProductDto.countryId),
-          modelSizeInPackage: createProductDto.modelSizeInPackage,
-          preview: preview.originalname,
-          bestseller: Boolean(createProductDto.bestseller),
-          new: Boolean(createProductDto.new),
-        },
+        data: createProductDto,
       });
 
       return product;
