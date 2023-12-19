@@ -6,7 +6,9 @@ import {
   Post,
   Query,
   Delete,
+  UseInterceptors,
 } from '@nestjs/common';
+import { NoFilesInterceptor } from '@nestjs/platform-express';
 import { CreateProductDto } from 'src/product/dto/create-product-dto';
 import { UpdateProductDto } from 'src/product/dto/update-product-dto';
 import { ProductService } from 'src/product/product.service';
@@ -46,6 +48,7 @@ export class ProductController {
   }
 
   @Post('')
+  @UseInterceptors(NoFilesInterceptor())
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productService.create(createProductDto);
   }

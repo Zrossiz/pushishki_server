@@ -18,7 +18,7 @@ export class ProductService {
   ): Promise<Product | { message: string }> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
-        where: { id: createProductDto.countryId },
+        where: { id: Number(createProductDto.countryId) },
       });
 
       if (!country) {
@@ -26,7 +26,7 @@ export class ProductService {
       }
 
       const brand: Brand = await this.prismaService.brand.findFirst({
-        where: { id: createProductDto.brandId },
+        where: { id: Number(createProductDto.brandId) },
       });
 
       if (!brand) {
@@ -34,7 +34,7 @@ export class ProductService {
       }
 
       const category: Category = await this.prismaService.category.findFirst({
-        where: { id: createProductDto.categoryId },
+        where: { id: Number(createProductDto.categoryId) },
       });
 
       if (!category) {
@@ -42,7 +42,23 @@ export class ProductService {
       }
 
       const product: Product = await this.prismaService.product.create({
-        data: createProductDto,
+        data: {
+          title: createProductDto.title,
+          description: createProductDto.description,
+          articul: createProductDto.articul,
+          gearbox: createProductDto.gearbox,
+          battery: createProductDto.battery,
+          assembledModelSize: createProductDto.assembledModelSize,
+          video: createProductDto.video,
+          maximumLoad: createProductDto.maximumLoad,
+          brandId: Number(createProductDto.brandId),
+          categoryId: Number(createProductDto.categoryId),
+          countryId: Number(createProductDto.countryId),
+          modelSizeInPackage: createProductDto.modelSizeInPackage,
+          preview: createProductDto.preview,
+          bestseller: Boolean(createProductDto.bestseller),
+          new: Boolean(createProductDto.new),
+        },
       });
 
       return product;
