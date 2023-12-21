@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IProductWithLength } from 'src/interfaces';
+import { ICreateProductData, IProductWithLength } from 'src/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product-dto';
 import { Brand, Category, Country, Product } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product-dto';
@@ -41,8 +41,27 @@ export class ProductService {
         throw new BadRequestException('Сначала создайте категорию');
       }
 
+      const createData: ICreateProductData = {
+        categoryId: createProductDto.categoryId,
+        brandId: createProductDto.brandId,
+        countryId: createProductDto.countryId,
+        title: createProductDto.title,
+        description: createProductDto.description,
+        articul: createProductDto.articul,
+        gearbox: createProductDto.gearbox,
+        battery: createProductDto.battery,
+        maximumLoad: createProductDto.maximumLoad,
+        assembledModelSize: createProductDto.assembledModelSize,
+        modelSizeInPackage: createProductDto.modelSizeInPackage,
+        video: createProductDto.video,
+        preview: createProductDto.preview,
+        bestseller: createProductDto.bestseller,
+        new: createProductDto.new,
+        categorySlug: category.slug,
+      };
+
       const product: Product = await this.prismaService.product.create({
-        data: createProductDto,
+        data: createData,
       });
 
       return product;
