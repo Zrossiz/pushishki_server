@@ -62,6 +62,7 @@ CREATE TABLE "products" (
     "preview" TEXT NOT NULL,
     "bestseller" BOOLEAN NOT NULL DEFAULT false,
     "new" BOOLEAN NOT NULL DEFAULT false,
+    "category_slug" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
