@@ -58,6 +58,8 @@ export class ProductService {
         bestseller: createProductDto.bestseller,
         new: createProductDto.new,
         categorySlug: category.slug,
+        brandName: brand.title,
+        countryName: country.title,
       };
 
       const product: Product = await this.prismaService.product.create({
