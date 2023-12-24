@@ -77,6 +77,7 @@ model Product {
   preview            String
   bestseller         Boolean           @default(false)
   new                Boolean           @default(false)
+  defaultPrice       Int               @default(0) @map("default_price")
   categorySlug       String            @map("category_slug")
   brandName          String            @map("brand_name")
   countryName        String            @map("country_name")
