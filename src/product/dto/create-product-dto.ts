@@ -60,4 +60,8 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsBoolean()
   new: boolean;
+
+  @IsNotEmpty()
+  @IsNumber()
+  defaultPrice: number;
 }

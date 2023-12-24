@@ -57,6 +57,7 @@ export class ProductService {
         preview: createProductDto.preview,
         bestseller: createProductDto.bestseller,
         new: createProductDto.new,
+        defaultPrice: createProductDto.defaultPrice,
         categorySlug: category.slug,
         brandName: brand.title,
         countryName: country.title,

@@ -22,6 +22,7 @@ export interface ICreateProductData {
   preview: string;
   bestseller: boolean;
   new: boolean;
+  defaultPrice: number;
   categorySlug: string;
   countryName: string;
   brandName: string;
