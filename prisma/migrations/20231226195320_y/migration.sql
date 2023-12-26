@@ -62,6 +62,7 @@ CREATE TABLE "products" (
     "preview" TEXT NOT NULL,
     "bestseller" BOOLEAN NOT NULL DEFAULT false,
     "new" BOOLEAN NOT NULL DEFAULT false,
+    "in_stock" BOOLEAN NOT NULL DEFAULT true,
     "default_price" INTEGER NOT NULL DEFAULT 0,
     "category_slug" TEXT NOT NULL,
     "brand_name" TEXT NOT NULL,
