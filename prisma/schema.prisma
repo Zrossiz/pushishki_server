@@ -90,6 +90,8 @@ model Product {
   Product_variant    Product_variant[]
   createdAt          DateTime          @default(now()) @map("created_at")
   updatedAt          DateTime          @updatedAt @map("updated_at")
+  colors             Color[]
+  ProductsColors     ProductsColors[]
 
   @@map("products")
 }
@@ -177,10 +179,22 @@ model Order {
 }
 
 model Color {
-  id        Int      @id @default(autoincrement())
-  color     String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id             Int              @id @default(autoincrement())
+  color          String
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  products       Product[]
+  ProductsColors ProductsColors[]
 
   @@map("colors")
+}
+
+model ProductsColors {
+  id        Int     @id @default(autoincrement())
+  productId Int     @map("product_id")
+  colorId   Int     @map("color_id")
+  product   Product @relation(fields: [productId], references: [id])
+  color     Color   @relation(fields: [colorId], references: [id])
+
+  @@map("products_colors")
 }
