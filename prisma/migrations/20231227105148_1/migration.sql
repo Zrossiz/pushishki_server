@@ -52,11 +52,11 @@ CREATE TABLE "products" (
     "country_id" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "articul" TEXT NOT NULL,
+    "articul" INTEGER NOT NULL,
     "gearbox" TEXT NOT NULL,
     "battery" TEXT NOT NULL,
     "maximum_load" TEXT NOT NULL,
-    "assembled_model_size" TEXT NOT NULL,
+    "assembled_model_size" INTEGER NOT NULL,
     "model_size_in_package" TEXT NOT NULL,
     "video" TEXT NOT NULL,
     "preview" TEXT NOT NULL,
@@ -77,17 +77,20 @@ CREATE TABLE "products" (
 CREATE TABLE "product_variants" (
     "id" SERIAL NOT NULL,
     "product_id" INTEGER NOT NULL,
-    "title" TEXT NOT NULL,
+    "color_id" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
-    "articul" TEXT NOT NULL,
+    "articul" INTEGER NOT NULL,
     "gearbox" TEXT NOT NULL,
     "battery" TEXT NOT NULL,
     "maximum_load" TEXT NOT NULL,
     "assembled_model_size" TEXT NOT NULL,
     "model_size_in_package" TEXT NOT NULL,
-    "color" TEXT NOT NULL,
-    "images" TEXT[],
     "video" TEXT NOT NULL,
+    "in_stock" BOOLEAN NOT NULL DEFAULT true,
+    "price" INTEGER NOT NULL DEFAULT 0,
+    "category_slug" TEXT NOT NULL,
+    "brand_name" TEXT NOT NULL,
+    "country_name" TEXT NOT NULL,
 
     CONSTRAINT "product_variants_pkey" PRIMARY KEY ("id")
 );
@@ -152,11 +155,42 @@ CREATE TABLE "orders" (
     CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "colors" (
+    "id" SERIAL NOT NULL,
+    "color" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "colors_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "products_colors" (
+    "id" SERIAL NOT NULL,
+    "product_id" INTEGER NOT NULL,
+    "color_id" INTEGER NOT NULL,
+
+    CONSTRAINT "products_colors_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_ColorToProduct" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tokens_token_key" ON "tokens"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_ColorToProduct_AB_unique" ON "_ColorToProduct"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_ColorToProduct_B_index" ON "_ColorToProduct"("B");
 
 -- AddForeignKey
 ALTER TABLE "tokens" ADD CONSTRAINT "tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -177,6 +211,9 @@ ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("
 ALTER TABLE "product_variants" ADD CONSTRAINT "product_variants_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "product_variants" ADD CONSTRAINT "product_variants_color_id_fkey" FOREIGN KEY ("color_id") REFERENCES "colors"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -187,3 +224,15 @@ ALTER TABLE "basket" ADD CONSTRAINT "basket_product_id_fkey" FOREIGN KEY ("produ
 
 -- AddForeignKey
 ALTER TABLE "basket" ADD CONSTRAINT "basket_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "products_colors" ADD CONSTRAINT "products_colors_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "products_colors" ADD CONSTRAINT "products_colors_color_id_fkey" FOREIGN KEY ("color_id") REFERENCES "colors"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ColorToProduct" ADD CONSTRAINT "_ColorToProduct_A_fkey" FOREIGN KEY ("A") REFERENCES "colors"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ColorToProduct" ADD CONSTRAINT "_ColorToProduct_B_fkey" FOREIGN KEY ("B") REFERENCES "products"("id") ON DELETE CASCADE ON UPDATE CASCADE;

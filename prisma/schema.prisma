@@ -67,11 +67,11 @@ model Product {
   countryId          Int               @map("country_id")
   title              String
   description        String
-  articul            String
+  articul            Int
   gearbox            String
   battery            String
   maximumLoad        String            @map("maximum_load")
-  assembledModelSize String            @map("assembled_model_size")
+  assembledModelSize Int               @map("assembled_model_size")
   modelSizeInPackage String            @map("model_size_in_package")
   video              String
   preview            String
@@ -99,18 +99,22 @@ model Product {
 model Product_variant {
   id                 Int      @id @default(autoincrement())
   productId          Int      @map("product_id")
-  title              String
+  colorId            Int      @map("color_id")
   description        String
-  articul            String
+  articul            Int
   gearbox            String
   battery            String
   maximumLoad        String   @map("maximum_load")
-  assembledModelSize String   @map("assembled_model_size")
+  Int                String   @map("assembled_model_size")
   modelSizeInPackage String   @map("model_size_in_package")
-  color              String
-  images             String[]
   video              String
+  inStock            Boolean  @default(true) @map("in_stock")
+  price              Int      @default(0)
+  categorySlug       String   @map("category_slug")
+  brandName          String   @map("brand_name")
+  countryName        String   @map("country_name")
   product            Product  @relation(fields: [productId], references: [id])
+  color              Color    @relation(fields: [colorId], references: [id])
   Basket             Basket[]
 
   @@map("product_variants")
@@ -179,12 +183,13 @@ model Order {
 }
 
 model Color {
-  id             Int              @id @default(autoincrement())
-  color          String
-  createdAt      DateTime         @default(now()) @map("created_at")
-  updatedAt      DateTime         @updatedAt @map("updated_at")
-  products       Product[]
-  ProductsColors ProductsColors[]
+  id              Int               @id @default(autoincrement())
+  color           String
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  products        Product[]
+  ProductsColors  ProductsColors[]
+  Product_variant Product_variant[]
 
   @@map("colors")
 }
