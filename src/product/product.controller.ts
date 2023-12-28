@@ -57,4 +57,12 @@ export class ProductController {
   ) {
     return await this.productService.update(+productId, updateProductDto);
   }
+
+  @Get('color/:id')
+  async getProductsByColor(
+    @Param('id') colorId: string,
+    @Query('page') page: number,
+  ) {
+    return await this.productService.getProductsByColor(+colorId, page);
+  }
 }

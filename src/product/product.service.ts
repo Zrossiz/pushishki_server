@@ -215,6 +215,55 @@ export class ProductService {
     }
   }
 
+  async getProductsByColor(
+    colorId: number,
+    page: number,
+  ): Promise<IProductWithLength | { message: string }> {
+    try {
+      const productsByColor = await this.prismaService.productsColors.findMany({
+        where: {
+          colorId,
+        },
+      });
+
+      const productsIds: number[] = [];
+
+      for (let i = 0; i <= productsByColor.length; i++) {
+        if (productsByColor[i]) {
+          productsIds.push(productsByColor[i].productId);
+        }
+      }
+
+      const skip: number = page ? (page - 1) * 10 : 0;
+
+      const totalPages: number = Math.ceil(productsIds.length / 10);
+
+      const products: Product[] = await this.prismaService.product.findMany({
+        where: {
+          id: {
+            in: productsIds,
+          },
+        },
+        take: 10,
+        skip,
+      });
+
+      const populatedData: IProductWithLength = {
+        length: products.length,
+        totalPages: products.length === 0 ? 0 : totalPages,
+        data: products,
+      };
+
+      return populatedData;
+    } catch (err) {
+      console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
+
   async find(
     search: string,
     page: number,
