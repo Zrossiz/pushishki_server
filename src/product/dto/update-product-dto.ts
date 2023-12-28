@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class UpdateProductDto {
   @IsNumber()
@@ -22,7 +22,6 @@ export class UpdateProductDto {
   @IsString()
   gearbox: string;
 
-  @IsNotEmpty()
   @IsString()
   battery: string;
 
@@ -38,7 +37,6 @@ export class UpdateProductDto {
   @IsString()
   video: string;
 
-  @IsNotEmpty()
   @IsString()
   preview: string;
 

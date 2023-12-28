@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class UpdateProductVariantDto {
   @IsNumber()
@@ -25,6 +25,7 @@ export class UpdateProductVariantDto {
   @IsString()
   modelSizeInPackage: string;
 
+  @IsArray()
   images: string[];
 
   @IsString()
