@@ -7,14 +7,16 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { IUserWithTokens } from 'src/interfaces';
-import { User } from '@prisma/client';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  async registration(createUserDto): Promise<User | { message: string }> {
+  async registration(createUserDto) {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { email: createUserDto.email },
@@ -38,7 +40,13 @@ export class AuthService {
       const newUser = await this.prismaService.user.create({
         data: userData,
       });
-      return newUser;
+
+      const { token } = this.generateToken(newUser.id, newUser.username);
+
+      return {
+        user: newUser,
+        token,
+      };
     } catch (err) {
       console.log(err);
       if (`${err.status}`.startsWith('4')) {
@@ -48,7 +56,7 @@ export class AuthService {
     }
   }
 
-  async login(loginUserDto): Promise<IUserWithTokens | { message: string }> {
+  async login(loginUserDto) {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: loginUserDto.username },
@@ -75,12 +83,11 @@ export class AuthService {
         );
       }
 
+      const { token } = this.generateToken(existUser.id, existUser.username);
+
       return {
-        tokens: {
-          refreshToken: '123',
-          acccesToken: '1234',
-        },
         user: existUser,
+        token,
       };
     } catch (err) {
       console.log(err);
@@ -90,4 +97,12 @@ export class AuthService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  private generateToken = (id: number, username: string) => {
+    const payload = { id, username };
+
+    return {
+      token: this.jwtService.sign(payload),
+    };
+  };
 }
