@@ -42,22 +42,7 @@ export class ProductService {
       }
 
       const createData: ICreateProductData = {
-        categoryId: createProductDto.categoryId,
-        brandId: createProductDto.brandId,
-        countryId: createProductDto.countryId,
-        title: createProductDto.title,
-        description: createProductDto.description,
-        articul: createProductDto.articul,
-        gearbox: createProductDto.gearbox,
-        battery: createProductDto.battery,
-        maximumLoad: createProductDto.maximumLoad,
-        assembledModelSize: createProductDto.assembledModelSize,
-        modelSizeInPackage: createProductDto.modelSizeInPackage,
-        video: createProductDto.video,
-        preview: createProductDto.preview,
-        bestseller: createProductDto.bestseller,
-        new: createProductDto.new,
-        defaultPrice: createProductDto.defaultPrice,
+        ...createProductDto,
         categorySlug: category.slug,
         brandName: brand.title,
         countryName: country.title,

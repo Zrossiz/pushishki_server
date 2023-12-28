@@ -6,7 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant-dto';
 import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant-dto';
-import { Product, Product_variant } from '@prisma/client';
+import { Color, Product, Product_variant } from '@prisma/client';
 
 @Injectable()
 export class ProductVariantService {
@@ -15,22 +15,46 @@ export class ProductVariantService {
   async create(
     createProductVariantDto: CreateProductVariantDto,
   ): Promise<Product_variant | { message: string }> {
-    const product: Product = await this.prismaService.product.findFirst({
-      where: { id: createProductVariantDto.productId },
-    });
-
-    if (!product) {
-      throw new BadRequestException(
-        `Товар ${createProductVariantDto.productId} не найден`,
-      );
-    }
-
-    const productVariant: Product_variant =
-      await this.prismaService.product_variant.create({
-        data: createProductVariantDto,
+    try {
+      const product: Product = await this.prismaService.product.findFirst({
+        where: { id: createProductVariantDto.productId },
       });
 
-    return productVariant;
+      if (!product) {
+        throw new BadRequestException(
+          `Товар ${createProductVariantDto.productId} не найден`,
+        );
+      }
+
+      const color: Color = await this.prismaService.color.findFirst({
+        where: {
+          id: createProductVariantDto.colorId,
+        },
+      });
+
+      if (!color) {
+        throw new BadRequestException('Цвет не найден');
+      }
+
+      const productVariant: Product_variant =
+        await this.prismaService.product_variant.create({
+          data: createProductVariantDto,
+        });
+
+      await this.prismaService.productsColors.create({
+        data: {
+          colorId: productVariant.colorId,
+          productId: productVariant.productId,
+        },
+      });
+      return productVariant;
+    } catch (err) {
+      console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
   }
 
   async update(
