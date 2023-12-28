@@ -28,4 +28,30 @@ export class ColorService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async delete(colorId: number) {
+    try {
+      const foundColor: Color = await this.prismaService.color.findFirst({
+        where: { id: colorId },
+      });
+
+      if (!foundColor) {
+        throw new BadRequestException('Цвет не найден');
+      }
+
+      const color: Color = await this.prismaService.color.delete({
+        where: {
+          id: colorId,
+        },
+      });
+
+      return color;
+    } catch (err) {
+      console.log(err);
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }

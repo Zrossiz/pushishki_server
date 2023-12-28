@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { ColorService } from './color.service';
 import { CreateColorDto } from './dto/create-color.dto';
 
@@ -9,5 +9,10 @@ export class ColorController {
   @Post('')
   async create(@Body() createColorDto: CreateColorDto) {
     return await this.colorService.create(createColorDto);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') colorId: string) {
+    return await this.colorService.delete(+colorId);
   }
 }
