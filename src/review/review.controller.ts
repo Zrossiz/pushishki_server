@@ -8,10 +8,12 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateReviewDto } from 'src/review/dto/create-review-dto';
 import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
 import { ReviewService } from 'src/review/review.service';
 
+@ApiTags('Review')
 @Controller('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}

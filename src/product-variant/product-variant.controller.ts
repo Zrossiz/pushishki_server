@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant-dto';
 import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant-dto';
 import { ProductVariantService } from 'src/product-variant/product-variant.service';
 
+@ApiTags('Product variant')
 @Controller('product-variant')
 export class ProductVariantController {
   constructor(private readonly productVariantService: ProductVariantService) {}

@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
-import { UserService } from './user/user.service';
-import { UserController } from './user/user.controller';
-import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductModule } from './product/product.module';
 import { BrandModule } from './brand/brand.module';
@@ -26,7 +23,6 @@ import { ColorModule } from './color/color.module';
 @Module({
   imports: [
     AuthModule,
-    UserModule,
     PrismaModule,
     ProductModule,
     BrandModule,
@@ -40,13 +36,12 @@ import { ColorModule } from './color/color.module';
   ],
   controllers: [
     AuthController,
-    UserController,
     CountryController,
     ReviewController,
     ProductVariantController,
     OrderController,
     BasketController,
   ],
-  providers: [UserService, ReviewService, OrderService, BasketService],
+  providers: [ReviewService, OrderService, BasketService],
 })
 export class AppModule {}

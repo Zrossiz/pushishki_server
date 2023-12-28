@@ -8,17 +8,13 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IUserWithTokens } from 'src/interfaces';
-import { CreateUserDto } from 'src/user/dto/create-user-dto';
 import { User } from '@prisma/client';
-import { LoginUserDto } from 'src/user/dto/login-user-dto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async registration(
-    createUserDto: CreateUserDto,
-  ): Promise<User | { message: string }> {
+  async registration(createUserDto): Promise<User | { message: string }> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { email: createUserDto.email },
@@ -53,9 +49,7 @@ export class AuthService {
     }
   }
 
-  async login(
-    loginUserDto: LoginUserDto,
-  ): Promise<IUserWithTokens | { message: string }> {
+  async login(loginUserDto): Promise<IUserWithTokens | { message: string }> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: loginUserDto.username },
