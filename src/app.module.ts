@@ -21,6 +21,7 @@ import { OrderModule } from './order/order.module';
 import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
+import { ColorModule } from './color/color.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { BasketModule } from './basket/basket.module';
     ProductVariantModule,
     OrderModule,
     BasketModule,
+    ColorModule,
   ],
   controllers: [
     AuthController,
