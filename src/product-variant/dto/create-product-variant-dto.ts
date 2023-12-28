@@ -7,7 +7,7 @@ export class CreateProductVariantDto {
 
   @IsNotEmpty()
   @IsString()
-  title: string;
+  colorId: number;
 
   @IsNotEmpty()
   @IsString()
@@ -15,7 +15,7 @@ export class CreateProductVariantDto {
 
   @IsNotEmpty()
   @IsString()
-  articul: string;
+  articul: number;
 
   @IsNotEmpty()
   @IsString()
@@ -27,7 +27,7 @@ export class CreateProductVariantDto {
 
   @IsNotEmpty()
   @IsString()
-  maximumLoad: string;
+  maximumLoad: number;
 
   @IsNotEmpty()
   @IsString()
@@ -39,12 +39,12 @@ export class CreateProductVariantDto {
 
   @IsNotEmpty()
   @IsString()
-  color: string;
+  video: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
 
   @IsNotEmpty()
   images: string[];
-
-  @IsNotEmpty()
-  @IsString()
-  video: string;
 }

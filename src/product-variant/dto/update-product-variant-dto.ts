@@ -1,46 +1,32 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UpdateProductVariantDto {
-  @IsNotEmpty()
-  @IsString()
-  title: string;
+  @IsNumber()
+  colorId: number;
 
-  @IsNotEmpty()
   @IsString()
   description: string;
 
-  @IsNotEmpty()
   @IsString()
-  articul: string;
+  articul: number;
 
-  @IsNotEmpty()
   @IsString()
   gearbox: string;
 
-  @IsNotEmpty()
   @IsString()
   battery: string;
 
-  @IsNotEmpty()
   @IsString()
-  maximumLoad: string;
+  maximumLoad: number;
 
-  @IsNotEmpty()
   @IsString()
   assembledModelSize: string;
 
-  @IsNotEmpty()
   @IsString()
   modelSizeInPackage: string;
 
-  @IsNotEmpty()
-  @IsString()
-  color: string;
-
-  @IsNotEmpty()
   images: string[];
 
-  @IsNotEmpty()
   @IsString()
   video: string;
 }

@@ -104,15 +104,13 @@ model Product_variant {
   articul            Int
   gearbox            String
   battery            String
-  maximumLoad        String   @map("maximum_load")
-  Int                String   @map("assembled_model_size")
+  maximumLoad        Int      @map("maximum_load")
+  assembledModelSize String   @map("assembled_model_size")
   modelSizeInPackage String   @map("model_size_in_package")
   video              String
   inStock            Boolean  @default(true) @map("in_stock")
   price              Int      @default(0)
-  categorySlug       String   @map("category_slug")
-  brandName          String   @map("brand_name")
-  countryName        String   @map("country_name")
+  images             String[]
   product            Product  @relation(fields: [productId], references: [id])
   color              Color    @relation(fields: [colorId], references: [id])
   Basket             Basket[]
