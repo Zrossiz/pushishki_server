@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MulterModule } from '@nestjs/platform-express';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UserService } from './user/user.service';
@@ -22,8 +21,6 @@ import { OrderModule } from './order/order.module';
 import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 
 @Module({
   imports: [
@@ -38,18 +35,6 @@ import { extname } from 'path';
     ProductVariantModule,
     OrderModule,
     BasketModule,
-    MulterModule.register({
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
   ],
   controllers: [
     AuthController,
