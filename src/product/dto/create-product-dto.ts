@@ -23,7 +23,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsString()
-  articul: string;
+  articul: number;
 
   @IsNotEmpty()
   @IsString()
@@ -35,7 +35,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsString()
-  maximumLoad: string;
+  maximumLoad: number;
 
   @IsNotEmpty()
   @IsString()

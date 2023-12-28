@@ -12,10 +12,10 @@ export interface ICreateProductData {
   countryId: number;
   title: string;
   description: string;
-  articul: string;
+  articul: number;
   gearbox: string;
   battery: string;
-  maximumLoad: string;
+  maximumLoad: number;
   assembledModelSize: string;
   modelSizeInPackage: string;
   video: string;

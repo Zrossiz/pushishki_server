@@ -70,8 +70,8 @@ model Product {
   articul            Int
   gearbox            String
   battery            String
-  maximumLoad        String            @map("maximum_load")
-  assembledModelSize Int               @map("assembled_model_size")
+  maximumLoad        Int               @map("maximum_load")
+  assembledModelSize String            @map("assembled_model_size")
   modelSizeInPackage String            @map("model_size_in_package")
   video              String
   preview            String

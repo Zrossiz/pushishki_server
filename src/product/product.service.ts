@@ -250,7 +250,7 @@ export class ProductService {
               },
             },
             {
-              articul: search,
+              articul: +search,
             },
           ],
         },
