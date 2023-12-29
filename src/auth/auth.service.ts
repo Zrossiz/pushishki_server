@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async registration(createUserDto) {
+  async registration(createUserDto: CreateUserDto) {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { email: createUserDto.email },
@@ -48,7 +50,7 @@ export class AuthService {
     }
   }
 
-  async login(loginUserDto) {
+  async login(loginUserDto: LoginUserDto) {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: loginUserDto.username },
