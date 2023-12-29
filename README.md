@@ -20,19 +20,23 @@ PORT=9000
 JWT_SECRET={SECRET_KEY}
 ```
 
+DATABASE_URL - ссылка для подключения к БД
+
 DB_USER - имя базы данных(логин) пример: admin
 
 DB_PASSWORD - пароль от базы данны
 
 DB_NAME - имя базы данных для подключения к ней. пример: pushishki
 
+JWT_SECRET - Секретный ключ JWT
+
+PORT - порт, на котором запустится приложение
+
 ## Для запуска продакшен-билда
 
 ```bash
 npm run build
 npm run start:prod
-# или
-yarn dev
 ```
 
 Приложение так же запустится на 9000 порту.
