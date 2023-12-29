@@ -182,6 +182,37 @@ export class CountryService {
         throw new BadRequestException(`Страна ${slug} не найдена`);
       }
 
+      const productsCountry: Product[] =
+        await this.prismaService.product.findMany({
+          where: {
+            countryId: country.id,
+          },
+        });
+
+      const productsIds: number[] = [];
+
+      for (let i = 0; i <= productsCountry.length; i++) {
+        if (productsCountry[i]) {
+          productsIds.push(productsCountry[i].id);
+        }
+      }
+
+      await this.prismaService.product_variant.deleteMany({
+        where: {
+          productId: {
+            in: productsIds,
+          },
+        },
+      });
+
+      await this.prismaService.product.deleteMany({
+        where: { countryId: country.id },
+      });
+
+      await this.prismaService.brand.deleteMany({
+        where: { countryId: country.id },
+      });
+
       const deletedCountry: Country = await this.prismaService.country.delete({
         where: { id: country.id },
       });
