@@ -157,6 +157,32 @@ export class BrandService {
         throw new BadRequestException(`Бренд ${slug} не найден`);
       }
 
+      const brandProducts = await this.prismaService.product.findMany({
+        where: { brandId: brand.id },
+      });
+
+      const brandProductVariantsIds: number[] = [];
+
+      for (let i = 0; i <= brandProducts.length; i++) {
+        if (brandProducts[i]) {
+          brandProductVariantsIds.push(brandProducts[i].id);
+        }
+      }
+
+      await this.prismaService.product_variant.deleteMany({
+        where: {
+          productId: {
+            in: brandProductVariantsIds,
+          },
+        },
+      });
+
+      await this.prismaService.product.deleteMany({
+        where: {
+          brandId: brand.id,
+        },
+      });
+
       const deletedBrand: Brand = await this.prismaService.brand.delete({
         where: { id: brand.id },
       });
