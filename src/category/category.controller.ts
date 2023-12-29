@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { UpdateCategoryDto } from 'src/category/dto/update-category-dto';
+import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CategoryService } from 'src/category/category.service';
-import { CreateCategoryDto } from './dto/create-category-dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Category')

@@ -7,8 +7,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateCountryDto } from 'src/country/dto/create-country-dto';
-import { UpdateCountryDto } from 'src/country/dto/update-country-dto';
+import { CreateCountryDto } from 'src/country/dto/create-country.dto';
+import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { CountryService } from 'src/country/country.service';
 import { ApiTags } from '@nestjs/swagger';
 

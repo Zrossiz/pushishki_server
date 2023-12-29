@@ -8,8 +8,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { BrandService } from 'src/brand/brand.service';
-import { CreateBrandDto } from './dto/create-brand-dto';
-import { UpdateBrandDto } from './dto/update-brand-dto';
+import { CreateBrandDto } from './dto/create-brand.dto';
+import { UpdateBrandDto } from './dto/update-brand.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Brand')

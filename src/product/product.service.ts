@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ICreateProductData, IProductWithLength } from 'src/interfaces';
-import { UpdateProductDto } from 'src/product/dto/update-product-dto';
+import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { Brand, Category, Country, Product } from '@prisma/client';
-import { CreateProductDto } from './dto/create-product-dto';
+import { CreateProductDto } from './dto/create-product.dto';
 
 @Injectable()
 export class ProductService {

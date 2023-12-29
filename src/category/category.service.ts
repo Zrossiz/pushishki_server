@@ -6,8 +6,8 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { ICategoryWithLength, IProductWithLength } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
-import { UpdateCategoryDto } from 'src/category/dto/update-category-dto';
-import { CreateCategoryDto } from './dto/create-category-dto';
+import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category, Product } from '@prisma/client';
 
 @Injectable()

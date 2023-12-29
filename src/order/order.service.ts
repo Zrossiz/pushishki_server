@@ -6,8 +6,8 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { IOrderWithLength } from 'src/interfaces';
 import { Order } from '@prisma/client';
-import { CreateOrderDto } from './dto/create-order-dto';
-import { UpdateOrderDto } from './dto/update-order-dto';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class OrderService {

@@ -4,8 +4,8 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant-dto';
-import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant-dto';
+import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant.dto';
+import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant.dto';
 import { Color, Product, Product_variant } from '@prisma/client';
 
 @Injectable()

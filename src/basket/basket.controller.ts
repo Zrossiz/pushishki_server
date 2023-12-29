@@ -1,5 +1,5 @@
 import { Body, Controller, Param, Post, Get } from '@nestjs/common';
-import { CreateBasketDto } from 'src/basket/dto/create-basket-dto';
+import { CreateBasketDto } from 'src/basket/dto/create-basket.dto';
 import { BasketService } from 'src/basket/basket.service';
 import { ApiTags } from '@nestjs/swagger';
 

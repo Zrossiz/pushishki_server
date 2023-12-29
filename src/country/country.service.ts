@@ -6,9 +6,9 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { ICountryWithLength, IProductWithLength } from 'src/interfaces';
 import { generateSlug } from 'src/helpers';
-import { UpdateCountryDto } from 'src/country/dto/update-country-dto';
+import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { Country, Product } from '@prisma/client';
-import { CreateCountryDto } from './dto/create-country-dto';
+import { CreateCountryDto } from './dto/create-country.dto';
 
 @Injectable()
 export class CountryService {

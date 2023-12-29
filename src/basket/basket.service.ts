@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateBasketDto } from 'src/basket/dto/create-basket-dto';
+import { CreateBasketDto } from 'src/basket/dto/create-basket.dto';
 
 @Injectable()
 export class BasketService {
