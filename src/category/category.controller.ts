@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CategoryService } from 'src/category/category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -24,7 +24,7 @@ export class CategoryController {
     return await this.categoryService.getOne(slug);
   }
 
-  @Post(':slug')
+  @Put(':slug')
   async update(
     @Param('slug') slug: string,
     @Body() updateCategory: UpdateCategoryDto,

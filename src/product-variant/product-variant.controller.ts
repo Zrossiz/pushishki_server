@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant.dto';
 import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant.dto';
@@ -19,7 +27,7 @@ export class ProductVariantController {
     return await this.productVariantService.getOne(+productVariantId);
   }
 
-  @Post(':id')
+  @Put(':id')
   async update(
     @Param('id') productVariantId: string,
     @Body() updateProductVariantDto: UpdateProductVariantDto,

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { BrandService } from 'src/brand/brand.service';
@@ -40,7 +41,7 @@ export class BrandController {
     return this.brandService.getProductsBySlug(slug, page);
   }
 
-  @Post('/:slug')
+  @Put('/:slug')
   async update(
     @Param('slug') slug: string,
     @Body() updateBrandDto: UpdateBrandDto,

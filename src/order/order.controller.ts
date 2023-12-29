@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { OrderService } from 'src/order/order.service';
@@ -37,7 +38,7 @@ export class OrderController {
     return await this.orderService.delete(+orderId);
   }
 
-  @Post(':id')
+  @Put(':id')
   async update(
     @Param('id') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,

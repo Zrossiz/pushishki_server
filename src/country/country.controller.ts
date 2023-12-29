@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { CreateCountryDto } from 'src/country/dto/create-country.dto';
@@ -27,7 +28,7 @@ export class CountryController {
     return this.countryService.getOne(slug);
   }
 
-  @Post(':slug')
+  @Put(':slug')
   async update(
     @Param('slug') slug: string,
     @Body() updateCountryDto: UpdateCountryDto,

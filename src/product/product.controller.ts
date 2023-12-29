@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from 'src/product/dto/create-product.dto';
@@ -52,7 +53,7 @@ export class ProductController {
     return await this.productService.create(createProductDto);
   }
 
-  @Post(':id/update')
+  @Put(':id/update')
   async update(
     @Param('id') productId: string,
     @Body() updateProductDto: UpdateProductDto,
