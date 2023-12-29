@@ -1,8 +1,6 @@
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -23,13 +21,7 @@ export class AuthService {
       });
 
       if (existUser) {
-        return new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Пользователь с таким email уже зарегистрирован',
-          },
-          400,
-        );
+        throw new BadRequestException('Неверный логин или пароль ');
       }
       const hashedPassword = hashSync(createUserDto.password, genSaltSync(10));
       const userData = {
@@ -74,13 +66,7 @@ export class AuthService {
       );
 
       if (!isPasswordValid) {
-        return new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Неверный логин или пароль',
-          },
-          400,
-        );
+        throw new BadRequestException('Неверный логин или пароль');
       }
 
       const { token } = this.generateToken(existUser.id, existUser.username);
