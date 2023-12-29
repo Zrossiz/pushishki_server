@@ -8,7 +8,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { IUserWithToken } from 'src/interfaces';
+import { IUserWithToken } from 'src/shared/interfaces';
 
 @Injectable()
 export class AuthService {

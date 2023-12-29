@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ICreateProductData, IProductWithLength } from 'src/interfaces';
+import { ICreateProductData, IProductWithLength } from 'src/shared/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { Brand, Category, Country, Product } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product.dto';

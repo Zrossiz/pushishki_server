@@ -4,8 +4,8 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ICountryWithLength, IProductWithLength } from 'src/interfaces';
-import { generateSlug } from 'src/helpers';
+import { ICountryWithLength, IProductWithLength } from 'src/shared/interfaces';
+import { generateSlug } from 'src/shared/helpers';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { Country, Product } from '@prisma/client';
 import { CreateCountryDto } from './dto/create-country.dto';

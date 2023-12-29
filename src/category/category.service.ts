@@ -4,8 +4,8 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ICategoryWithLength, IProductWithLength } from 'src/interfaces';
-import { generateSlug } from 'src/helpers';
+import { ICategoryWithLength, IProductWithLength } from 'src/shared/interfaces';
+import { generateSlug } from 'src/shared/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category, Product } from '@prisma/client';
