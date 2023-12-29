@@ -17,7 +17,7 @@ export class AuthController {
     return await this.authService.registration(createUserDto);
   }
 
-  @ApiOperation({ summary: 'Идентфикация пользователя' })
+  @ApiOperation({ summary: 'Идентификация пользователя' })
   @ApiBody({ type: LoginUserDto })
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {

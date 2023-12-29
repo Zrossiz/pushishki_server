@@ -157,9 +157,10 @@ export class BrandService {
         throw new BadRequestException(`Бренд ${slug} не найден`);
       }
 
-      const brandProducts = await this.prismaService.product.findMany({
-        where: { brandId: brand.id },
-      });
+      const brandProducts: Product[] =
+        await this.prismaService.product.findMany({
+          where: { brandId: brand.id },
+        });
 
       const brandProductVariantsIds: number[] = [];
 
