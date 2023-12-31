@@ -12,7 +12,6 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  email     String   @unique
   username  String
   password  String
   createdAt DateTime @default(now()) @map("created_at")
@@ -22,14 +21,15 @@ model User {
 }
 
 model Country {
-  id        Int       @id @default(autoincrement())
-  title     String
-  slug      String
-  image     String
-  Brand     Brand[]
-  Product   Product[]
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  slug        String
+  image       String
+  Brand       Brand[]
+  Product     Product[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("countries")
 }
@@ -37,10 +37,10 @@ model Country {
 model Brand {
   id          Int       @id @default(autoincrement())
   countryId   Int       @map("country_id")
-  title       String
+  name        String
+  description String
   slug        String
   image       String
-  description String
   Product     Product[]
   country     Country   @relation(fields: [countryId], references: [id])
   createdAt   DateTime  @default(now()) @map("created_at")
@@ -50,42 +50,39 @@ model Brand {
 }
 
 model Product {
-  id                 Int               @id @default(autoincrement())
-  categoryId         Int               @map("category_id")
-  brandId            Int               @map("brand_id")
-  countryId          Int               @map("country_id")
-  title              String
+  id                 Int              @id @default(autoincrement())
+  countryId          Int              @map("country_id")
+  brandId            Int              @map("brand_id")
+  categoryId         Int              @map("category_id")
+  name               String
   description        String
-  articul            Int
+  articul            String
   gearbox            String
   battery            String
-  maximumLoad        Int               @map("maximum_load")
-  assembledModelSize String            @map("assembled_model_size")
-  modelSizeInPackage String            @map("model_size_in_package")
+  maximumLoad        Int              @map("maximum_load")
+  assembledModelSize String           @map("assembled_model_size")
+  modelSizeInPackage String           @map("model_size_in_package")
   video              String
-  preview            String
-  bestseller         Boolean           @default(false)
-  new                Boolean           @default(false)
-  inStock            Boolean           @default(true) @map("in_stock")
-  defaultPrice       Int               @default(0) @map("default_price")
-  categorySlug       String            @map("category_slug")
-  brandName          String            @map("brand_name")
-  countryName        String            @map("country_name")
-  country            Country           @relation(fields: [countryId], references: [id])
-  brand              Brand             @relation(fields: [brandId], references: [id])
-  category           Category          @relation(fields: [categoryId], references: [id])
+  image              String
+  bestseller         Boolean          @default(false)
+  new                Boolean          @default(false)
+  inStock            Boolean          @default(true) @map("in_stock")
+  defaultPrice       Int              @default(0) @map("default_price")
+  country            Country          @relation(fields: [countryId], references: [id])
+  brand              Brand            @relation(fields: [brandId], references: [id])
+  category           Category         @relation(fields: [categoryId], references: [id])
   Basket             Basket[]
   Review             Review[]
-  Product_variant    Product_variant[]
-  createdAt          DateTime          @default(now()) @map("created_at")
-  updatedAt          DateTime          @updatedAt @map("updated_at")
+  Product_variant    ProductVariant[]
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
   colors             Color[]
   ProductsColors     ProductsColors[]
 
   @@map("products")
 }
 
-model Product_variant {
+model ProductVariant {
   id                 Int      @id @default(autoincrement())
   productId          Int      @map("product_id")
   colorId            Int      @map("color_id")
@@ -110,7 +107,7 @@ model Product_variant {
 model Review {
   id          Int      @id @default(autoincrement())
   productId   Int      @map("product_id")
-  name        String
+  username    String
   title       String
   description String
   rating      Int
@@ -124,7 +121,7 @@ model Review {
 
 model Category {
   id          Int       @id @default(autoincrement())
-  title       String
+  name        String
   slug        String
   description String
   image       String
@@ -136,47 +133,43 @@ model Category {
 }
 
 model Basket {
-  id              Int             @id @default(autoincrement())
-  productId       Int             @map("product_id")
-  variantId       Int             @map("variant_id")
-  orderId         Int             @map("order_id")
-  name            String
-  lastname        String
-  secondname      String
-  phone           String
-  count           Int
+  id              Int            @id @default(autoincrement())
+  productId       Int            @map("product_id")
+  variantId       Int            @map("variant_id")
+  orderId         Int            @map("order_id")
+  quantity        Int
   price           Int
-  Product_variant Product_variant @relation(fields: [variantId], references: [id])
-  Product         Product         @relation(fields: [productId], references: [id])
-  createdAt       DateTime        @default(now()) @map("created_at")
-  updatedAt       DateTime        @updatedAt @map("updated_at")
-  Order           Order?          @relation(fields: [orderId], references: [id])
+  Product_variant ProductVariant @relation(fields: [variantId], references: [id])
+  Product         Product        @relation(fields: [productId], references: [id])
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+  Order           Order?         @relation(fields: [orderId], references: [id])
 
   @@map("basket")
 }
 
 model Order {
   id         Int      @id @default(autoincrement())
-  orderId    Basket[]
   name       String
   lastname   String
-  secondname String
+  secondname String   @map("second_name")
   phone      String
   price      Int
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+  orderId    Basket[]
 
   @@map("orders")
 }
 
 model Color {
-  id              Int               @id @default(autoincrement())
+  id              Int              @id @default(autoincrement())
   color           String
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
   products        Product[]
   ProductsColors  ProductsColors[]
-  Product_variant Product_variant[]
+  Product_variant ProductVariant[]
 
   @@map("colors")
 }

@@ -1,10 +1,8 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
-    "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -12,16 +10,10 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
-CREATE TABLE "tokens" (
-    "token" TEXT NOT NULL,
-    "exp" TIMESTAMP(3) NOT NULL,
-    "user_id" INTEGER NOT NULL
-);
-
--- CreateTable
 CREATE TABLE "countries" (
     "id" SERIAL NOT NULL,
-    "title" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -34,10 +26,10 @@ CREATE TABLE "countries" (
 CREATE TABLE "brands" (
     "id" SERIAL NOT NULL,
     "country_id" INTEGER NOT NULL,
-    "title" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "image" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -47,26 +39,23 @@ CREATE TABLE "brands" (
 -- CreateTable
 CREATE TABLE "products" (
     "id" SERIAL NOT NULL,
-    "category_id" INTEGER NOT NULL,
-    "brand_id" INTEGER NOT NULL,
     "country_id" INTEGER NOT NULL,
-    "title" TEXT NOT NULL,
+    "brand_id" INTEGER NOT NULL,
+    "category_id" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "articul" INTEGER NOT NULL,
+    "articul" TEXT NOT NULL,
     "gearbox" TEXT NOT NULL,
     "battery" TEXT NOT NULL,
-    "maximum_load" TEXT NOT NULL,
-    "assembled_model_size" INTEGER NOT NULL,
+    "maximum_load" INTEGER NOT NULL,
+    "assembled_model_size" TEXT NOT NULL,
     "model_size_in_package" TEXT NOT NULL,
     "video" TEXT NOT NULL,
-    "preview" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
     "bestseller" BOOLEAN NOT NULL DEFAULT false,
     "new" BOOLEAN NOT NULL DEFAULT false,
     "in_stock" BOOLEAN NOT NULL DEFAULT true,
     "default_price" INTEGER NOT NULL DEFAULT 0,
-    "category_slug" TEXT NOT NULL,
-    "brand_name" TEXT NOT NULL,
-    "country_name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -82,15 +71,13 @@ CREATE TABLE "product_variants" (
     "articul" INTEGER NOT NULL,
     "gearbox" TEXT NOT NULL,
     "battery" TEXT NOT NULL,
-    "maximum_load" TEXT NOT NULL,
+    "maximum_load" INTEGER NOT NULL,
     "assembled_model_size" TEXT NOT NULL,
     "model_size_in_package" TEXT NOT NULL,
     "video" TEXT NOT NULL,
     "in_stock" BOOLEAN NOT NULL DEFAULT true,
     "price" INTEGER NOT NULL DEFAULT 0,
-    "category_slug" TEXT NOT NULL,
-    "brand_name" TEXT NOT NULL,
-    "country_name" TEXT NOT NULL,
+    "images" TEXT[],
 
     CONSTRAINT "product_variants_pkey" PRIMARY KEY ("id")
 );
@@ -99,7 +86,7 @@ CREATE TABLE "product_variants" (
 CREATE TABLE "reviews" (
     "id" SERIAL NOT NULL,
     "product_id" INTEGER NOT NULL,
-    "name" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
@@ -113,7 +100,7 @@ CREATE TABLE "reviews" (
 -- CreateTable
 CREATE TABLE "categories" (
     "id" SERIAL NOT NULL,
-    "title" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "image" TEXT NOT NULL,
@@ -129,11 +116,7 @@ CREATE TABLE "basket" (
     "product_id" INTEGER NOT NULL,
     "variant_id" INTEGER NOT NULL,
     "order_id" INTEGER NOT NULL,
-    "name" TEXT NOT NULL,
-    "lastname" TEXT NOT NULL,
-    "secondname" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
-    "count" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL,
     "price" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -146,7 +129,7 @@ CREATE TABLE "orders" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
-    "secondname" TEXT NOT NULL,
+    "second_name" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -181,19 +164,10 @@ CREATE TABLE "_ColorToProduct" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "tokens_token_key" ON "tokens"("token");
-
--- CreateIndex
 CREATE UNIQUE INDEX "_ColorToProduct_AB_unique" ON "_ColorToProduct"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_ColorToProduct_B_index" ON "_ColorToProduct"("B");
-
--- AddForeignKey
-ALTER TABLE "tokens" ADD CONSTRAINT "tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "brands" ADD CONSTRAINT "brands_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "countries"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
