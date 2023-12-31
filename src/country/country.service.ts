@@ -4,7 +4,11 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ICountryWithLength, IProductWithLength } from 'src/shared/interfaces';
+import {
+  ICountry,
+  ICountryWithLength,
+  IProductWithLength,
+} from 'src/shared/interfaces';
 import { generateSlug } from 'src/shared/helpers';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { Country, Product } from '@prisma/client';
@@ -14,12 +18,30 @@ import { CreateCountryDto } from './dto/create-country.dto';
 export class CountryService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getAll(): Promise<ICountryWithLength | { message: string }> {
+  async getAll(
+    page: number,
+  ): Promise<ICountryWithLength | { message: string }> {
     try {
-      const countries: Country[] = await this.prismaService.country.findMany();
+      const skip: number = page ? (page - 1) * 10 : 0;
+
+      const totalPages: number = Math.ceil(
+        (await this.prismaService.country.count()) / 10,
+      );
+
+      const countries: ICountry[] = await this.prismaService.country.findMany({
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          image: true,
+        },
+        take: 10,
+        skip,
+      });
 
       const data: ICountryWithLength = {
         length: countries.length,
+        totalPages: countries.length === 0 ? 0 : totalPages,
         data: countries,
       };
 
@@ -33,10 +55,16 @@ export class CountryService {
     }
   }
 
-  async getOne(slug: string): Promise<Country | { message: string }> {
+  async getOne(slug: string): Promise<ICountry | { message: string }> {
     try {
-      const country: Country = await this.prismaService.country.findFirst({
+      const country: ICountry = await this.prismaService.country.findFirst({
         where: { slug: slug },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          image: true,
+        },
       });
 
       if (!country) {
@@ -97,10 +125,17 @@ export class CountryService {
   async update(
     slug: string,
     updateCountryDto: UpdateCountryDto,
-  ): Promise<Country | { message: string }> {
+  ): Promise<ICountry | { message: string }> {
     try {
-      const country: Country = await this.prismaService.country.findFirst({
+      const country = await this.prismaService.country.findFirst({
         where: { slug: slug },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          image: true,
+          slug: true,
+        },
       });
 
       if (!country) {
@@ -108,9 +143,9 @@ export class CountryService {
       }
 
       const countryData = {
-        title: updateCountryDto.title,
-        slug: updateCountryDto.title
-          ? generateSlug(updateCountryDto.title).toLowerCase()
+        name: updateCountryDto.name,
+        slug: updateCountryDto.name
+          ? generateSlug(updateCountryDto.name).toLowerCase()
           : country.slug,
         image: updateCountryDto.image,
       };
@@ -126,6 +161,13 @@ export class CountryService {
           id: country.id,
         },
         data: countryData,
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          image: true,
+          slug: true,
+        },
       });
 
       return updatedCountry;
@@ -140,7 +182,7 @@ export class CountryService {
 
   async create(
     createCountryDto: CreateCountryDto,
-  ): Promise<Country | { message: string }> {
+  ): Promise<ICountry | { message: string }> {
     try {
       const existCountry: Country = await this.prismaService.country.findFirst({
         where: { name: createCountryDto.name },
@@ -159,8 +201,14 @@ export class CountryService {
         image: createCountryDto.image,
       };
 
-      const country: Country = await this.prismaService.country.create({
+      const country: ICountry = await this.prismaService.country.create({
         data: countryData,
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          image: true,
+        },
       });
 
       return country;
@@ -173,7 +221,7 @@ export class CountryService {
     }
   }
 
-  async delete(slug: string): Promise<Country | { message: string }> {
+  async delete(slug: string): Promise<ICountry | { message: string }> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },
@@ -214,8 +262,14 @@ export class CountryService {
         where: { countryId: country.id },
       });
 
-      const deletedCountry: Country = await this.prismaService.country.delete({
+      const deletedCountry: ICountry = await this.prismaService.country.delete({
         where: { id: country.id },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          image: true,
+        },
       });
 
       return deletedCountry;

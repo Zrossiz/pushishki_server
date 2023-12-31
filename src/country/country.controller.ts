@@ -19,8 +19,8 @@ export class CountryController {
   constructor(private readonly countryService: CountryService) {}
 
   @Get('')
-  async getAll() {
-    return await this.countryService.getAll();
+  async getAll(@Query('page') page: number) {
+    return await this.countryService.getAll(page);
   }
 
   @Get(':slug')

@@ -2,7 +2,7 @@ import { IsString } from 'class-validator';
 
 export class UpdateCountryDto {
   @IsString()
-  title: string;
+  name: string;
 
   @IsString()
   image: string;
