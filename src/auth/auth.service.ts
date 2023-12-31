@@ -26,7 +26,9 @@ export class AuthService {
       });
 
       if (existUser) {
-        throw new BadRequestException('Неверный логин или пароль ');
+        throw new BadRequestException(
+          'Пользователь с таким именем не зарегестрирован',
+        );
       }
       const hashedPassword = hashSync(createUserDto.password, genSaltSync(10));
       const userData = {
@@ -40,10 +42,13 @@ export class AuthService {
 
       const { token } = this.generateToken(newUser.id, newUser.username);
 
-      return {
-        user: newUser,
+      const populatedData = {
+        id: newUser.id,
+        username: newUser.username,
         token,
       };
+
+      return populatedData;
     } catch (err) {
       console.log(err);
       if (`${err.status}`.startsWith('4')) {
@@ -78,10 +83,13 @@ export class AuthService {
 
       const { token } = this.generateToken(existUser.id, existUser.username);
 
-      return {
-        user: existUser,
+      const populatedData = {
+        id: existUser.id,
+        username: existUser.username,
         token,
       };
+
+      return populatedData;
     } catch (err) {
       console.log(err);
       if (`${err.status}`.startsWith('4')) {

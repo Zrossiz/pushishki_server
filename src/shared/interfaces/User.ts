@@ -1,6 +1,5 @@
-import { User } from '@prisma/client';
-
 export interface IUserWithToken {
-  user: User;
+  id: number;
+  username: string;
   token: string;
 }
