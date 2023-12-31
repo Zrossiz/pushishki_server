@@ -10,7 +10,7 @@ export class CreateBrandDto {
   @ApiProperty({ example: 'River toys', description: 'Название бренда' })
   @IsNotEmpty()
   @IsString()
-  title: string;
+  name: string;
 
   @ApiProperty({
     example: 'example.png',

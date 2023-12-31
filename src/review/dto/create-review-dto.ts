@@ -7,7 +7,7 @@ export class CreateReviewDto {
 
   @IsNotEmpty()
   @IsString()
-  name: string;
+  username: string;
 
   @IsNotEmpty()
   @IsString()

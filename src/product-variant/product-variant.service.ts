@@ -6,7 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant.dto';
 import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant.dto';
-import { Color, Product, Product_variant } from '@prisma/client';
+import { Color, Product, ProductVariant } from '@prisma/client';
 
 @Injectable()
 export class ProductVariantService {
@@ -14,7 +14,7 @@ export class ProductVariantService {
 
   async create(
     createProductVariantDto: CreateProductVariantDto,
-  ): Promise<Product_variant | { message: string }> {
+  ): Promise<ProductVariant | { message: string }> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: createProductVariantDto.productId },
@@ -36,8 +36,8 @@ export class ProductVariantService {
         throw new BadRequestException('Цвет не найден');
       }
 
-      const productVariant: Product_variant =
-        await this.prismaService.product_variant.create({
+      const productVariant: ProductVariant =
+        await this.prismaService.productVariant.create({
           data: createProductVariantDto,
         });
 
@@ -60,10 +60,10 @@ export class ProductVariantService {
   async update(
     productVariantId: number,
     updateProductVariantDto: UpdateProductVariantDto,
-  ): Promise<Product_variant | { message: string }> {
+  ): Promise<ProductVariant | { message: string }> {
     try {
-      const productVariant: Product_variant =
-        await this.prismaService.product_variant.findFirst({
+      const productVariant: ProductVariant =
+        await this.prismaService.productVariant.findFirst({
           where: { id: productVariantId },
         });
 
@@ -79,8 +79,8 @@ export class ProductVariantService {
         }
       });
 
-      const updatedProductVariant: Product_variant =
-        await this.prismaService.product_variant.update({
+      const updatedProductVariant: ProductVariant =
+        await this.prismaService.productVariant.update({
           where: { id: productVariantId },
           data: updateProductVariantDto,
         });
@@ -97,10 +97,10 @@ export class ProductVariantService {
 
   async delete(
     productVariantId: number,
-  ): Promise<Product_variant | { message: string }> {
+  ): Promise<ProductVariant | { message: string }> {
     try {
-      const productVariant: Product_variant =
-        await this.prismaService.product_variant.findFirst({
+      const productVariant: ProductVariant =
+        await this.prismaService.productVariant.findFirst({
           where: { id: productVariantId },
         });
 
@@ -110,8 +110,8 @@ export class ProductVariantService {
         );
       }
 
-      const deletedProductVariant: Product_variant =
-        await this.prismaService.product_variant.delete({
+      const deletedProductVariant: ProductVariant =
+        await this.prismaService.productVariant.delete({
           where: { id: productVariantId },
         });
 
@@ -127,10 +127,10 @@ export class ProductVariantService {
 
   async getOne(
     productVariantId: number,
-  ): Promise<Product_variant | { message: string }> {
+  ): Promise<ProductVariant | { message: string }> {
     try {
-      const productVariant: Product_variant =
-        await this.prismaService.product_variant.findFirst({
+      const productVariant: ProductVariant =
+        await this.prismaService.productVariant.findFirst({
           where: { id: productVariantId },
         });
 
@@ -152,8 +152,8 @@ export class ProductVariantService {
 
   async getAllVariantsByProduct(productId: number) {
     try {
-      const productVariants: Product_variant[] =
-        await this.prismaService.product_variant.findMany({
+      const productVariants: ProductVariant[] =
+        await this.prismaService.productVariant.findMany({
           where: { productId },
         });
 

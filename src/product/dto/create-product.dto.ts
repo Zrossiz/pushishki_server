@@ -3,7 +3,7 @@ import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateProductDto {
   @IsNotEmpty()
   @IsNumber()
-  categoryId: number;
+  countryId: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -11,11 +11,11 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsNumber()
-  countryId: number;
+  categoryId: number;
 
   @IsNotEmpty()
   @IsString()
-  title: string;
+  name: string;
 
   @IsNotEmpty()
   @IsString()
@@ -23,7 +23,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsString()
-  articul: number;
+  articul: string;
 
   @IsNotEmpty()
   @IsString()
@@ -51,7 +51,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsString()
-  preview: string;
+  image: string;
 
   @IsNotEmpty()
   @IsBoolean()

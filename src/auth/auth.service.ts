@@ -22,7 +22,7 @@ export class AuthService {
   ): Promise<IUserWithToken | { message: string }> {
     try {
       const existUser = await this.prismaService.user.findFirst({
-        where: { email: createUserDto.email },
+        where: { username: createUserDto.username },
       });
 
       if (existUser) {

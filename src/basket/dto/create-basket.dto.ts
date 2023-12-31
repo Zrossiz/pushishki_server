@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
 
 export class CreateBasketDto {
   @IsArray()
@@ -30,30 +24,10 @@ export class BasketDto {
   @IsNumber()
   orderId: number;
 
-  @ApiProperty({ example: 'Иван', description: 'Имя заказчика' })
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @ApiProperty({ example: 'Иванов', description: 'Фамилия заказчика' })
-  @IsNotEmpty()
-  @IsString()
-  lastname: string;
-
-  @ApiProperty({ example: 'Иванович', description: 'Отчество заказчика' })
-  @IsNotEmpty()
-  @IsString()
-  secondname: string;
-
-  @ApiProperty({ example: '+79996305009', description: 'Телефон заказчика' })
-  @IsNotEmpty()
-  @IsString()
-  phone: string;
-
   @ApiProperty({ example: 10, description: 'Количество товара данной позиции' })
   @IsNotEmpty()
   @IsNumber()
-  count: number;
+  quantity: number;
 
   @ApiProperty({ example: '10000', description: 'Стоимость данной позиции' })
   @IsNotEmpty()

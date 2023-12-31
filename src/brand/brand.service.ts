@@ -27,18 +27,18 @@ export class BrandService {
       }
 
       const existBrand: Brand = await this.prismaService.brand.findFirst({
-        where: { title: createBrandDto.title },
+        where: { name: createBrandDto.name },
       });
 
       if (existBrand) {
         throw new BadRequestException('Бренд с таким названием уже существует');
       }
 
-      const slug = generateSlug(createBrandDto.title).toLowerCase();
+      const slug = generateSlug(createBrandDto.name).toLowerCase();
 
       const brandData = {
         countryId: createBrandDto.countryId,
-        title: createBrandDto.title,
+        name: createBrandDto.name,
         slug,
         image: createBrandDto.image,
         description: createBrandDto.description,
@@ -170,7 +170,7 @@ export class BrandService {
         }
       }
 
-      await this.prismaService.product_variant.deleteMany({
+      await this.prismaService.productVariant.deleteMany({
         where: {
           productId: {
             in: brandProductVariantsIds,

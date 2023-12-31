@@ -143,17 +143,18 @@ export class CountryService {
   ): Promise<Country | { message: string }> {
     try {
       const existCountry: Country = await this.prismaService.country.findFirst({
-        where: { title: createCountryDto.title },
+        where: { name: createCountryDto.name },
       });
 
       if (existCountry) {
         throw new BadRequestException('Страна с таким названием уже создана');
       }
 
-      const slug = generateSlug(createCountryDto.title).toLowerCase();
+      const slug = generateSlug(createCountryDto.name).toLowerCase();
 
       const countryData = {
-        title: createCountryDto.title,
+        name: createCountryDto.name,
+        description: createCountryDto.description,
         slug,
         image: createCountryDto.image,
       };
@@ -197,7 +198,7 @@ export class CountryService {
         }
       }
 
-      await this.prismaService.product_variant.deleteMany({
+      await this.prismaService.productVariant.deleteMany({
         where: {
           productId: {
             in: productsIds,

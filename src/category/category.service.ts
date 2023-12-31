@@ -20,7 +20,7 @@ export class CategoryService {
     try {
       const existCategory: Category =
         await this.prismaService.category.findFirst({
-          where: { title: createCategoryDto.title },
+          where: { name: createCategoryDto.name },
         });
 
       if (existCategory) {
@@ -29,10 +29,10 @@ export class CategoryService {
         );
       }
 
-      const slug = generateSlug(createCategoryDto.title).toLowerCase();
+      const slug = generateSlug(createCategoryDto.name).toLowerCase();
 
       const categoryData = {
-        title: createCategoryDto.title,
+        name: createCategoryDto.name,
         description: createCategoryDto.description,
         slug,
         image: createCategoryDto.image,

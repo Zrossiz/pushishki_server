@@ -17,7 +17,7 @@ export class UpdateProductDto {
   description: string;
 
   @IsString()
-  articul: number;
+  articul: string;
 
   @IsString()
   gearbox: string;

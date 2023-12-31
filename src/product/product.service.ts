@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ICreateProductData, IProductWithLength } from 'src/shared/interfaces';
+import { IProductWithLength } from 'src/shared/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { Brand, Category, Country, Product } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -41,15 +41,8 @@ export class ProductService {
         throw new BadRequestException('Сначала создайте категорию');
       }
 
-      const createData: ICreateProductData = {
-        ...createProductDto,
-        categorySlug: category.slug,
-        brandName: brand.title,
-        countryName: country.title,
-      };
-
       const product: Product = await this.prismaService.product.create({
-        data: createData,
+        data: createProductDto,
       });
 
       return product;
@@ -279,12 +272,12 @@ export class ProductService {
         where: {
           OR: [
             {
-              title: {
+              name: {
                 contains: search,
               },
             },
             {
-              articul: +search,
+              articul: search,
             },
           ],
         },
