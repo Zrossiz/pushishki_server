@@ -4,7 +4,12 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IBrandWithLength, IProductWithLength } from 'src/shared/interfaces';
+import {
+  IBrand,
+  IBrandWithLength,
+  IProduct,
+  IProductWithLength,
+} from 'src/shared/interfaces';
 import { UpdateBrandDto } from 'src/brand/dto/update-brand.dto';
 import { generateSlug } from 'src/shared/helpers';
 import { CreateBrandDto } from './dto/create-brand.dto';
@@ -16,7 +21,7 @@ export class BrandService {
 
   async create(
     createBrandDto: CreateBrandDto,
-  ): Promise<Brand | { message: string }> {
+  ): Promise<IBrand | { message: string }> {
     try {
       const existCountry: Country = await this.prismaService.country.findFirst({
         where: { id: createBrandDto.countryId },
@@ -44,8 +49,16 @@ export class BrandService {
         description: createBrandDto.description,
       };
 
-      const brand: Brand = await this.prismaService.brand.create({
+      const brand: IBrand = await this.prismaService.brand.create({
         data: brandData,
+        select: {
+          id: true,
+          countryId: true,
+          name: true,
+          description: true,
+          slug: true,
+          image: true,
+        },
       });
 
       return brand;
@@ -58,9 +71,26 @@ export class BrandService {
     }
   }
 
-  async getAll(): Promise<IBrandWithLength | { message: string }> {
+  async getAll(page: number): Promise<IBrandWithLength | { message: string }> {
     try {
-      const brands: Brand[] = await this.prismaService.brand.findMany();
+      const skip: number = page ? (page - 1) * 10 : 0;
+
+      const totalPages: number = Math.ceil(
+        (await this.prismaService.brand.count()) / 10,
+      );
+
+      const brands: IBrand[] = await this.prismaService.brand.findMany({
+        select: {
+          id: true,
+          countryId: true,
+          name: true,
+          description: true,
+          slug: true,
+          image: true,
+        },
+        take: 10,
+        skip,
+      });
 
       if (brands.length === 0) {
         throw new BadRequestException('Упс, ничего не найдено');
@@ -68,6 +98,7 @@ export class BrandService {
 
       const data: IBrandWithLength = {
         length: brands.length,
+        totalPages: brands.length === 0 ? 0 : totalPages,
         data: brands,
       };
 
@@ -81,10 +112,18 @@ export class BrandService {
     }
   }
 
-  async getOne(slug: string): Promise<Brand | { message: string }> {
+  async getOne(slug: string): Promise<IBrand | { message: string }> {
     try {
-      const brand: Brand = await this.prismaService.brand.findFirst({
+      const brand: IBrand = await this.prismaService.brand.findFirst({
         where: { slug },
+        select: {
+          id: true,
+          countryId: true,
+          name: true,
+          description: true,
+          slug: true,
+          image: true,
+        },
       });
 
       if (!brand) {
@@ -104,9 +143,9 @@ export class BrandService {
   async update(
     updateBrandDto: UpdateBrandDto,
     slug: string,
-  ): Promise<Brand | { message: string }> {
+  ): Promise<IBrand | { message: string }> {
     try {
-      const brand: Brand = await this.prismaService.brand.findFirst({
+      const brand: IBrand = await this.prismaService.brand.findFirst({
         where: { slug: slug },
       });
 
@@ -116,9 +155,9 @@ export class BrandService {
 
       const brandData = {
         countryId: updateBrandDto.countryId,
-        title: updateBrandDto.title,
-        slug: updateBrandDto.title
-          ? generateSlug(updateBrandDto.title).toLowerCase()
+        name: updateBrandDto.name,
+        slug: updateBrandDto.name
+          ? generateSlug(updateBrandDto.name).toLowerCase()
           : brand.slug,
         image: updateBrandDto.image,
         description: updateBrandDto.description,
@@ -130,11 +169,19 @@ export class BrandService {
         }
       });
 
-      const updatedBrand: Brand = await this.prismaService.brand.update({
+      const updatedBrand: IBrand = await this.prismaService.brand.update({
         where: {
           id: brand.id,
         },
         data: brandData,
+        select: {
+          id: true,
+          countryId: true,
+          name: true,
+          description: true,
+          slug: true,
+          image: true,
+        },
       });
 
       return updatedBrand;
@@ -147,7 +194,7 @@ export class BrandService {
     }
   }
 
-  async delete(slug: string): Promise<Brand | { message: string }> {
+  async delete(slug: string): Promise<IBrand | { message: string }> {
     try {
       const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug },
@@ -184,8 +231,16 @@ export class BrandService {
         },
       });
 
-      const deletedBrand: Brand = await this.prismaService.brand.delete({
+      const deletedBrand: IBrand = await this.prismaService.brand.delete({
         where: { id: brand.id },
+        select: {
+          id: true,
+          countryId: true,
+          name: true,
+          description: true,
+          slug: true,
+          image: true,
+        },
       });
 
       return deletedBrand;
@@ -217,10 +272,30 @@ export class BrandService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products: IProduct[] = await this.prismaService.product.findMany({
         take: 10,
-        where: { brandId: brand.id },
         skip,
+        where: { brandId: brand.id },
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       const populatedData: IProductWithLength = {

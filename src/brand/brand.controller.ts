@@ -20,8 +20,8 @@ export class BrandController {
 
   @ApiOperation({ summary: 'Получить все бренды' })
   @Get('')
-  async getAll() {
-    return await this.brandService.getAll();
+  async getAll(@Query('page') page: string) {
+    return await this.brandService.getAll(+page);
   }
 
   @ApiOperation({ summary: 'Получить один бренд' })

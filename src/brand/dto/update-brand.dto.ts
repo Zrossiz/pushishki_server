@@ -8,7 +8,7 @@ export class UpdateBrandDto {
 
   @ApiProperty({ example: 'River Toys' })
   @IsString()
-  title: string;
+  name: string;
 
   @ApiProperty({ example: 'example.png' })
   @IsString()
