@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IProductWithLength } from 'src/shared/interfaces';
+import { IProduct, IProductWithLength } from 'src/shared/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { Brand, Category, Country, Product } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -15,7 +15,7 @@ export class ProductService {
 
   async create(
     createProductDto: CreateProductDto,
-  ): Promise<Product | { message: string }> {
+  ): Promise<IProduct | { message: string }> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
         where: { id: Number(createProductDto.countryId) },
@@ -41,8 +41,28 @@ export class ProductService {
         throw new BadRequestException('Сначала создайте категорию');
       }
 
-      const product: Product = await this.prismaService.product.create({
+      const product: IProduct = await this.prismaService.product.create({
         data: createProductDto,
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       return product;
@@ -65,9 +85,29 @@ export class ProductService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products: IProduct[] = await this.prismaService.product.findMany({
         take: 10,
         skip,
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       const populatedData: IProductWithLength = {
@@ -86,10 +126,30 @@ export class ProductService {
     }
   }
 
-  async getOne(productId: number): Promise<Product | { message: string }> {
+  async getOne(productId: number): Promise<IProduct | { message: string }> {
     try {
-      const product: Product = await this.prismaService.product.findFirst({
+      const product: IProduct = await this.prismaService.product.findFirst({
         where: { id: productId },
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       if (!product) {
@@ -106,10 +166,30 @@ export class ProductService {
     }
   }
 
-  async getBestsellers(): Promise<Product[] | { message: string }> {
+  async getBestsellers(): Promise<IProduct[] | { message: string }> {
     try {
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products: IProduct[] = await this.prismaService.product.findMany({
         where: { bestseller: true },
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       if (!products) {
@@ -126,10 +206,30 @@ export class ProductService {
     }
   }
 
-  async getNewProducts(): Promise<Product[] | { message: string }> {
+  async getNewProducts(): Promise<IProduct[] | { message: string }> {
     try {
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products: IProduct[] = await this.prismaService.product.findMany({
         where: { new: true },
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       if (!products) {
@@ -149,7 +249,7 @@ export class ProductService {
   async update(
     productId: number,
     updateProductDto: UpdateProductDto,
-  ): Promise<Product | { message: string }> {
+  ): Promise<IProduct | { message: string }> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: {
@@ -167,11 +267,31 @@ export class ProductService {
         }
       });
 
-      const updatedProduct: Product = await this.prismaService.product.update({
+      const updatedProduct: IProduct = await this.prismaService.product.update({
         where: {
           id: productId,
         },
         data: updateProductDto,
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       return updatedProduct;
@@ -184,7 +304,7 @@ export class ProductService {
     }
   }
 
-  async delete(productId: number): Promise<Product | { message: string }> {
+  async delete(productId: number): Promise<IProduct | { message: string }> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
@@ -194,8 +314,28 @@ export class ProductService {
         throw new BadRequestException(`Товар ${productId} не найден`);
       }
 
-      const deletedProduct: Product = await this.prismaService.product.delete({
+      const deletedProduct: IProduct = await this.prismaService.product.delete({
         where: { id: product.id },
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       return deletedProduct;
@@ -231,7 +371,7 @@ export class ProductService {
 
       const totalPages: number = Math.ceil(productsIds.length / 10);
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products: IProduct[] = await this.prismaService.product.findMany({
         where: {
           id: {
             in: productsIds,
@@ -239,6 +379,26 @@ export class ProductService {
         },
         take: 10,
         skip,
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       const populatedData: IProductWithLength = {
@@ -268,7 +428,7 @@ export class ProductService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products: IProduct[] = await this.prismaService.product.findMany({
         where: {
           OR: [
             {
@@ -283,6 +443,26 @@ export class ProductService {
         },
         take: 10,
         skip,
+        select: {
+          id: true,
+          countryId: true,
+          brandId: true,
+          categoryId: true,
+          name: true,
+          description: true,
+          articul: true,
+          gearbox: true,
+          battery: true,
+          maximumLoad: true,
+          assembledModelSize: true,
+          modelSizeInPackage: true,
+          video: true,
+          image: true,
+          bestseller: true,
+          new: true,
+          inStock: true,
+          defaultPrice: true,
+        },
       });
 
       if (!products) {
