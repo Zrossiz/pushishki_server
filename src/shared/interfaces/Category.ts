@@ -1,6 +1,13 @@
-import { Category } from '@prisma/client';
-
 export interface ICategoryWithLength {
   length: number;
-  data: Category[];
+  totalPages: number;
+  data: ICategory[];
+}
+
+export interface ICategory {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  image: string;
 }

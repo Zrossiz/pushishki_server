@@ -24,8 +24,8 @@ export class CategoryController {
 
   @ApiOperation({ summary: 'Получить все категории' })
   @Get('')
-  async getAll() {
-    return await this.categoryService.getAll();
+  async getAll(@Query('page') page: string) {
+    return await this.categoryService.getAll(+page);
   }
 
   @ApiParam({

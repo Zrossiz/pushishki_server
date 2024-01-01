@@ -7,7 +7,7 @@ export class UpdateCategoryDto {
     description: 'Заголовок категории',
   })
   @IsString()
-  title: string;
+  name: string;
 
   @ApiProperty({
     example: 'Моковое описание категории',
