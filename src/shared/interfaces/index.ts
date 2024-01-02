@@ -5,3 +5,4 @@ export * from './User';
 export * from './Category';
 export * from './Review';
 export * from './Order';
+export * from './Color';

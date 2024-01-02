@@ -6,6 +6,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateColorDto } from './dto/create-color.dto';
 import { Color } from '@prisma/client';
+import { IColor } from 'src/shared/interfaces';
 
 @Injectable()
 export class ColorService {
@@ -13,10 +14,14 @@ export class ColorService {
 
   async create(
     createColorDto: CreateColorDto,
-  ): Promise<Color | { message: string }> {
+  ): Promise<IColor | { message: string }> {
     try {
-      const color: Color = await this.prismaService.color.create({
+      const color: IColor = await this.prismaService.color.create({
         data: createColorDto,
+        select: {
+          id: true,
+          color: true,
+        },
       });
 
       return color;
@@ -29,7 +34,7 @@ export class ColorService {
     }
   }
 
-  async delete(colorId: number) {
+  async delete(colorId: number): Promise<IColor | { message: string }> {
     try {
       const foundColor: Color = await this.prismaService.color.findFirst({
         where: { id: colorId },
@@ -51,9 +56,13 @@ export class ColorService {
         },
       });
 
-      const color: Color = await this.prismaService.color.delete({
+      const color: IColor = await this.prismaService.color.delete({
         where: {
           id: colorId,
+        },
+        select: {
+          id: true,
+          color: true,
         },
       });
 
