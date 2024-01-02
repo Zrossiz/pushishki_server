@@ -23,6 +23,13 @@ export class CategoryController {
   }
 
   @ApiOperation({ summary: 'Получить все категории' })
+  @ApiQuery({
+    name: 'page',
+    type: 'string',
+    description: 'Страница',
+    example: '1',
+    required: false,
+  })
   @Get('')
   async getAll(@Query('page') page: string) {
     return await this.categoryService.getAll(+page);
