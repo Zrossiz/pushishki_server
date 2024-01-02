@@ -25,6 +25,6 @@ export class UpdateOrderDto {
 
   @ApiProperty({ example: '20000' })
   @IsOptional()
-  @IsNumber({}, { message: 'Стоимость должна быть цифровым значением' })
+  @IsNumber({}, { message: 'Стоимость должна быть числовым значением' })
   price: number;
 }

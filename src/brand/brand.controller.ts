@@ -7,6 +7,8 @@ import {
   Post,
   Put,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { BrandService } from 'src/brand/brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
@@ -52,6 +54,7 @@ export class BrandController {
   @ApiOperation({ summary: 'Создание бренда' })
   @ApiBody({ type: CreateBrandDto })
   @Post('')
+  @UsePipes(ValidationPipe)
   async create(@Body() createBrandDto: CreateBrandDto) {
     return await this.brandService.create(createBrandDto);
   }
@@ -87,6 +90,7 @@ export class BrandController {
   })
   @ApiBody({ type: UpdateBrandDto })
   @Put('/:slug')
+  @UsePipes(ValidationPipe)
   async update(
     @Param('slug') slug: string,
     @Body() updateBrandDto: UpdateBrandDto,

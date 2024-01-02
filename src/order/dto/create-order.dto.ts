@@ -27,6 +27,6 @@ export class CreateOrderDto {
 
   @ApiProperty({ example: '20000' })
   @IsNotEmpty({ message: 'Стоимость не может быть пустым значением' })
-  @IsNumber({}, { message: 'Стоимость должна быть цифровым значением' })
+  @IsNumber({}, { message: 'Стоимость должна быть числовым значением' })
   price: number;
 }
