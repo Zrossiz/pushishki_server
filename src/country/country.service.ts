@@ -144,6 +144,7 @@ export class CountryService {
 
       const countryData = {
         name: updateCountryDto.name,
+        description: updateCountryDto.description,
         slug: updateCountryDto.name
           ? generateSlug(updateCountryDto.name).toLowerCase()
           : country.slug,
