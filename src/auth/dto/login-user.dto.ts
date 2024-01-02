@@ -3,14 +3,14 @@ import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class LoginUserDto {
   @ApiProperty({ example: 'username', description: 'User name' })
-  @IsNotEmpty()
-  @MinLength(2)
-  @IsString()
+  @IsNotEmpty({ message: 'Имя пользователя не может быть пустым' })
+  @IsString({ message: 'Имя пользователя должно быть строкой' })
+  @MinLength(3, { message: 'Имя пользователя должно быть больше 3 символов' })
   username: string;
 
   @ApiProperty({ example: '1232qwerty', description: 'User password' })
-  @IsNotEmpty()
-  @MinLength(6)
-  @IsString()
+  @IsNotEmpty({ message: 'Пароль не может быть пустым' })
+  @MinLength(6, { message: 'Длина пароля должна быть больше 6 символов' })
+  @IsString({ message: 'Пароль должен быть строкой' })
   password: string;
 }

@@ -32,7 +32,6 @@ export class AuthService {
       }
       const hashedPassword = hashSync(createUserDto.password, genSaltSync(10));
       const userData = {
-        email: createUserDto.email,
         username: createUserDto.username,
         password: hashedPassword,
       };

@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -12,6 +18,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Регистрация пользователя' })
   @ApiBody({ type: CreateUserDto })
+  @UsePipes(ValidationPipe)
   @Post('signup')
   async registration(@Body() createUserDto: CreateUserDto) {
     return await this.authService.registration(createUserDto);
@@ -19,6 +26,7 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Идентификация пользователя' })
   @ApiBody({ type: LoginUserDto })
+  @UsePipes(ValidationPipe)
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     return await this.authService.login(loginUserDto);
