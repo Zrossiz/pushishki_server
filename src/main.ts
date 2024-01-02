@@ -5,6 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('/api');
+  app.getHttpAdapter().getInstance().disable('x-powered-by');
 
   const config = new DocumentBuilder()
     .setTitle('Pushishki API')

@@ -13,7 +13,7 @@ import {
 import { CreateCountryDto } from 'src/country/dto/create-country.dto';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { CountryService } from 'src/country/country.service';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Country')
 @Controller('country')
@@ -34,11 +34,9 @@ export class CountryController {
   }
 
   @ApiOperation({ summary: 'Получить одну страну' })
-  @ApiQuery({
+  @ApiProperty({
     name: 'slug',
     type: 'string',
-    description: 'Слаг страны',
-    example: 'kitay',
   })
   @Get(':slug')
   async getOne(@Param('slug') slug: string) {
@@ -46,11 +44,9 @@ export class CountryController {
   }
 
   @ApiOperation({ summary: 'Обновить страну' })
-  @ApiQuery({
+  @ApiProperty({
     name: 'slug',
     type: 'string',
-    description: 'Слаг страны',
-    example: 'kitay',
   })
   @Put(':slug')
   @UsePipes(ValidationPipe)
@@ -62,11 +58,9 @@ export class CountryController {
   }
 
   @ApiOperation({ summary: 'Получить товары страны' })
-  @ApiQuery({
+  @ApiProperty({
     name: 'slug',
     type: 'string',
-    description: 'Слаг страны',
-    example: 'kitay',
   })
   @ApiQuery({
     name: 'page',
@@ -91,11 +85,9 @@ export class CountryController {
   }
 
   @ApiOperation({ summary: 'Удалить страну' })
-  @ApiQuery({
+  @ApiProperty({
     name: 'slug',
     type: 'string',
-    description: 'Слаг страны',
-    example: 'kitay',
   })
   @Delete(':slug')
   async delete(@Param('slug') slug: string) {
