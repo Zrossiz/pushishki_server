@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateReviewDto } from 'src/review/dto/create-review-dto';
-import { IReviewWithLength } from 'src/shared/interfaces';
+import { IReview, IReviewWithLength } from 'src/shared/interfaces';
 import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
 import { Product, Review } from '@prisma/client';
 
@@ -15,10 +15,19 @@ export class ReviewService {
 
   async create(
     createReviewDto: CreateReviewDto,
-  ): Promise<Review | { message: string }> {
+  ): Promise<IReview | { message: string }> {
     try {
-      const review: Review = await this.prismaService.review.create({
+      const review: IReview = await this.prismaService.review.create({
         data: createReviewDto,
+        select: {
+          id: true,
+          productId: true,
+          username: true,
+          title: true,
+          description: true,
+          rating: true,
+          active: true,
+        },
       });
 
       if (!review) {
@@ -38,7 +47,7 @@ export class ReviewService {
   async update(
     reviewId: number,
     updateReviewDto: UpdateReviewDto,
-  ): Promise<Review | { message: string }> {
+  ): Promise<IReview | { message: string }> {
     try {
       const review: Review = await this.prismaService.review.findFirst({
         where: { id: reviewId },
@@ -54,9 +63,18 @@ export class ReviewService {
         }
       });
 
-      const updatedReview: Review = await this.prismaService.review.update({
+      const updatedReview: IReview = await this.prismaService.review.update({
         where: { id: reviewId },
         data: updateReviewDto,
+        select: {
+          id: true,
+          productId: true,
+          username: true,
+          title: true,
+          description: true,
+          rating: true,
+          active: true,
+        },
       });
 
       return updatedReview;
@@ -91,15 +109,24 @@ export class ReviewService {
 
       const totalPages: number = Math.ceil(reviewByProduct.length / 10);
 
-      const reviews: Review[] = await this.prismaService.review.findMany({
+      const reviews: IReview[] = await this.prismaService.review.findMany({
         take: 10,
         where: { productId, active: true },
         skip,
+        select: {
+          id: true,
+          productId: true,
+          username: true,
+          title: true,
+          description: true,
+          rating: true,
+          active: true,
+        },
       });
 
       const populatedData: IReviewWithLength = {
         length: reviews.length,
-        totalPages,
+        totalPages: reviews.length === 0 ? 0 : totalPages,
         data: reviews,
       };
 
@@ -115,11 +142,20 @@ export class ReviewService {
 
   async switchActiveReview(
     reviewId: number,
-  ): Promise<Review | { message: string }> {
+  ): Promise<IReview | { message: string }> {
     try {
-      const updatedReview: Review = await this.prismaService.review.update({
+      const updatedReview: IReview = await this.prismaService.review.update({
         where: { id: reviewId },
         data: { active: true },
+        select: {
+          id: true,
+          productId: true,
+          username: true,
+          title: true,
+          description: true,
+          rating: true,
+          active: true,
+        },
       });
 
       return updatedReview;
@@ -132,7 +168,7 @@ export class ReviewService {
     }
   }
 
-  async delete(reviewId: number): Promise<Review | { message: string }> {
+  async delete(reviewId: number): Promise<IReview | { message: string }> {
     try {
       const review: Review = await this.prismaService.review.findFirst({
         where: { id: reviewId },
@@ -142,8 +178,17 @@ export class ReviewService {
         throw new BadRequestException(`Отзыв ${reviewId} не найден`);
       }
 
-      const deletedReview: Review = await this.prismaService.review.delete({
+      const deletedReview: IReview = await this.prismaService.review.delete({
         where: { id: reviewId },
+        select: {
+          id: true,
+          productId: true,
+          username: true,
+          title: true,
+          description: true,
+          rating: true,
+          active: true,
+        },
       });
 
       return deletedReview;
