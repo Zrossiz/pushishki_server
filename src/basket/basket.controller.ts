@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Post, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Post,
+  Get,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { BasketDto, CreateBasketDto } from 'src/basket/dto/create-basket.dto';
 import { BasketService } from 'src/basket/basket.service';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -11,6 +19,7 @@ export class BasketController {
   @ApiOperation({ summary: 'Создание корзины' })
   @ApiBody({ type: BasketDto })
   @Post('')
+  @UsePipes(ValidationPipe)
   async create(@Body() createBasketDto: CreateBasketDto) {
     return await this.basketService.create(createBasketDto);
   }

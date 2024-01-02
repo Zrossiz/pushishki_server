@@ -11,26 +11,30 @@ export class CreateBasketDto {
 
 export class BasketDto {
   @ApiProperty({ example: '1', description: 'Id продукта' })
-  @IsNotEmpty()
-  @IsNumber()
+  @IsNotEmpty({ message: 'Id товара не может быть пустым значением' })
+  @IsNumber({}, { message: 'Id товара должно быть числом' })
   productId: number;
 
   @ApiProperty({ example: '1', description: 'Id варианта продукта' })
-  @IsNotEmpty()
-  @IsNumber()
+  @IsNotEmpty({
+    message: 'Id варианта продукта не может быть пустым значением',
+  })
+  @IsNumber({}, { message: 'Id варианта продукта должно быть числом' })
   variantId: number;
 
   @ApiProperty({ example: '1', description: 'Id заказа' })
-  @IsNumber()
+  @IsNumber({}, { message: 'Id заказа должно быть числом' })
   orderId: number;
 
   @ApiProperty({ example: 10, description: 'Количество товара данной позиции' })
-  @IsNotEmpty()
-  @IsNumber()
+  @IsNotEmpty({
+    message: 'Количество единиц товара не может быть пустым значением',
+  })
+  @IsNumber({}, { message: 'Количество единиц товара должно быть числом' })
   quantity: number;
 
   @ApiProperty({ example: '10000', description: 'Стоимость данной позиции' })
-  @IsNotEmpty()
-  @IsNumber()
+  @IsNotEmpty({ message: 'Стоимость не может быть пустым значением' })
+  @IsNumber({}, { message: 'Стоимость должно быть числом' })
   price: number;
 }
