@@ -57,13 +57,13 @@ model Product {
   name               String
   description        String
   articul            String
-  gearbox            String
-  battery            String
-  maximumLoad        Int              @map("maximum_load")
-  assembledModelSize String           @map("assembled_model_size")
-  modelSizeInPackage String           @map("model_size_in_package")
-  video              String
-  image              String
+  gearbox            String?
+  battery            String?
+  maximumLoad        Int?             @map("maximum_load")
+  assembledModelSize String?          @map("assembled_model_size")
+  modelSizeInPackage String?          @map("model_size_in_package")
+  video              String?
+  image              String?
   bestseller         Boolean          @default(false)
   new                Boolean          @default(false)
   inStock            Boolean          @default(true) @map("in_stock")
@@ -88,12 +88,12 @@ model ProductVariant {
   colorId            Int      @map("color_id")
   description        String
   articul            Int
-  gearbox            String
-  battery            String
-  maximumLoad        Int      @map("maximum_load")
-  assembledModelSize String   @map("assembled_model_size")
-  modelSizeInPackage String   @map("model_size_in_package")
-  video              String
+  gearbox            String?
+  battery            String?
+  maximumLoad        Int?     @map("maximum_load")
+  assembledModelSize String?  @map("assembled_model_size")
+  modelSizeInPackage String?  @map("model_size_in_package")
+  video              String?
   inStock            Boolean  @default(true) @map("in_stock")
   price              Int      @default(0)
   images             String[]
