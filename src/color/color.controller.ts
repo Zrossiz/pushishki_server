@@ -4,12 +4,14 @@ import {
   Delete,
   Param,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ColorService } from './color.service';
 import { CreateColorDto } from './dto/create-color.dto';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Color')
 @Controller('color')
@@ -19,6 +21,7 @@ export class ColorController {
   @ApiOperation({ summary: 'Создание цвета' })
   @Post('')
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   async create(@Body() createColorDto: CreateColorDto) {
     return await this.colorService.create(createColorDto);
   }
@@ -31,6 +34,7 @@ export class ColorController {
     example: '1',
   })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') colorId: string) {
     return await this.colorService.delete(+colorId);
   }
