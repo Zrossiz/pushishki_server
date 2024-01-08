@@ -51,6 +51,7 @@ export class CountryController {
     type: 'string',
   })
   @Put(':slug')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async update(
     @Param('slug') slug: string,
@@ -81,6 +82,7 @@ export class CountryController {
 
   @ApiOperation({ summary: 'Создать страну' })
   @Post('')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async create(@Body() createCountryDto: CreateCountryDto) {
     return await this.countryService.create(createCountryDto);
