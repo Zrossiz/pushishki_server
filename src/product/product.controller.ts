@@ -7,8 +7,10 @@ import {
   Query,
   Delete,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateProductDto } from 'src/product/dto/create-product.dto';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { ProductService } from 'src/product/product.service';
@@ -44,16 +46,19 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') productId: string) {
     return await this.productService.delete(+productId);
   }
 
   @Post('')
+  @UseGuards(JwtAuthGuard)
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productService.create(createProductDto);
   }
 
   @Put(':id/update')
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') productId: string,
     @Body() updateProductDto: UpdateProductDto,
