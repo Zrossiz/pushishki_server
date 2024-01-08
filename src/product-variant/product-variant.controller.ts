@@ -6,10 +6,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant.dto';
 import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant.dto';
 import { ProductVariantService } from 'src/product-variant/product-variant.service';
@@ -33,6 +35,7 @@ export class ProductVariantController {
 
   @ApiOperation({ summary: 'Обновить вариант продукта' })
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async update(
     @Param('id') productVariantId: string,
@@ -46,12 +49,14 @@ export class ProductVariantController {
 
   @ApiOperation({ summary: 'Удалить вариант продукта' })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') productVariantId: string) {
     return await this.productVariantService.delete(+productVariantId);
   }
 
   @ApiOperation({ summary: 'Создать вариант продукта' })
   @Post('')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async create(@Body() createProductVariantDto: CreateProductVariantDto) {
     return await this.productVariantService.create(createProductVariantDto);
