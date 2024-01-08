@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -20,6 +21,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Brand')
 @Controller('brand')
@@ -54,6 +56,7 @@ export class BrandController {
   @ApiOperation({ summary: 'Создание бренда' })
   @ApiBody({ type: CreateBrandDto })
   @Post('')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async create(@Body() createBrandDto: CreateBrandDto) {
     return await this.brandService.create(createBrandDto);
@@ -90,6 +93,7 @@ export class BrandController {
   })
   @ApiBody({ type: UpdateBrandDto })
   @Put('/:slug')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async update(
     @Param('slug') slug: string,
@@ -106,6 +110,7 @@ export class BrandController {
     example: 'river-toys',
   })
   @Delete('/:slug')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('slug') slug: string) {
     return await this.brandService.delete(slug);
   }
