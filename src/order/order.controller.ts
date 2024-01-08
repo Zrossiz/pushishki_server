@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { OrderService } from 'src/order/order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Order')
 @Controller('order')
@@ -23,6 +25,7 @@ export class OrderController {
   @ApiOperation({ summary: 'Создать заказ' })
   @Post('')
   @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
   async create(@Body() createOrderDto: CreateOrderDto) {
     return await this.orderService.create(createOrderDto);
   }
@@ -36,6 +39,7 @@ export class OrderController {
     required: false,
   })
   @Get('')
+  @UseGuards(JwtAuthGuard)
   async getAll(@Query('page') page: string) {
     return await this.orderService.getAll(+page);
   }
@@ -48,6 +52,7 @@ export class OrderController {
     example: '1',
   })
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getOne(@Param('id') orderId: string) {
     return await this.orderService.getOne(+orderId);
   }
@@ -60,6 +65,7 @@ export class OrderController {
     example: '1',
   })
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') orderId: string) {
     return await this.orderService.delete(+orderId);
   }
@@ -72,6 +78,7 @@ export class OrderController {
     example: '1',
   })
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async update(
     @Param('id') orderId: string,
