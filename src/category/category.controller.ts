@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CategoryService } from 'src/category/category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -9,6 +18,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Category')
 @Controller('category')
@@ -18,6 +28,7 @@ export class CategoryController {
   @ApiOperation({ summary: 'Создание категории' })
   @ApiBody({ type: CreateCategoryDto })
   @Post('')
+  @UseGuards(JwtAuthGuard)
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return await this.categoryService.create(createCategoryDto);
   }
@@ -55,6 +66,7 @@ export class CategoryController {
   })
   @ApiOperation({ summary: 'Редактировать категорию по slug' })
   @Put(':slug')
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('slug') slug: string,
     @Body() updateCategory: UpdateCategoryDto,
