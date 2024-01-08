@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { CreateCountryDto } from 'src/country/dto/create-country.dto';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { CountryService } from 'src/country/country.service';
 import { ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Country')
 @Controller('country')
@@ -90,6 +92,7 @@ export class CountryController {
     type: 'string',
   })
   @Delete(':slug')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('slug') slug: string) {
     return await this.countryService.delete(slug);
   }

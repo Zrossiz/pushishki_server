@@ -33,6 +33,7 @@ export class CountryService {
           id: true,
           name: true,
           description: true,
+          slug: true,
           image: true,
         },
         take: 10,
@@ -63,6 +64,7 @@ export class CountryService {
           id: true,
           name: true,
           description: true,
+          slug: true,
           image: true,
         },
       });
@@ -208,6 +210,7 @@ export class CountryService {
           id: true,
           name: true,
           description: true,
+          slug: true,
           image: true,
         },
       });
@@ -269,6 +272,7 @@ export class CountryService {
           id: true,
           name: true,
           description: true,
+          slug: true,
           image: true,
         },
       });
