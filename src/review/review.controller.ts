@@ -11,7 +11,12 @@ import {
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiProperty,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateReviewDto } from 'src/review/dto/create-review-dto';
 import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
@@ -34,6 +39,7 @@ export class ReviewController {
     name: 'id',
     type: 'string',
   })
+  @ApiBearerAuth()
   @Put(':id/update')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -49,6 +55,7 @@ export class ReviewController {
     name: 'id',
     type: 'string',
   })
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') reviewId: number) {
@@ -60,6 +67,7 @@ export class ReviewController {
     name: 'id',
     type: 'string',
   })
+  @ApiBearerAuth()
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   async switchActiveReview(@Param('id') reviewId: number) {

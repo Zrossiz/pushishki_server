@@ -10,7 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateProductVariantDto } from 'src/product-variant/dto/create-product-variant.dto';
 import { UpdateProductVariantDto } from 'src/product-variant/dto/update-product-variant.dto';
@@ -34,6 +34,7 @@ export class ProductVariantController {
   }
 
   @ApiOperation({ summary: 'Обновить вариант продукта' })
+  @ApiBearerAuth()
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -48,6 +49,7 @@ export class ProductVariantController {
   }
 
   @ApiOperation({ summary: 'Удалить вариант продукта' })
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') productVariantId: string) {
@@ -55,6 +57,7 @@ export class ProductVariantController {
   }
 
   @ApiOperation({ summary: 'Создать вариант продукта' })
+  @ApiBearerAuth()
   @Post('')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)

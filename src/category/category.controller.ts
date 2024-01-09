@@ -12,6 +12,7 @@ import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CategoryService } from 'src/category/category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -27,6 +28,7 @@ export class CategoryController {
 
   @ApiOperation({ summary: 'Создание категории' })
   @ApiBody({ type: CreateCategoryDto })
+  @ApiBearerAuth()
   @Post('')
   @UseGuards(JwtAuthGuard)
   async create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -65,6 +67,7 @@ export class CategoryController {
     example: 'elektromobili',
   })
   @ApiOperation({ summary: 'Редактировать категорию по slug' })
+  @ApiBearerAuth()
   @Put(':slug')
   @UseGuards(JwtAuthGuard)
   async update(

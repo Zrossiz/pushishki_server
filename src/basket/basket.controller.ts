@@ -10,7 +10,13 @@ import {
 } from '@nestjs/common';
 import { BasketDto, CreateBasketDto } from 'src/basket/dto/create-basket.dto';
 import { BasketService } from 'src/basket/basket.service';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Basket')
@@ -36,6 +42,7 @@ export class BasketController {
     Данный эндпоинт принимает массив объектов`,
   })
   @ApiBody({ type: BasketDto })
+  @ApiBearerAuth()
   @Post('')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -45,6 +52,7 @@ export class BasketController {
 
   @ApiOperation({ summary: 'Получить записи по id заказа' })
   @ApiParam({ name: 'id', type: 'string', description: 'Order Id', example: 1 })
+  @ApiBearerAuth()
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   async getBasketsByOrderId(@Param('id') orderId: string) {

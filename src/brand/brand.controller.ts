@@ -15,6 +15,7 @@ import { BrandService } from 'src/brand/brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -55,6 +56,7 @@ export class BrandController {
 
   @ApiOperation({ summary: 'Создание бренда' })
   @ApiBody({ type: CreateBrandDto })
+  @ApiBearerAuth()
   @Post('')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -92,6 +94,7 @@ export class BrandController {
     example: 'river-toys',
   })
   @ApiBody({ type: UpdateBrandDto })
+  @ApiBearerAuth()
   @Put('/:slug')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -109,6 +112,7 @@ export class BrandController {
     description: 'Slug бренда',
     example: 'river-toys',
   })
+  @ApiBearerAuth()
   @Delete('/:slug')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('slug') slug: string) {

@@ -14,7 +14,13 @@ import {
 import { OrderService } from 'src/order/order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Order')
@@ -23,6 +29,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @ApiOperation({ summary: 'Создать заказ' })
+  @ApiBearerAuth()
   @Post('')
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
@@ -38,6 +45,7 @@ export class OrderController {
     example: '1',
     required: false,
   })
+  @ApiBearerAuth()
   @Get('')
   @UseGuards(JwtAuthGuard)
   async getAll(@Query('page') page: string) {
@@ -51,6 +59,7 @@ export class OrderController {
     description: 'Id цвета',
     example: '1',
   })
+  @ApiBearerAuth()
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   async getOne(@Param('id') orderId: string) {
@@ -64,6 +73,7 @@ export class OrderController {
     description: 'Id цвета',
     example: '1',
   })
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') orderId: string) {
@@ -77,6 +87,7 @@ export class OrderController {
     description: 'Id цвета',
     example: '1',
   })
+  @ApiBearerAuth()
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)

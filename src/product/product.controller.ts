@@ -9,7 +9,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateProductDto } from 'src/product/dto/create-product.dto';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
@@ -47,18 +47,21 @@ export class ProductController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async delete(@Param('id') productId: string) {
     return await this.productService.delete(+productId);
   }
 
   @Post('')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productService.create(createProductDto);
   }
 
   @Put(':id/update')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   async update(
     @Param('id') productId: string,
     @Body() updateProductDto: UpdateProductDto,

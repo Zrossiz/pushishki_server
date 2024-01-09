@@ -10,7 +10,12 @@ import {
 } from '@nestjs/common';
 import { ColorService } from './color.service';
 import { CreateColorDto } from './dto/create-color.dto';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Color')
@@ -19,6 +24,7 @@ export class ColorController {
   constructor(private readonly colorService: ColorService) {}
 
   @ApiOperation({ summary: 'Создание цвета' })
+  @ApiBearerAuth()
   @Post('')
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
@@ -33,6 +39,7 @@ export class ColorController {
     description: 'Id цвета',
     example: '1',
   })
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') colorId: string) {

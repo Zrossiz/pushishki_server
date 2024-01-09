@@ -14,7 +14,13 @@ import {
 import { CreateCountryDto } from 'src/country/dto/create-country.dto';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { CountryService } from 'src/country/country.service';
-import { ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiProperty,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Country')
@@ -50,6 +56,7 @@ export class CountryController {
     name: 'slug',
     type: 'string',
   })
+  @ApiBearerAuth()
   @Put(':slug')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -81,6 +88,7 @@ export class CountryController {
   }
 
   @ApiOperation({ summary: 'Создать страну' })
+  @ApiBearerAuth()
   @Post('')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -93,6 +101,7 @@ export class CountryController {
     name: 'slug',
     type: 'string',
   })
+  @ApiBearerAuth()
   @Delete(':slug')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('slug') slug: string) {
