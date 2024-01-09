@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsNotEmpty,
@@ -7,66 +8,82 @@ import {
 } from 'class-validator';
 
 export class CreateProductDto {
+  @ApiProperty({ example: 1 })
   @IsNotEmpty({ message: 'Id страны не может быть пустым значением' })
   @IsNumber({}, { message: 'Id страны должно быть числом' })
   countryId: number;
 
+  @ApiProperty({ example: 1 })
   @IsNotEmpty({ message: 'Id бренда не может быть пустым значением' })
   @IsNumber({}, { message: 'Id бренда должно быть числом' })
   brandId: number;
 
+  @ApiProperty({ example: 1 })
   @IsNotEmpty({ message: 'Id категории не может быть пустым значением' })
   @IsNumber({}, { message: 'Id категории должно быть числом' })
   categoryId: number;
 
+  @ApiProperty({ example: 'Моковое описание товара' })
   @IsNotEmpty({ message: 'Название товара не может быть пустым значением' })
   @IsString({ message: 'Название товара должно быть строкой' })
   name: string;
 
+  @ApiProperty({ example: 'Моковое описание товара' })
   @IsNotEmpty({ message: 'Описание товара не может быть пустым значением' })
   @IsString({ message: 'Описание товара должно быть строкой' })
   description: string;
 
+  @ApiProperty({ example: '123оОЛУ' })
   @IsNotEmpty({ message: 'Артикул товара не может быть пустым значением' })
   @IsString({ message: 'Артикул должен быть строкой' })
   articul: string;
 
+  @ApiProperty({ example: '' })
   @IsOptional()
-  @IsString({ message: 'Редуктор должен быть строкой' })
+  @IsString({ message: '2шт*12v/35w/7000 об' })
   gearbox: string;
 
+  @ApiProperty({ example: '12v/7ah' })
   @IsOptional()
   @IsString({ message: 'Баттарея должна быть строкой' })
   battery: string;
 
+  @ApiProperty({ example: 30 })
   @IsOptional()
   @IsNumber({}, { message: 'Максимальная нагрузка должна быть числом' })
   maximumLoad: number;
 
+  @ApiProperty({ example: '246*66*84 см, вес: 27,8 кг' })
   @IsOptional()
   @IsString({ message: 'Размер собранной модели должен быть строкой' })
   assembledModelSize: string;
 
+  @ApiProperty({ example: '124*56*53 см, вес: 32 кг, Объём 0,36 м3' })
   @IsOptional()
   @IsString({ message: 'Размер модели в упаковке должен быть строкой' })
   modelSizeInPackage: string;
 
+  @ApiProperty({ example: 'https://www.youtube.com/watch?v=M6tVC3MwbR0' })
   @IsOptional()
   @IsString({ message: 'Ссылка на видео должна быть строкой' })
   video: string;
 
+  @ApiProperty({ example: 'example.png' })
   @IsOptional()
   @IsString({ message: 'Ссылка на изображение должно быть строкой' })
   image: string;
 
+  @ApiProperty({ example: true })
   @IsNotEmpty({ message: 'Бестселлера не может быть пустым' })
   @IsBoolean({ message: 'Бестселлер должен быть булевым значением' })
   bestseller: boolean;
 
+  @ApiProperty({ example: false })
   @IsNotEmpty({ message: 'Новинка не может быть пустым значением' })
   @IsBoolean({ message: 'Новинка должна быть булевым значением' })
   new: boolean;
 
+  @ApiProperty({ example: 10000 })
   @IsNotEmpty({ message: 'Цена по умолчанию не может быть пустым значением' })
   @IsNumber({}, { message: 'Значение цены по умолчанию должно быть числом' })
   defaultPrice: number;
