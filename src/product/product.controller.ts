@@ -72,6 +72,7 @@ export class ProductController {
   @ApiOperation({ summary: 'Редактирование товара' })
   @Put(':id/update')
   @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
   @ApiBearerAuth()
   async update(
     @Param('id') productId: string,

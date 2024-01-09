@@ -24,7 +24,7 @@ export class CreateProductDto {
   name: string;
 
   @IsNotEmpty({ message: 'Описание товара не может быть пустым значением' })
-  @IsString()
+  @IsString({ message: 'Описание товара должно быть строкой' })
   description: string;
 
   @IsNotEmpty({ message: 'Артикул товара не может быть пустым значением' })
@@ -48,7 +48,7 @@ export class CreateProductDto {
   assembledModelSize: string;
 
   @IsOptional()
-  @IsString({ message: 'Размер модели в упаковке' })
+  @IsString({ message: 'Размер модели в упаковке должен быть строкой' })
   modelSizeInPackage: string;
 
   @IsOptional()
