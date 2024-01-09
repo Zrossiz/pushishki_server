@@ -8,6 +8,8 @@ import {
   Delete,
   Put,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
@@ -59,9 +61,10 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: 'Создать товар' })
+  @ApiBearerAuth()
   @Post('')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @UsePipes(ValidationPipe)
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productService.create(createProductDto);
   }
