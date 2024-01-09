@@ -38,7 +38,7 @@ export class CreateProductDto {
   @IsString({ message: 'Артикул должен быть строкой' })
   articul: string;
 
-  @ApiProperty({ example: '' })
+  @ApiProperty({ example: '2шт*12v/35w/7000 об' })
   @IsOptional()
   @IsString({ message: '2шт*12v/35w/7000 об' })
   gearbox: string;
