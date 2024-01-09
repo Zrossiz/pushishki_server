@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -19,6 +24,7 @@ import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
 import { ColorModule } from './color/color.module';
+import { CheckApiKey } from './shared/middleware';
 
 @Module({
   imports: [
@@ -44,4 +50,11 @@ import { ColorModule } from './color/color.module';
   ],
   providers: [ReviewService, OrderService, BasketService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CheckApiKey).forRoutes({
+      path: 'auth/signup',
+      method: RequestMethod.POST,
+    });
+  }
+}
