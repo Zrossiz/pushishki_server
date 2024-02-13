@@ -179,6 +179,7 @@ export class CategoryService {
   async getProductsBySlug(
     slug: string,
     page: number,
+    sort: string,
   ): Promise<IProductWithLength | { message: string }> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
@@ -219,6 +220,11 @@ export class CategoryService {
           defaultPrice: true,
         },
         skip,
+        orderBy: [
+          {
+            defaultPrice: sort ? 'asc': 'desc'
+          }
+        ]
       });
 
       const populatedData: IProductWithLength = {

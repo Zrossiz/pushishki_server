@@ -91,11 +91,19 @@ export class CategoryController {
     example: '1',
     required: false,
   })
+  @ApiQuery({
+    name: 'sort',
+    type: 'string',
+    description: 'Сортировка',
+    example: 'desc',
+    required: false,
+  })
   @Get(':slug/products')
   async getProductsBySlug(
     @Param('slug') slug: string,
     @Query('page') page: number,
+    @Query('sort') sort: string
   ) {
-    return await this.categoryService.getProductsBySlug(slug, page);
+    return await this.categoryService.getProductsBySlug(slug, page, sort);
   }
 }
