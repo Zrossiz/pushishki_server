@@ -106,6 +106,7 @@ export class CategoryController {
     @Query('price-from') priceFrom: string,
     @Query('price-to') priceTo: string,
     @Query('brands') brands: string,
+    @Query('countries') countries: string,
   ) {
     return await this.categoryService.getProductsBySlug(
       slug,
@@ -114,6 +115,7 @@ export class CategoryController {
       +priceFrom,
       +priceTo,
       brands,
+      countries,
     );
   }
 }

@@ -183,6 +183,7 @@ export class CategoryService {
     priceFrom: number,
     priceTo: number,
     brands: string,
+    countries: string
   ): Promise<IProductWithLength | { message: string }> {
     try {
 
@@ -197,6 +198,7 @@ export class CategoryService {
       const priceFromForFilter: number = priceFrom || 0;
       const priceToForFilter: number = priceTo || 999999;
       const brandsForFilter: number[] | undefined = brands ? JSON.parse(brands) : undefined;
+      const countriesForFilter: number[] | undefined = countries ? JSON.parse(countries) : undefined;
 
       const filter: any = {
         categoryId: category.id,
@@ -209,6 +211,12 @@ export class CategoryService {
       if (brandsForFilter) {
         filter.brandId = {
           in: brandsForFilter
+        }
+      }
+
+      if (countriesForFilter) {
+        filter.countryId = {
+          in: countriesForFilter
         }
       }
 
