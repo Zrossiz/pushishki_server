@@ -102,8 +102,16 @@ export class CategoryController {
   async getProductsBySlug(
     @Param('slug') slug: string,
     @Query('page') page: number,
-    @Query('sort') sort: string
+    @Query('sort') sort: string,
+    @Query('price-from') priceFrom: string,
+    @Query('price-to') priceTo: string,
   ) {
-    return await this.categoryService.getProductsBySlug(slug, page, sort);
+    return await this.categoryService.getProductsBySlug(
+      slug,
+      page,
+      sort,
+      +priceFrom,
+      +priceTo
+    );
   }
 }

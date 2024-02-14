@@ -180,8 +180,14 @@ export class CategoryService {
     slug: string,
     page: number,
     sort: string,
+    priceFrom: number,
+    priceTo: number
   ): Promise<IProductWithLength | { message: string }> {
     try {
+
+      const priceFromForFilter = priceFrom || 0;
+      const priceToForFilter = priceTo || 999999;
+
       const category: Category = await this.prismaService.category.findFirst({
         where: { slug },
       });
@@ -193,12 +199,26 @@ export class CategoryService {
       const skip: number = page ? (page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(
-        (await this.prismaService.product.count()) / 10,
+        (await this.prismaService.product.count({
+          where: { 
+            categoryId: category.id,
+            defaultPrice: {
+              gte: +priceFromForFilter,
+              lte: +priceToForFilter,
+            }
+          },
+        })) / 10,
       );
 
       const products: IProduct[] = await this.prismaService.product.findMany({
         take: 10,
-        where: { categoryId: category.id },
+        where: { 
+          categoryId: category.id,
+          defaultPrice: {
+            gte: +priceFromForFilter,
+            lte: +priceToForFilter,
+          }
+        },
         select: {
           id: true,
           countryId: true,
@@ -222,7 +242,7 @@ export class CategoryService {
         skip,
         orderBy: [
           {
-            defaultPrice: sort ? 'asc': 'desc'
+            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc'
           }
         ]
       });
