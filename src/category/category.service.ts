@@ -181,12 +181,10 @@ export class CategoryService {
     page: number,
     sort: string,
     priceFrom: number,
-    priceTo: number
+    priceTo: number,
+    brands: string,
   ): Promise<IProductWithLength | { message: string }> {
     try {
-
-      const priceFromForFilter = priceFrom || 0;
-      const priceToForFilter = priceTo || 999999;
 
       const category: Category = await this.prismaService.category.findFirst({
         where: { slug },
@@ -196,29 +194,35 @@ export class CategoryService {
         throw new BadRequestException(`Категория ${slug} не найдена`);
       }
 
+      const priceFromForFilter: number = priceFrom || 0;
+      const priceToForFilter: number = priceTo || 999999;
+      const brandsForFilter: number[] | undefined = brands ? JSON.parse(brands) : undefined;
+
+      const filter: any = {
+        categoryId: category.id,
+        defaultPrice: {
+          gte: +priceFromForFilter,
+          lte: +priceToForFilter,
+        },
+      }
+
+      if (brandsForFilter) {
+        filter.brandId = {
+          in: brandsForFilter
+        }
+      }
+
       const skip: number = page ? (page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(
         (await this.prismaService.product.count({
-          where: { 
-            categoryId: category.id,
-            defaultPrice: {
-              gte: +priceFromForFilter,
-              lte: +priceToForFilter,
-            }
-          },
+          where: filter,
         })) / 10,
       );
 
       const products: IProduct[] = await this.prismaService.product.findMany({
         take: 10,
-        where: { 
-          categoryId: category.id,
-          defaultPrice: {
-            gte: +priceFromForFilter,
-            lte: +priceToForFilter,
-          }
-        },
+        where: filter,
         select: {
           id: true,
           countryId: true,

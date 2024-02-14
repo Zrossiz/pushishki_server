@@ -105,13 +105,15 @@ export class CategoryController {
     @Query('sort') sort: string,
     @Query('price-from') priceFrom: string,
     @Query('price-to') priceTo: string,
+    @Query('brands') brands: string,
   ) {
     return await this.categoryService.getProductsBySlug(
       slug,
       page,
       sort,
       +priceFrom,
-      +priceTo
+      +priceTo,
+      brands,
     );
   }
 }
