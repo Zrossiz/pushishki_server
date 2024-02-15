@@ -183,7 +183,8 @@ export class CategoryService {
     priceFrom: number,
     priceTo: number,
     brands: string,
-    countries: string
+    countries: string,
+    inStock: string,
   ): Promise<IProductWithLength | { message: string }> {
     try {
 
@@ -218,6 +219,10 @@ export class CategoryService {
         filter.countryId = {
           in: countriesForFilter
         }
+      }
+
+      if (inStock === 'true') {
+        filter.inStock = true
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;
