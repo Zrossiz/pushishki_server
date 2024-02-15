@@ -185,6 +185,7 @@ export class CategoryService {
     brands: string,
     countries: string,
     inStock: string,
+    maximumLoad: number
   ): Promise<IProductWithLength | { message: string }> {
     try {
 
@@ -223,6 +224,12 @@ export class CategoryService {
 
       if (inStock === 'true') {
         filter.inStock = true
+      }
+
+      if (maximumLoad >= 1) {
+        filter.maximumLoad = {
+          lte: maximumLoad
+        }
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;
