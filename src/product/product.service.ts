@@ -17,51 +17,33 @@ export class ProductService {
     createProductDto: CreateProductDto,
   ): Promise<IProduct | { message: string }> {
     try {
-      const checkCountry: ICountry = await this.prismaService.country.findFirst({
+      const country: Country = await this.prismaService.country.findFirst({
         where: { id: Number(createProductDto.countryId) },
       });
 
-      if (!checkCountry) {
+      if (!country) {
         throw new BadRequestException('Сначала создайте страну');
       }
 
-      const checkBrand: IBrand = await this.prismaService.brand.findFirst({
+      const brand: Brand = await this.prismaService.brand.findFirst({
         where: { id: Number(createProductDto.brandId) },
       });
 
-      if (!checkBrand) {
+      if (!brand) {
         throw new BadRequestException('Сначала создайте бренд');
       }
 
-      const checkCategory: ICategory = await this.prismaService.category.findFirst({
+      const category: Category = await this.prismaService.category.findFirst({
         where: { id: Number(createProductDto.categoryId) },
       });
 
-      if (!checkCategory) {
+      if (!category) {
         throw new BadRequestException('Сначала создайте категорию');
       }
 
       const product: Product = await this.prismaService.product.create({
         data: createProductDto,
       });
-
-      const category: Category = await this.prismaService.category.findFirst({
-        where: {
-          id: product.categoryId
-        }
-      });
-
-      const brand: Brand = await this.prismaService.brand.findFirst({
-        where: {
-          id: product.brandId
-        }
-      });
-
-      const country: Country = await this.prismaService.country.findFirst({
-        where: {
-          id: product.countryId
-        }
-      })
 
       const res = {
         id: product.id,
@@ -166,28 +148,8 @@ export class ProductService {
 
   async getOne(productId: number): Promise<IProduct | { message: string }> {
     try {
-      const product = await this.prismaService.product.findFirst({
+      const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
-        select: {
-          id: true,
-          countryId: true,
-          brandId: true,
-          categoryId: true,
-          name: true,
-          description: true,
-          articul: true,
-          gearbox: true,
-          battery: true,
-          maximumLoad: true,
-          assembledModelSize: true,
-          modelSizeInPackage: true,
-          video: true,
-          image: true,
-          bestseller: true,
-          new: true,
-          inStock: true,
-          defaultPrice: true,
-        },
       });
 
       if (!product) {
@@ -412,21 +374,21 @@ export class ProductService {
       })
 
       const res = {
-        id: product.id,
+        id: updatedProduct.id,
         country: country,
         brand: brand,
         category: category,
-        name: product.name,
-        description: product.description,
-        articul: product.articul,
-        gearbox: product.gearbox,
-        battery: product.battery,
-        maximumLoad: product.maximumLoad,
-        assembledModelSize: product.assembledModelSize,
-        modelSizeInPackage: product.modelSizeInPackage,
-        video: product.video,
-        inStock: product.inStock,
-        defaultPrice: product.defaultPrice,
+        name: updatedProduct.name,
+        description: updatedProduct.description,
+        articul: updatedProduct.articul,
+        gearbox: updatedProduct.gearbox,
+        battery: updatedProduct.battery,
+        maximumLoad: updatedProduct.maximumLoad,
+        assembledModelSize: updatedProduct.assembledModelSize,
+        modelSizeInPackage: updatedProduct.modelSizeInPackage,
+        video: updatedProduct.video,
+        inStock: updatedProduct.inStock,
+        defaultPrice: updatedProduct.defaultPrice,
       }
 
       return res;
