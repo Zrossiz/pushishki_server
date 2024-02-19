@@ -7,11 +7,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import {
   ICountry,
   ICountryWithLength,
+  IProduct,
   IProductWithLength,
 } from 'src/shared/interfaces';
 import { generateSlug } from 'src/shared/helpers';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
-import { Country, Product } from '@prisma/client';
+import { Brand, Category, Country, Product } from '@prisma/client';
 import { CreateCountryDto } from './dto/create-country.dto';
 
 @Injectable()
@@ -108,10 +109,52 @@ export class CountryService {
         skip,
       });
 
+      const updatedData: IProduct[] = await Promise.all(
+        products.map(async (item) => {
+          const category: Category = await this.prismaService.category.findFirst({
+            where: {
+              id: item.categoryId,
+            }
+          })
+          
+          const country: Country = await this.prismaService.country.findFirst({
+            where: {
+              id: item.countryId
+            }
+          })
+
+          const brand: Brand = await this.prismaService.brand.findFirst({
+            where: {
+              id: item.brandId
+            }
+          })
+
+          const product: IProduct = {
+            id: item.id,
+            country: country,
+            brand: brand,
+            category: category,
+            name: item.name,
+            description: item.description,
+            articul: item.articul,
+            gearbox: item.gearbox,
+            battery: item.battery,
+            maximumLoad: item.maximumLoad,
+            assembledModelSize: item.assembledModelSize,
+            modelSizeInPackage: item.modelSizeInPackage,
+            video: item.video,
+            inStock: item.inStock,
+            defaultPrice: item.defaultPrice,
+          }
+
+          return product;
+        })
+      )
+
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: products,
+        data: updatedData,
       };
 
       return populatedData;

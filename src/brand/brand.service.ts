@@ -13,7 +13,7 @@ import {
 import { UpdateBrandDto } from 'src/brand/dto/update-brand.dto';
 import { generateSlug } from 'src/shared/helpers';
 import { CreateBrandDto } from './dto/create-brand.dto';
-import { Brand, Country, Product } from '@prisma/client';
+import { Brand, Category, Country, Product } from '@prisma/client';
 
 @Injectable()
 export class BrandService {
@@ -272,36 +272,58 @@ export class BrandService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: IProduct[] = await this.prismaService.product.findMany({
+      const products: Product[] = await this.prismaService.product.findMany({
         take: 10,
         skip,
         where: { brandId: brand.id },
-        select: {
-          id: true,
-          countryId: true,
-          brandId: true,
-          categoryId: true,
-          name: true,
-          description: true,
-          articul: true,
-          gearbox: true,
-          battery: true,
-          maximumLoad: true,
-          assembledModelSize: true,
-          modelSizeInPackage: true,
-          video: true,
-          image: true,
-          bestseller: true,
-          new: true,
-          inStock: true,
-          defaultPrice: true,
-        },
       });
+
+      const updatedData: IProduct[] = await Promise.all(
+        products.map(async (item) => {
+          const category: Category = await this.prismaService.category.findFirst({
+            where: {
+              id: item.categoryId,
+            }
+          })
+          
+          const country: Country = await this.prismaService.country.findFirst({
+            where: {
+              id: item.countryId
+            }
+          })
+
+          const brand: Brand = await this.prismaService.brand.findFirst({
+            where: {
+              id: item.brandId
+            }
+          })
+
+          const product: IProduct = {
+            id: item.id,
+            country: country,
+            brand: brand,
+            category: category,
+            name: item.name,
+            description: item.description,
+            articul: item.articul,
+            gearbox: item.gearbox,
+            battery: item.battery,
+            maximumLoad: item.maximumLoad,
+            assembledModelSize: item.assembledModelSize,
+            modelSizeInPackage: item.modelSizeInPackage,
+            video: item.video,
+            inStock: item.inStock,
+            defaultPrice: item.defaultPrice,
+          }
+
+          return product;
+        })
+      )
 
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: products,
+        data: updatedData,
       };
 
       return populatedData;
