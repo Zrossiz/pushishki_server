@@ -21,5 +21,6 @@ export interface IProduct {
   modelSizeInPackage: string,
   video: string,
   inStock: boolean,
+  image?: string,
   defaultPrice: number,
 }

@@ -287,6 +287,7 @@ export class CategoryService {
             video: item.video,
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
+            image: item.image,
           }
 
           return product;
