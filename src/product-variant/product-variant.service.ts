@@ -161,6 +161,16 @@ export class ProductVariantService {
         throw new BadRequestException(`Варианты продуктов не найдены`);
       }
 
+      await Promise.all(productVariants.map(async (item: any) => {
+        const color: Color = await this.prismaService.color.findFirst({
+          where: {
+            id: item.colorId
+          }
+        })
+
+        return item.color = color.color; 
+      }));
+
       return productVariants;
     } catch (err) {
       console.log(err);
