@@ -68,6 +68,7 @@ model Product {
   new                Boolean          @default(false)
   inStock            Boolean          @default(true) @map("in_stock")
   defaultPrice       Int              @default(0) @map("default_price")
+  rating             Float            @default(0.0)
   country            Country          @relation(fields: [countryId], references: [id])
   brand              Brand            @relation(fields: [brandId], references: [id])
   category           Category         @relation(fields: [categoryId], references: [id])
