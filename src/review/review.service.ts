@@ -147,16 +147,32 @@ export class ReviewService {
       const updatedReview: IReview = await this.prismaService.review.update({
         where: { id: reviewId },
         data: { active: true },
-        select: {
-          id: true,
-          productId: true,
-          username: true,
-          title: true,
-          description: true,
-          rating: true,
-          active: true,
+      });
+
+      const product: Product = await this.prismaService.product.findFirst({
+        where: {
+          id: updatedReview.productId
+        }
+      });
+
+      const reviewsAvgRating = await this.prismaService.review.aggregate({
+        where: {
+          productId: product.id,
+          active: true
+        },
+        _avg: {
+          rating: true
         },
       });
+
+      await this.prismaService.product.update({
+        where: {
+          id: product.id
+        },
+        data: {
+          rating: reviewsAvgRating._avg.rating
+        }
+      })
 
       return updatedReview;
     } catch (err) {
