@@ -22,8 +22,8 @@ export class UpdateProductVariantDto {
 
   @ApiProperty({ example: '123УР123', description: 'Артикул товара' })
   @IsOptional()
-  @IsString({ message: 'Акртикул должен быть строкой' })
-  articul: number;
+  @IsString({ message: 'Артикул должен быть строкой' })
+  articul: string;
 
   @ApiProperty({
     example: '2шт*12v/35w/7000 об',
