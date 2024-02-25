@@ -69,6 +69,9 @@ model Product {
   inStock            Boolean          @default(true) @map("in_stock")
   defaultPrice       Int              @default(0) @map("default_price")
   rating             Float            @default(0)
+  metaTitle          String?          @map("meta_tile")
+  metaDescription    String?          @map("meta_description")
+  metaKeyWords       String?          @map("meta_key_words")
   country            Country          @relation(fields: [countryId], references: [id])
   brand              Brand            @relation(fields: [brandId], references: [id])
   category           Category         @relation(fields: [categoryId], references: [id])
@@ -129,6 +132,9 @@ model Category {
   Product     Product[]
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
+  metaTitle          String?          @map("meta_tile")
+  metaDescription    String?          @map("meta_description")
+  metaKeyWords       String?          @map("meta_key_words")
 
   @@map("categories")
 }
