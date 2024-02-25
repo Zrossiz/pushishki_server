@@ -86,4 +86,28 @@ export class UpdateProductDto {
   @IsOptional()
   @IsNumber({}, { message: 'Значение цены по умолчанию должно быть числом' })
   defaultPrice: number;
+
+  @ApiProperty({
+    example: "Название товара",
+    description: "Meta title for product"
+  })
+  @IsOptional()
+  @IsString()
+  metaTitle: string;
+
+  @ApiProperty({
+    example: "Описание товара",
+    description: "Meta description for product"
+  })
+  @IsOptional()
+  @IsString()
+  metaDescription: string;
+
+  @ApiProperty({
+    example: "Ключевые слова товара",
+    description: "Meta key words for product"
+  })
+  @IsOptional()
+  @IsString()
+  metaKeyWords: string;
 }
