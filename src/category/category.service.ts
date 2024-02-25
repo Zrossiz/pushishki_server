@@ -41,17 +41,13 @@ export class CategoryService {
         description: createCategoryDto.description,
         slug,
         image: createCategoryDto.image,
+        metaTitle: createCategoryDto.metaTitle,
+        metaDescription: createCategoryDto.metaDescription,
+        metaKeyWords: createCategoryDto.metaKeyWords
       };
 
       const category: ICategory = await this.prismaService.category.create({
         data: categoryData,
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          description: true,
-          image: true,
-        },
       });
 
       return category;
@@ -124,6 +120,9 @@ export class CategoryService {
           : existCategory.slug,
         description: updateCategoryDto.description,
         image: updateCategoryDto.image,
+        metaTitle: updateCategoryDto.metaTitle,
+        metaDescription: updateCategoryDto.metaDescription,
+        metaKeyWords: updateCategoryDto.metaKeyWords
       };
 
       Object.keys(categoryData).forEach((key) => {
