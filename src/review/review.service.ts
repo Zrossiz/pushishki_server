@@ -113,15 +113,6 @@ export class ReviewService {
         take: 10,
         where: { productId, active: true },
         skip,
-        select: {
-          id: true,
-          productId: true,
-          username: true,
-          title: true,
-          description: true,
-          rating: true,
-          active: true,
-        },
       });
 
       const populatedData: IReviewWithLength = {
@@ -170,7 +161,7 @@ export class ReviewService {
           id: product.id
         },
         data: {
-          rating: reviewsAvgRating._avg.rating
+          rating: +reviewsAvgRating._avg.rating.toFixed(2)
         }
       })
 
