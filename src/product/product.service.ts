@@ -190,7 +190,8 @@ export class ProductService {
         video: product.video,
         inStock: product.inStock,
         defaultPrice: product.defaultPrice,
-        rating: product.rating
+        rating: product.rating,
+        image: product.image,
       }
 
       return res;
