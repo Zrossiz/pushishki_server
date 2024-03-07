@@ -61,6 +61,9 @@ export class ProductService {
         video: product.video,
         inStock: product.inStock,
         defaultPrice: product.defaultPrice,
+        metaTitle: product.metaTitle,
+        metaDescription: product.metaDescription,
+        metaKeyWords: product.metaKeyWords,
       }
 
       return res;
@@ -124,6 +127,9 @@ export class ProductService {
             video: item.video,
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
+            metaTitle: item.metaTitle,
+            metaDescription: item.metaDescription,
+            metaKeyWords: item.metaKeyWords,
           }
 
           return product;
@@ -192,6 +198,9 @@ export class ProductService {
         defaultPrice: product.defaultPrice,
         rating: product.rating,
         image: product.image,
+        metaTitle: product.metaTitle,
+        metaDescription: product.metaDescription,
+        metaKeyWords: product.metaKeyWords,
       }
 
       return res;
@@ -250,6 +259,9 @@ export class ProductService {
             video: item.video,
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
+            metaTitle: item.metaTitle,
+            metaDescription: item.metaDescription,
+            metaKeyWords: item.metaKeyWords,
           }
 
           return product;
@@ -312,6 +324,9 @@ export class ProductService {
             video: item.video,
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
+            metaTitle: item.metaTitle,
+            metaDescription: item.metaDescription,
+            metaKeyWords: item.metaKeyWords,
           }
 
           return product;
@@ -391,6 +406,9 @@ export class ProductService {
         video: updatedProduct.video,
         inStock: updatedProduct.inStock,
         defaultPrice: updatedProduct.defaultPrice,
+        metaTitle: updateProductDto.metaTitle,
+        metaDescription: updateProductDto.metaDescription,
+        metaKeyWords: updateProductDto.metaKeyWords,
       }
 
       return res;
@@ -497,6 +515,9 @@ export class ProductService {
             video: item.video,
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
+            metaTitle: item.metaTitle,
+            metaDescription: item.metaDescription,
+            metaKeyWords: item.metaKeyWords,
           }
 
           return product;
@@ -587,6 +608,9 @@ export class ProductService {
             video: item.video,
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
+            metaTitle: item.metaTitle,
+            metaDescription: item.metaDescription,
+            metaKeyWords: item.metaKeyWords,
           }
 
           return product;

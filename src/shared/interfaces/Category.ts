@@ -10,4 +10,7 @@ export interface ICategory {
   slug: string;
   description: string;
   image: string;
+  metaTitle: string;
+  metaDescription: string;
+  metaKeyWords: string;
 }

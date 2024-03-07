@@ -314,6 +314,9 @@ export class BrandService {
             video: item.video,
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
+            metaTitle: item.metaTitle,
+            metaDescription: item.metaDescription,
+            metaKeyWords: item.metaKeyWords,
           }
 
           return product;

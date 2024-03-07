@@ -72,13 +72,6 @@ export class CategoryService {
 
       const categories: ICategory[] =
         await this.prismaService.category.findMany({
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            description: true,
-            image: true,
-          },
           take: 10,
           skip,
         });
@@ -135,13 +128,6 @@ export class CategoryService {
         await this.prismaService.category.update({
           where: { id: existCategory.id },
           data: categoryData,
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            description: true,
-            image: true,
-          },
         });
 
       return updatedCategory;
@@ -158,13 +144,6 @@ export class CategoryService {
     try {
       const category: ICategory = await this.prismaService.category.findFirst({
         where: { slug },
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          description: true,
-          image: true,
-        },
       });
 
       if (!category) {
@@ -287,6 +266,9 @@ export class CategoryService {
             inStock: item.inStock,
             defaultPrice: item.defaultPrice,
             image: item.image,
+            metaTitle: item.metaTitle,
+            metaDescription: item.metaDescription,
+            metaKeyWords: item.metaKeyWords
           }
 
           return product;

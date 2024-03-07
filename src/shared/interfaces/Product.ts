@@ -23,4 +23,7 @@ export interface IProduct {
   inStock: boolean,
   image?: string,
   defaultPrice: number,
+  metaTitle: string;
+  metaDescription: string;
+  metaKeyWords: string;
 }
