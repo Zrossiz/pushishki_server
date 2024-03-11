@@ -159,8 +159,8 @@ model Order {
   id         Int      @id @default(autoincrement())
   name       String
   lastname   String
-  secondname String   @map("second_name")
   phone      String
+  address    String?
   price      Int
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
