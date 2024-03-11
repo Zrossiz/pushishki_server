@@ -47,9 +47,9 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: 'Получить товар по id' })
-  @Get(':id')
-  async getOne(@Param('id') productId: string) {
-    return await this.productService.getOne(+productId);
+  @Get(':slug')
+  async getOne(@Param('slug') slug: string) {
+    return await this.productService.getOne(slug);
   }
 
   @ApiOperation({ summary: 'Удалить товар' })

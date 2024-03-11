@@ -8,6 +8,7 @@ import { IBrand, ICategory, ICountry, IProduct, IProductWithLength } from 'src/s
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Brand, Country, Product, Category } from '@prisma/client';
+import { generateSlug } from 'src/shared/helpers';
 
 @Injectable()
 export class ProductService {
@@ -41,8 +42,23 @@ export class ProductService {
         throw new BadRequestException('Сначала создайте категорию');
       }
 
+      const existProduct: Product = await this.prismaService.product.findFirst({
+        where: {
+          name: createProductDto.name,
+        }
+      });
+
+      if (existProduct) {
+        throw new BadRequestException('Товар с таким названием уже существует')
+      };
+
+      const slug: string = generateSlug(createProductDto.name);
+
       const product: Product = await this.prismaService.product.create({
-        data: createProductDto,
+        data: {
+          ...createProductDto,
+          slug
+        },
       });
 
       const res = {
@@ -152,14 +168,14 @@ export class ProductService {
     }
   }
 
-  async getOne(productId: number): Promise<IProduct | { message: string }> {
+  async getOne(slug: string): Promise<IProduct | { message: string }> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
-        where: { id: productId },
+        where: { slug },
       });
 
       if (!product) {
-        throw new BadRequestException(`Товар с id ${productId} не найден`);
+        throw new BadRequestException(`Товар ${slug} не найден`);
       }
 
       const category: Category = await this.prismaService.category.findFirst({

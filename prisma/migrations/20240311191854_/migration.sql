@@ -56,6 +56,11 @@ CREATE TABLE "products" (
     "new" BOOLEAN NOT NULL DEFAULT false,
     "in_stock" BOOLEAN NOT NULL DEFAULT true,
     "default_price" INTEGER NOT NULL DEFAULT 0,
+    "rating" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "meta_tile" TEXT,
+    "meta_description" TEXT,
+    "meta_key_words" TEXT,
+    "slug" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -68,7 +73,7 @@ CREATE TABLE "product_variants" (
     "product_id" INTEGER NOT NULL,
     "color_id" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
-    "articul" INTEGER NOT NULL,
+    "articul" TEXT NOT NULL,
     "gearbox" TEXT,
     "battery" TEXT,
     "maximum_load" INTEGER,
@@ -106,6 +111,9 @@ CREATE TABLE "categories" (
     "image" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "meta_tile" TEXT,
+    "meta_description" TEXT,
+    "meta_key_words" TEXT,
 
     CONSTRAINT "categories_pkey" PRIMARY KEY ("id")
 );
@@ -129,8 +137,8 @@ CREATE TABLE "orders" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
-    "second_name" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
+    "address" TEXT,
     "price" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,

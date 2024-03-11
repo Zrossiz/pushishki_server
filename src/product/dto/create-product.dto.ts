@@ -33,6 +33,11 @@ export class CreateProductDto {
   @IsString({ message: 'Описание товара должно быть строкой' })
   description: string;
 
+  @ApiProperty({ example: 'Моковые характеристики товара' })
+  @IsOptional()
+  @IsString({ message: 'Характеристики товара должны быть строкой' })
+  characteristics: string;
+
   @ApiProperty({ example: '123оОЛУ' })
   @IsNotEmpty({ message: 'Артикул товара не может быть пустым значением' })
   @IsString({ message: 'Артикул должен быть строкой' })
