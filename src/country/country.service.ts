@@ -148,6 +148,7 @@ export class CountryService {
             metaTitle: item.metaTitle,
             metaDescription: item.metaDescription,
             metaKeyWords: item.metaKeyWords,
+            slug: item.slug
           }
 
           return product;

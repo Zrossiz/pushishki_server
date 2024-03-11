@@ -268,7 +268,9 @@ export class CategoryService {
             image: item.image,
             metaTitle: item.metaTitle,
             metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords
+            metaKeyWords: item.metaKeyWords,
+            characteristics: item.characteristics,
+            slug: item.slug,
           }
 
           return product;

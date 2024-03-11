@@ -80,6 +80,7 @@ export class ProductService {
         metaTitle: product.metaTitle,
         metaDescription: product.metaDescription,
         metaKeyWords: product.metaKeyWords,
+        slug: product.slug
       }
 
       return res;
@@ -146,6 +147,7 @@ export class ProductService {
             metaTitle: item.metaTitle,
             metaDescription: item.metaDescription,
             metaKeyWords: item.metaKeyWords,
+            slug: item.slug
           }
 
           return product;
@@ -217,6 +219,8 @@ export class ProductService {
         metaTitle: product.metaTitle,
         metaDescription: product.metaDescription,
         metaKeyWords: product.metaKeyWords,
+        characteristics: product.characteristics,
+        slug: product.slug,
       }
 
       return res;
@@ -278,6 +282,7 @@ export class ProductService {
             metaTitle: item.metaTitle,
             metaDescription: item.metaDescription,
             metaKeyWords: item.metaKeyWords,
+            slug: item.slug,
           }
 
           return product;
@@ -343,6 +348,7 @@ export class ProductService {
             metaTitle: item.metaTitle,
             metaDescription: item.metaDescription,
             metaKeyWords: item.metaKeyWords,
+            slug: item.slug
           }
 
           return product;
@@ -425,6 +431,7 @@ export class ProductService {
         metaTitle: updateProductDto.metaTitle,
         metaDescription: updateProductDto.metaDescription,
         metaKeyWords: updateProductDto.metaKeyWords,
+        slug: updatedProduct.slug
       }
 
       return res;
@@ -534,6 +541,7 @@ export class ProductService {
             metaTitle: item.metaTitle,
             metaDescription: item.metaDescription,
             metaKeyWords: item.metaKeyWords,
+            slug: item.slug,
           }
 
           return product;
@@ -627,6 +635,7 @@ export class ProductService {
             metaTitle: item.metaTitle,
             metaDescription: item.metaDescription,
             metaKeyWords: item.metaKeyWords,
+            slug: item.slug,
           }
 
           return product;

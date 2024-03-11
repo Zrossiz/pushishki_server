@@ -26,4 +26,6 @@ export interface IProduct {
   metaTitle: string;
   metaDescription: string;
   metaKeyWords: string;
+  characteristics?: string;
+  slug: string;
 }
