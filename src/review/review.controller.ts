@@ -67,9 +67,7 @@ export class ReviewController {
     name: 'id',
     type: 'string',
   })
-  @ApiBearerAuth()
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
   async switchActiveReview(@Param('id') reviewId: number) {
     return await this.reviewService.switchActiveReview(+reviewId);
   }
