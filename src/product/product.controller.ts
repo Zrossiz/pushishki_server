@@ -30,8 +30,12 @@ export class ProductController {
 
   @ApiOperation({ summary: 'Поиск товаров' })
   @Get('search')
-  async search(@Query('page') page: number, @Query('search') search: string) {
-    return await this.productService.find(search, page);
+  async search(
+    @Query('page') page: number, 
+    @Query('search') search: string,
+    @Query('sort') sort: 'asc' | 'desc',
+  ) {
+    return await this.productService.find(search, page, sort);
   }
 
   @ApiOperation({ summary: 'Получить лучшие предложения' })

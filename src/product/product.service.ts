@@ -567,6 +567,7 @@ export class ProductService {
   async find(
     search: string,
     page: number,
+    sort: 'asc' | 'desc' = 'desc',
   ): Promise<IProductWithLength | { message: string }> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
@@ -574,22 +575,43 @@ export class ProductService {
       const totalPages: number = Math.ceil(
         (await this.prismaService.product.count()) / 10,
       );
+      const searchLower = search.toLowerCase();
 
       const products: Product[] = await this.prismaService.product.findMany({
         where: {
           OR: [
             {
               name: {
-                contains: search,
+                contains: searchLower,
               },
             },
             {
-              articul: search,
+              name: {
+                startsWith: searchLower,
+              },
+            },
+            {
+              name: {
+                endsWith: searchLower,
+              },
+            },
+            {
+              name: {
+                startsWith: searchLower.charAt(0).toUpperCase() + searchLower.slice(1)
+              }
+            },
+            {
+              articul: {
+                equals: searchLower,
+              },
             },
           ],
         },
         take: 10,
         skip,
+        orderBy: {
+          defaultPrice: sort
+        }
       });
 
       if (!products) {
@@ -636,6 +658,7 @@ export class ProductService {
             metaDescription: item.metaDescription,
             metaKeyWords: item.metaKeyWords,
             slug: item.slug,
+            image: item.image,
           }
 
           return product;
