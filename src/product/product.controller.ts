@@ -33,7 +33,7 @@ export class ProductController {
   async search(
     @Query('page') page: number, 
     @Query('search') search: string,
-    @Query('sort') sort: 'asc' | 'desc',
+    @Query('sort') sort: string,
   ) {
     return await this.productService.find(search, page, sort);
   }
