@@ -2,14 +2,16 @@ import {
   Body,
   Controller,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { JwtAuthGuard } from './auth.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -30,5 +32,15 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     return await this.authService.login(loginUserDto);
+  }
+
+  @ApiOperation({ summary: 'Проверка токена' })
+  @ApiHeader({ name: 'Authorization', description: 'Bearer token' })
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  async checkUser() {
+    return {
+      message: 'Success',
+    }
   }
 }
