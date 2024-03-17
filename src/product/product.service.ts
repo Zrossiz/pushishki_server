@@ -70,10 +70,10 @@ export class ProductService {
 
       return res;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -132,10 +132,10 @@ export class ProductService {
 
       return populatedData;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -177,10 +177,10 @@ export class ProductService {
 
       return res;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -228,10 +228,10 @@ export class ProductService {
 
       return updatedData;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -280,10 +280,10 @@ export class ProductService {
       return updatedData;
 
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -344,10 +344,10 @@ export class ProductService {
       return res;
 
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -368,10 +368,10 @@ export class ProductService {
 
       return deletedProduct;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -448,10 +448,10 @@ export class ProductService {
 
       return populatedData;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -580,10 +580,10 @@ export class ProductService {
 
       return populatedData;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

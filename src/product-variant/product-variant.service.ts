@@ -49,10 +49,10 @@ export class ProductVariantService {
       });
       return productVariant;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -87,10 +87,10 @@ export class ProductVariantService {
 
       return updatedProductVariant;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -117,10 +117,10 @@ export class ProductVariantService {
 
       return deletedProductVariant;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -142,10 +142,10 @@ export class ProductVariantService {
 
       return productVariant;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -173,10 +173,10 @@ export class ProductVariantService {
 
       return productVariants;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

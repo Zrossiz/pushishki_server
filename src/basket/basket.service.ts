@@ -19,10 +19,10 @@ export class BasketService {
       });
       return orders;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -35,10 +35,10 @@ export class BasketService {
 
       return basket;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

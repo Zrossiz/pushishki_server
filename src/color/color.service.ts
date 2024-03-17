@@ -26,10 +26,10 @@ export class ColorService {
 
       return color;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -68,10 +68,10 @@ export class ColorService {
 
       return color;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

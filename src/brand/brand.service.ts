@@ -63,10 +63,10 @@ export class BrandService {
 
       return brand;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -104,10 +104,10 @@ export class BrandService {
 
       return data;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -132,10 +132,10 @@ export class BrandService {
 
       return brand;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -185,11 +185,11 @@ export class BrandService {
       });
 
       return updatedBrand;
-    } catch (err) {
-      console.log(err);
+    }   catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -245,10 +245,10 @@ export class BrandService {
 
       return deletedBrand;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
-      }
+      };
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
@@ -317,10 +317,10 @@ export class BrandService {
 
       return populatedData;
     } catch (err) {
-      console.log(err);
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
-      }
+      };
+      console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
