@@ -37,13 +37,8 @@ export class CategoryService {
       const slug = generateSlug(createCategoryDto.name).toLowerCase();
 
       const categoryData = {
-        name: createCategoryDto.name,
-        description: createCategoryDto.description,
+        ...createCategoryDto,
         slug,
-        image: createCategoryDto.image,
-        metaTitle: createCategoryDto.metaTitle,
-        metaDescription: createCategoryDto.metaDescription,
-        metaKeyWords: createCategoryDto.metaKeyWords
       };
 
       const category: ICategory = await this.prismaService.category.create({
@@ -107,15 +102,10 @@ export class CategoryService {
       }
 
       const categoryData = {
-        name: updateCategoryDto.name,
         slug: updateCategoryDto.name
           ? generateSlug(updateCategoryDto.name).toLowerCase()
           : existCategory.slug,
-        description: updateCategoryDto.description,
-        image: updateCategoryDto.image,
-        metaTitle: updateCategoryDto.metaTitle,
-        metaDescription: updateCategoryDto.metaDescription,
-        metaKeyWords: updateCategoryDto.metaKeyWords
+        ...updateCategoryDto,
       };
 
       Object.keys(categoryData).forEach((key) => {
@@ -250,28 +240,11 @@ export class CategoryService {
           })
 
           const product: IProduct = {
-            id: item.id,
+            ...item,
             country: country,
             brand: brand,
             category: category,
-            name: item.name,
-            description: item.description,
-            articul: item.articul,
-            gearbox: item.gearbox,
-            battery: item.battery,
-            maximumLoad: item.maximumLoad,
-            assembledModelSize: item.assembledModelSize,
-            modelSizeInPackage: item.modelSizeInPackage,
-            video: item.video,
-            inStock: item.inStock,
-            defaultPrice: item.defaultPrice,
-            image: item.image,
-            metaTitle: item.metaTitle,
-            metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords,
-            characteristics: item.characteristics,
-            slug: item.slug,
-          }
+          };
 
           return product;
         })

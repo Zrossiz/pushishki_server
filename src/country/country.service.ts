@@ -130,25 +130,10 @@ export class CountryService {
           })
 
           const product: IProduct = {
-            id: item.id,
+            ...item,
             country: country,
             brand: brand,
             category: category,
-            name: item.name,
-            description: item.description,
-            articul: item.articul,
-            gearbox: item.gearbox,
-            battery: item.battery,
-            maximumLoad: item.maximumLoad,
-            assembledModelSize: item.assembledModelSize,
-            modelSizeInPackage: item.modelSizeInPackage,
-            video: item.video,
-            inStock: item.inStock,
-            defaultPrice: item.defaultPrice,
-            metaTitle: item.metaTitle,
-            metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords,
-            slug: item.slug
           }
 
           return product;

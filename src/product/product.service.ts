@@ -62,25 +62,10 @@ export class ProductService {
       });
 
       const res = {
-        id: product.id,
+        ...product,
         country: country,
         brand: brand,
         category: category,
-        name: product.name,
-        description: product.description,
-        articul: product.articul,
-        gearbox: product.gearbox,
-        battery: product.battery,
-        maximumLoad: product.maximumLoad,
-        assembledModelSize: product.assembledModelSize,
-        modelSizeInPackage: product.modelSizeInPackage,
-        video: product.video,
-        inStock: product.inStock,
-        defaultPrice: product.defaultPrice,
-        metaTitle: product.metaTitle,
-        metaDescription: product.metaDescription,
-        metaKeyWords: product.metaKeyWords,
-        slug: product.slug
       }
 
       return res;
@@ -129,25 +114,10 @@ export class ProductService {
           })
 
           const product: IProduct = {
-            id: item.id,
+            ...item,
             country: country,
             brand: brand,
             category: category,
-            name: item.name,
-            description: item.description,
-            articul: item.articul,
-            gearbox: item.gearbox,
-            battery: item.battery,
-            maximumLoad: item.maximumLoad,
-            assembledModelSize: item.assembledModelSize,
-            modelSizeInPackage: item.modelSizeInPackage,
-            video: item.video,
-            inStock: item.inStock,
-            defaultPrice: item.defaultPrice,
-            metaTitle: item.metaTitle,
-            metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords,
-            slug: item.slug
           }
 
           return product;
@@ -199,28 +169,10 @@ export class ProductService {
       })
 
       const res = {
-        id: product.id,
+        ...product,
         country: country,
         brand: brand,
         category: category,
-        name: product.name,
-        description: product.description,
-        articul: product.articul,
-        gearbox: product.gearbox,
-        battery: product.battery,
-        maximumLoad: product.maximumLoad,
-        assembledModelSize: product.assembledModelSize,
-        modelSizeInPackage: product.modelSizeInPackage,
-        video: product.video,
-        inStock: product.inStock,
-        defaultPrice: product.defaultPrice,
-        rating: product.rating,
-        image: product.image,
-        metaTitle: product.metaTitle,
-        metaDescription: product.metaDescription,
-        metaKeyWords: product.metaKeyWords,
-        characteristics: product.characteristics,
-        slug: product.slug,
       }
 
       return res;
@@ -264,25 +216,10 @@ export class ProductService {
           })
 
           const product: IProduct = {
-            id: item.id,
+            ...item,
             country: country,
             brand: brand,
             category: category,
-            name: item.name,
-            description: item.description,
-            articul: item.articul,
-            gearbox: item.gearbox,
-            battery: item.battery,
-            maximumLoad: item.maximumLoad,
-            assembledModelSize: item.assembledModelSize,
-            modelSizeInPackage: item.modelSizeInPackage,
-            video: item.video,
-            inStock: item.inStock,
-            defaultPrice: item.defaultPrice,
-            metaTitle: item.metaTitle,
-            metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords,
-            slug: item.slug,
           }
 
           return product;
@@ -330,25 +267,10 @@ export class ProductService {
           })
 
           const product: IProduct = {
-            id: item.id,
+            ...item,
             country: country,
             brand: brand,
             category: category,
-            name: item.name,
-            description: item.description,
-            articul: item.articul,
-            gearbox: item.gearbox,
-            battery: item.battery,
-            maximumLoad: item.maximumLoad,
-            assembledModelSize: item.assembledModelSize,
-            modelSizeInPackage: item.modelSizeInPackage,
-            video: item.video,
-            inStock: item.inStock,
-            defaultPrice: item.defaultPrice,
-            metaTitle: item.metaTitle,
-            metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords,
-            slug: item.slug
           }
 
           return product;
@@ -413,25 +335,10 @@ export class ProductService {
       })
 
       const res = {
-        id: updatedProduct.id,
         country: country,
         brand: brand,
         category: category,
-        name: updatedProduct.name,
-        description: updatedProduct.description,
-        articul: updatedProduct.articul,
-        gearbox: updatedProduct.gearbox,
-        battery: updatedProduct.battery,
-        maximumLoad: updatedProduct.maximumLoad,
-        assembledModelSize: updatedProduct.assembledModelSize,
-        modelSizeInPackage: updatedProduct.modelSizeInPackage,
-        video: updatedProduct.video,
-        inStock: updatedProduct.inStock,
-        defaultPrice: updatedProduct.defaultPrice,
-        metaTitle: updateProductDto.metaTitle,
-        metaDescription: updateProductDto.metaDescription,
-        metaKeyWords: updateProductDto.metaKeyWords,
-        slug: updatedProduct.slug
+        ...updatedProduct,
       }
 
       return res;
@@ -523,25 +430,10 @@ export class ProductService {
           })
 
           const product: IProduct = {
-            id: item.id,
+            ...item,
             country: country,
             brand: brand,
             category: category,
-            name: item.name,
-            description: item.description,
-            articul: item.articul,
-            gearbox: item.gearbox,
-            battery: item.battery,
-            maximumLoad: item.maximumLoad,
-            assembledModelSize: item.assembledModelSize,
-            modelSizeInPackage: item.modelSizeInPackage,
-            video: item.video,
-            inStock: item.inStock,
-            defaultPrice: item.defaultPrice,
-            metaTitle: item.metaTitle,
-            metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords,
-            slug: item.slug,
           }
 
           return product;
@@ -670,26 +562,10 @@ export class ProductService {
           })
 
           const product: IProduct = {
-            id: item.id,
+            ...item,
             country: country,
             brand: brand,
             category: category,
-            name: item.name,
-            description: item.description,
-            articul: item.articul,
-            gearbox: item.gearbox,
-            battery: item.battery,
-            maximumLoad: item.maximumLoad,
-            assembledModelSize: item.assembledModelSize,
-            modelSizeInPackage: item.modelSizeInPackage,
-            video: item.video,
-            inStock: item.inStock,
-            defaultPrice: item.defaultPrice,
-            metaTitle: item.metaTitle,
-            metaDescription: item.metaDescription,
-            metaKeyWords: item.metaKeyWords,
-            slug: item.slug,
-            image: item.image,
           }
 
           return product;
