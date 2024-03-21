@@ -79,11 +79,13 @@ export class CreateProductDto {
   image: string;
 
   @ApiProperty({ example: true })
+  @IsOptional()
   @IsNotEmpty({ message: 'Бестселлера не может быть пустым' })
   @IsBoolean({ message: 'Бестселлер должен быть булевым значением' })
   bestseller: boolean;
 
   @ApiProperty({ example: false })
+  @IsOptional()
   @IsNotEmpty({ message: 'Новинка не может быть пустым значением' })
   @IsBoolean({ message: 'Новинка должна быть булевым значением' })
   new: boolean;
