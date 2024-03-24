@@ -75,4 +75,18 @@ export class ColorService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async getAll(): Promise<IColor[] | { message: string }> {
+    try {
+      const colors: IColor[] = await this.prismaService.color.findMany();
+
+      return colors;
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }

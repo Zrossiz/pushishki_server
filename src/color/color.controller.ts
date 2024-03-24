@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   UseGuards,
@@ -44,5 +45,13 @@ export class ColorController {
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') colorId: string) {
     return await this.colorService.delete(+colorId);
+  }
+
+  @ApiOperation({ summary: 'Получить все цвета' })
+  @ApiBearerAuth()
+  @Get('')
+  @UseGuards(JwtAuthGuard)
+  async getAll() {
+    return await this.colorService.getAll();
   }
 }
