@@ -16,6 +16,7 @@ export class CreateProductVariantDto {
     example: 'Моковое описание товара',
     description: 'Описание товара',
   })
+  @IsOptional()
   @IsNotEmpty({ message: 'Описание не может быть пустым значением' })
   @IsString({ message: 'Описание товара должно быть строкой' })
   description: string;
@@ -76,6 +77,7 @@ export class CreateProductVariantDto {
     example: ['example.png'],
     description: 'Массив изображений варинта продукта',
   })
+  @IsOptional()
   @IsNotEmpty({ message: 'Изображения не могут быть пустым значением' })
   images: string[];
 }
