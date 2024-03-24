@@ -360,7 +360,40 @@ export class ProductService {
 
       if (!product) {
         throw new BadRequestException(`Товар ${productId} не найден`);
-      }
+      };
+
+      const productVariants = await this.prismaService.productVariant.findMany({
+        where: {
+          productId
+        }
+      });
+
+      const productReviews = await this.prismaService.review.findMany({
+        where: {
+          productId
+        }
+      });
+
+      if (productReviews.length >= 1) {
+        await this.prismaService.review.deleteMany({
+          where: {
+            productId
+          }
+        });
+      };
+
+      if (productVariants.length >= 1) {
+        await this.prismaService.productsColors.deleteMany({
+          where: {
+            productId
+          }
+        });
+        await this.prismaService.productVariant.deleteMany({
+          where: {
+            productId
+          }
+        });
+      };
 
       const deletedProduct: Product = await this.prismaService.product.delete({
         where: { id: product.id },
