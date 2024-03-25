@@ -108,7 +108,14 @@ export class ProductVariantService {
         throw new BadRequestException(
           `Вариант продукта ${productVariantId} не найден`,
         );
-      }
+      };
+
+      const deletedRelations = await this.prismaService.productsColors.deleteMany({
+        where: {
+          colorId: productVariant.colorId,
+          productId: productVariant.productId,
+        }
+      });
 
       const deletedProductVariant: ProductVariant =
         await this.prismaService.productVariant.delete({
