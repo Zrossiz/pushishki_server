@@ -129,7 +129,7 @@ model Category {
   id          Int       @id @default(autoincrement())
   name        String
   slug        String
-  description String
+  description String?
   image       String
   Product     Product[]
   createdAt   DateTime  @default(now()) @map("created_at")
