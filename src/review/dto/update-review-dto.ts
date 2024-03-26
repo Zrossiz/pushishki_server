@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateReviewDto {
   @ApiProperty({ example: 'Хороший товар' })
@@ -16,4 +16,9 @@ export class UpdateReviewDto {
   @IsOptional()
   @IsNumber({}, { message: 'Рейтинг должен быть цифрой' })
   rating: number;
+
+  @ApiProperty({ example: true })
+  @IsOptional()
+  @IsBoolean()
+  active: boolean;
 }
