@@ -90,6 +90,7 @@ export class ReviewService {
   async getAllReviewsByProduct(
     productId: number,
     page: number,
+    all: string,
   ): Promise<IReviewWithLength | { message: string }> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
@@ -108,10 +109,21 @@ export class ReviewService {
         });
 
       const totalPages: number = Math.ceil(reviewByProduct.length / 10);
+      
+      const filter: {
+        productId: number,
+        active?: boolean,
+      } = {
+        productId,
+      };
+
+      if (all !== 'true') {
+        filter.active = true;
+      };
 
       const reviews: IReview[] = await this.prismaService.review.findMany({
         take: 10,
-        where: { productId, active: true },
+        where: filter,
         skip,
       });
 
