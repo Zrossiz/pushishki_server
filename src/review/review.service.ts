@@ -89,9 +89,8 @@ export class ReviewService {
 
   async getAllReviewsByProduct(
     productId: number,
-    page: number,
     all: string,
-  ): Promise<IReviewWithLength | { message: string }> {
+  ): Promise<IReview[] | { message: string }> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
@@ -100,15 +99,6 @@ export class ReviewService {
       if (!product) {
         throw new BadRequestException(`Товар с id: ${productId} не найден`);
       }
-
-      const skip: number = page ? (page - 1) * 10 : 0;
-
-      const reviewByProduct: Review[] =
-        await this.prismaService.review.findMany({
-          where: { productId },
-        });
-
-      const totalPages: number = Math.ceil(reviewByProduct.length / 10);
       
       const filter: {
         productId: number,
@@ -122,18 +112,13 @@ export class ReviewService {
       };
 
       const reviews: IReview[] = await this.prismaService.review.findMany({
-        take: 10,
         where: filter,
-        skip,
+        orderBy: {
+          createdAt: 'desc'
+        }
       });
 
-      const populatedData: IReviewWithLength = {
-        length: reviews.length,
-        totalPages: reviews.length === 0 ? 0 : totalPages,
-        data: reviews,
-      };
-
-      return populatedData;
+      return reviews;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
