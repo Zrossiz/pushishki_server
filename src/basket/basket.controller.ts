@@ -42,9 +42,7 @@ export class BasketController {
     Данный эндпоинт принимает массив объектов`,
   })
   @ApiBody({ type: BasketDto })
-  @ApiBearerAuth()
   @Post('')
-  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async create(@Body() createBasketDto: CreateBasketDto) {
     return await this.basketService.create(createBasketDto);

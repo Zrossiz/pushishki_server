@@ -21,9 +21,6 @@ export class CreateOrderDto {
   @ApiProperty({ example: '+79998887766' })
   @IsNotEmpty({ message: 'Номер не может быть пустым значением' })
   @IsString({ message: 'Номер телефона должен быть строкой' })
-  @IsPhoneNumber('RU', {
-    message: 'Номер телефона должен начинаться с +7 или 8',
-  })
   phone: string;
 
   @ApiProperty({ example: 'г. Москва, Алма-Атинска д8' })

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 export class CreateBasketDto {
   @IsArray()
@@ -15,12 +15,10 @@ export class BasketDto {
   @IsNumber({}, { message: 'Id товара должно быть числом' })
   productId: number;
 
-  @ApiProperty({ example: '1', description: 'Id варианта продукта' })
-  @IsNotEmpty({
-    message: 'Id варианта продукта не может быть пустым значением',
-  })
-  @IsNumber({}, { message: 'Id варианта продукта должно быть числом' })
-  variantId: number;
+  @ApiProperty({ example: 'Красный', description: 'Цвет варианта продукта' })
+  @IsOptional()
+  @IsString()
+  color: string;
 
   @ApiProperty({ example: '1', description: 'Id заказа' })
   @IsNumber({}, { message: 'Id заказа должно быть числом' })

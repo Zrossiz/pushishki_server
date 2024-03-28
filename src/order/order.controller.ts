@@ -29,10 +29,8 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @ApiOperation({ summary: 'Создать заказ' })
-  @ApiBearerAuth()
   @Post('')
   @UsePipes(ValidationPipe)
-  @UseGuards(JwtAuthGuard)
   async create(@Body() createOrderDto: CreateOrderDto) {
     return await this.orderService.create(createOrderDto);
   }
