@@ -31,7 +31,7 @@ export class ProductController {
   @ApiOperation({ summary: 'Поиск товаров' })
   @Get('search')
   async search(
-    @Query('page') page: number, 
+    @Query('page') page: number,
     @Query('search') search: string,
     @Query('sort') sort: string,
   ) {

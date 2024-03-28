@@ -99,23 +99,23 @@ export class ReviewService {
       if (!product) {
         throw new BadRequestException(`Товар с id: ${productId} не найден`);
       }
-      
+
       const filter: {
-        productId: number,
-        active?: boolean,
+        productId: number;
+        active?: boolean;
       } = {
         productId,
       };
 
       if (all !== 'true') {
         filter.active = true;
-      };
+      }
 
       const reviews: IReview[] = await this.prismaService.review.findMany({
         where: filter,
         orderBy: {
-          createdAt: 'desc'
-        }
+          createdAt: 'desc',
+        },
       });
 
       return reviews;
@@ -139,28 +139,28 @@ export class ReviewService {
 
       const product: Product = await this.prismaService.product.findFirst({
         where: {
-          id: updatedReview.productId
-        }
+          id: updatedReview.productId,
+        },
       });
 
       const reviewsAvgRating = await this.prismaService.review.aggregate({
         where: {
           productId: product.id,
-          active: true
+          active: true,
         },
         _avg: {
-          rating: true
+          rating: true,
         },
       });
 
       await this.prismaService.product.update({
         where: {
-          id: product.id
+          id: product.id,
         },
         data: {
-          rating: +reviewsAvgRating._avg.rating.toFixed(2)
-        }
-      })
+          rating: +reviewsAvgRating._avg.rating.toFixed(2),
+        },
+      });
 
       return updatedReview;
     } catch (err) {

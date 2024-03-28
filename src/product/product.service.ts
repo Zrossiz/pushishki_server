@@ -4,7 +4,13 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IBrand, ICategory, ICountry, IProduct, IProductWithLength } from 'src/shared/interfaces';
+import {
+  IBrand,
+  ICategory,
+  ICountry,
+  IProduct,
+  IProductWithLength,
+} from 'src/shared/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Brand, Country, Product, Category } from '@prisma/client';
@@ -45,19 +51,19 @@ export class ProductService {
       const existProduct: Product = await this.prismaService.product.findFirst({
         where: {
           name: createProductDto.name,
-        }
+        },
       });
 
       if (existProduct) {
-        throw new BadRequestException('Товар с таким названием уже существует')
-      };
+        throw new BadRequestException('Товар с таким названием уже существует');
+      }
 
       const slug: string = generateSlug(createProductDto.name);
 
       const product: Product = await this.prismaService.product.create({
         data: {
           ...createProductDto,
-          slug
+          slug,
         },
       });
 
@@ -66,7 +72,7 @@ export class ProductService {
         country: country,
         brand: brand,
         category: category,
-      }
+      };
 
       return res;
     } catch (err) {
@@ -95,34 +101,35 @@ export class ProductService {
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
             country: country,
             brand: brand,
             category: category,
-          }
+          };
 
           return product;
-        })
-      )
+        }),
+      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
@@ -152,28 +159,28 @@ export class ProductService {
 
       const category: Category = await this.prismaService.category.findFirst({
         where: {
-          id: product.categoryId
-        }
+          id: product.categoryId,
+        },
       });
 
       const brand: Brand = await this.prismaService.brand.findFirst({
         where: {
-          id: product.brandId
-        }
+          id: product.brandId,
+        },
       });
 
       const country: Country = await this.prismaService.country.findFirst({
         where: {
-          id: product.countryId
-        }
-      })
+          id: product.countryId,
+        },
+      });
 
       const res = {
         ...product,
         country: country,
         brand: brand,
         category: category,
-      }
+      };
 
       return res;
     } catch (err) {
@@ -197,34 +204,35 @@ export class ProductService {
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
             country: country,
             brand: brand,
             category: category,
-          }
+          };
 
           return product;
-        })
-      )
+        }),
+      );
 
       return updatedData;
     } catch (err) {
@@ -248,37 +256,37 @@ export class ProductService {
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
             country: country,
             brand: brand,
             category: category,
-          }
+          };
 
           return product;
-        })
-      )
+        }),
+      );
 
       return updatedData;
-
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
@@ -318,31 +326,30 @@ export class ProductService {
 
       const category: Category = await this.prismaService.category.findFirst({
         where: {
-          id: product.categoryId
-        }
+          id: product.categoryId,
+        },
       });
 
       const brand: Brand = await this.prismaService.brand.findFirst({
         where: {
-          id: product.brandId
-        }
+          id: product.brandId,
+        },
       });
 
       const country: Country = await this.prismaService.country.findFirst({
         where: {
-          id: product.countryId
-        }
-      })
+          id: product.countryId,
+        },
+      });
 
       const res = {
         country: country,
         brand: brand,
         category: category,
         ...updatedProduct,
-      }
+      };
 
       return res;
-
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
@@ -360,40 +367,40 @@ export class ProductService {
 
       if (!product) {
         throw new BadRequestException(`Товар ${productId} не найден`);
-      };
+      }
 
       const productVariants = await this.prismaService.productVariant.findMany({
         where: {
-          productId
-        }
+          productId,
+        },
       });
 
       const productReviews = await this.prismaService.review.findMany({
         where: {
-          productId
-        }
+          productId,
+        },
       });
 
       if (productReviews.length >= 1) {
         await this.prismaService.review.deleteMany({
           where: {
-            productId
-          }
+            productId,
+          },
         });
-      };
+      }
 
       if (productVariants.length >= 1) {
         await this.prismaService.productsColors.deleteMany({
           where: {
-            productId
-          }
+            productId,
+          },
         });
         await this.prismaService.productVariant.deleteMany({
           where: {
-            productId
-          }
+            productId,
+          },
         });
-      };
+      }
 
       const deletedProduct: Product = await this.prismaService.product.delete({
         where: { id: product.id },
@@ -444,34 +451,35 @@ export class ProductService {
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
             country: country,
             brand: brand,
             category: category,
-          }
+          };
 
           return product;
-        })
-      )
+        }),
+      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
@@ -518,8 +526,9 @@ export class ProductService {
               },
               {
                 name: {
-                  startsWith: searchLower.charAt(0).toUpperCase() + searchLower.slice(1)
-                }
+                  startsWith:
+                    searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
+                },
               },
               {
                 articul: {
@@ -527,7 +536,7 @@ export class ProductService {
                 },
               },
             ],
-          }
+          },
         })) / 10,
       );
 
@@ -551,8 +560,9 @@ export class ProductService {
             },
             {
               name: {
-                startsWith: searchLower.charAt(0).toUpperCase() + searchLower.slice(1)
-              }
+                startsWith:
+                  searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
+              },
             },
             {
               articul: {
@@ -565,9 +575,9 @@ export class ProductService {
         skip,
         orderBy: [
           {
-            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc'
-          }
-        ]
+            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
+          },
+        ],
       });
 
       if (!products) {
@@ -576,34 +586,35 @@ export class ProductService {
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
             country: country,
             brand: brand,
             category: category,
-          }
+          };
 
           return product;
-        })
-      )
+        }),
+      );
 
       const populatedData: IProductWithLength = {
         length: products.length,

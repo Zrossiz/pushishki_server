@@ -41,6 +41,6 @@ export class AuthController {
   async checkUser() {
     return {
       message: 'Success',
-    }
+    };
   }
 }

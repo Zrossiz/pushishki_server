@@ -185,7 +185,7 @@ export class BrandService {
       });
 
       return updatedBrand;
-    }   catch (err) {
+    } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
       }
@@ -247,7 +247,7 @@ export class BrandService {
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
-      };
+      }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
@@ -280,34 +280,35 @@ export class BrandService {
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
             country: country,
             brand: brand,
             category: category,
-          }
+          };
 
           return product;
-        })
-      )
+        }),
+      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
@@ -319,7 +320,7 @@ export class BrandService {
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
-      };
+      }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }

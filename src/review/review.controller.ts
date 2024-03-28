@@ -82,9 +82,6 @@ export class ReviewController {
     @Param('id') productId: string,
     @Query('all') all: string,
   ) {
-    return await this.reviewService.getAllReviewsByProduct(
-      +productId, 
-      all
-    );
+    return await this.reviewService.getAllReviewsByProduct(+productId, all);
   }
 }

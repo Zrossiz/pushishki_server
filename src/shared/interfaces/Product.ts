@@ -1,4 +1,4 @@
-import { Country, Brand, Category } from "@prisma/client";
+import { Country, Brand, Category } from '@prisma/client';
 
 export interface IProductWithLength {
   length: number;
@@ -7,22 +7,22 @@ export interface IProductWithLength {
 }
 
 export interface IProduct {
-  id: number,
-  country: Country,
-  brand: Brand,
-  category: Category,
-  name: string,
-  description: string,
-  articul: string,
-  gearbox: string,
-  battery: string,
-  maximumLoad: number,
-  assembledModelSize: string,
-  modelSizeInPackage: string,
-  video: string,
-  inStock: boolean,
-  image?: string,
-  defaultPrice: number,
+  id: number;
+  country: Country;
+  brand: Brand;
+  category: Category;
+  name: string;
+  description: string;
+  articul: string;
+  gearbox: string;
+  battery: string;
+  maximumLoad: number;
+  assembledModelSize: string;
+  modelSizeInPackage: string;
+  video: string;
+  inStock: boolean;
+  image?: string;
+  defaultPrice: number;
   metaTitle: string;
   metaDescription: string;
   metaKeyWords: string;

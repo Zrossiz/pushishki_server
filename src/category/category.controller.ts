@@ -119,7 +119,7 @@ export class CategoryController {
       brands,
       countries,
       inStock,
-      +maximumLoad
+      +maximumLoad,
     );
   }
 }

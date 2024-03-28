@@ -21,24 +21,24 @@ export class UpdateCategoryDto {
   image: string;
 
   @ApiProperty({
-    example: "Название категории",
-    description: "Meta title for category"
+    example: 'Название категории',
+    description: 'Meta title for category',
   })
   @IsOptional()
   @IsString()
   metaTitle: string;
 
   @ApiProperty({
-    example: "Описание категории",
-    description: "Meta description for category"
+    example: 'Описание категории',
+    description: 'Meta description for category',
   })
   @IsOptional()
   @IsString()
   metaDescription: string;
 
   @ApiProperty({
-    example: "Ключевые слова категории",
-    description: "Meta key words for category"
+    example: 'Ключевые слова категории',
+    description: 'Meta key words for category',
   })
   @IsOptional()
   @IsString()

@@ -111,34 +111,35 @@ export class CountryService {
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
             country: country,
             brand: brand,
             category: category,
-          }
+          };
 
           return product;
-        })
-      )
+        }),
+      );
 
       const populatedData: IProductWithLength = {
         length: products.length,

@@ -153,10 +153,9 @@ export class CategoryService {
     brands: string,
     countries: string,
     inStock: string,
-    maximumLoad: number
+    maximumLoad: number,
   ): Promise<IProductWithLength | { message: string }> {
     try {
-
       const category: Category = await this.prismaService.category.findFirst({
         where: { slug },
       });
@@ -167,8 +166,12 @@ export class CategoryService {
 
       const priceFromForFilter: number = priceFrom || 0;
       const priceToForFilter: number = priceTo || 999999;
-      const brandsForFilter: number[] | undefined = brands ? JSON.parse(brands) : undefined;
-      const countriesForFilter: number[] | undefined = countries ? JSON.parse(countries) : undefined;
+      const brandsForFilter: number[] | undefined = brands
+        ? JSON.parse(brands)
+        : undefined;
+      const countriesForFilter: number[] | undefined = countries
+        ? JSON.parse(countries)
+        : undefined;
 
       const filter: any = {
         categoryId: category.id,
@@ -176,28 +179,28 @@ export class CategoryService {
           gte: +priceFromForFilter,
           lte: +priceToForFilter,
         },
-      }
+      };
 
       if (brandsForFilter) {
         filter.brandId = {
-          in: brandsForFilter
-        }
+          in: brandsForFilter,
+        };
       }
 
       if (countriesForFilter) {
         filter.countryId = {
-          in: countriesForFilter
-        }
+          in: countriesForFilter,
+        };
       }
 
       if (inStock === 'true') {
-        filter.inStock = true
+        filter.inStock = true;
       }
 
       if (maximumLoad >= 1) {
         filter.maximumLoad = {
-          lte: maximumLoad
-        }
+          lte: maximumLoad,
+        };
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;
@@ -214,30 +217,31 @@ export class CategoryService {
         skip,
         orderBy: [
           {
-            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc'
-          }
-        ]
+            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
+          },
+        ],
       });
 
       const updatedData: IProduct[] = await Promise.all(
         products.map(async (item) => {
-          const category: Category = await this.prismaService.category.findFirst({
-            where: {
-              id: item.categoryId,
-            }
-          })
-          
+          const category: Category =
+            await this.prismaService.category.findFirst({
+              where: {
+                id: item.categoryId,
+              },
+            });
+
           const country: Country = await this.prismaService.country.findFirst({
             where: {
-              id: item.countryId
-            }
-          })
+              id: item.countryId,
+            },
+          });
 
           const brand: Brand = await this.prismaService.brand.findFirst({
             where: {
-              id: item.brandId
-            }
-          })
+              id: item.brandId,
+            },
+          });
 
           const product: IProduct = {
             ...item,
@@ -247,8 +251,8 @@ export class CategoryService {
           };
 
           return product;
-        })
-      )
+        }),
+      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
