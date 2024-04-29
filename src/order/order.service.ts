@@ -59,15 +59,18 @@ export class OrderService {
 
   async getAll(page: number): Promise<IOrderWithLength | { message: string }> {
     try {
-      const skip: number = page ? (page - 1) * 10 : 0;
+      const skip: number = page ? (page - 1) * 40 : 0;
 
       const totalPages: number = Math.ceil(
-        (await this.prismaService.order.count()) / 10,
+        (await this.prismaService.order.count()) / 40,
       );
 
       const orders: Order[] = await this.prismaService.order.findMany({
-        take: 10,
+        take: 40,
         skip,
+        orderBy: {
+          createdAt: 'desc'
+        }
       });
 
       if (!orders) {
