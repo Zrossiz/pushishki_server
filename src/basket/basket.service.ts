@@ -29,11 +29,18 @@ export class BasketService {
 
   async getBasketsByOrderId(orderId: number) {
     try {
-      const basket = await this.prismaService.basket.findMany({
+      const basketWithProducts = await this.prismaService.basket.findMany({
         where: { orderId },
+        include: {
+          Product: {
+            select: {
+              name: true
+            }
+          }
+        }
       });
 
-      return basket;
+      return basketWithProducts;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new BadRequestException(err.message);
