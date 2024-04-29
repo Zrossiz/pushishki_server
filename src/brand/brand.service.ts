@@ -142,15 +142,15 @@ export class BrandService {
 
   async update(
     updateBrandDto: UpdateBrandDto,
-    slug: string,
+    id: number,
   ): Promise<IBrand | { message: string }> {
     try {
       const brand: IBrand = await this.prismaService.brand.findFirst({
-        where: { slug: slug },
+        where: { id },
       });
 
       if (!brand) {
-        throw new BadRequestException(`Бренд ${slug} не найден`);
+        throw new BadRequestException(`Бренд ${id} не найден`);
       }
 
       const brandData = {

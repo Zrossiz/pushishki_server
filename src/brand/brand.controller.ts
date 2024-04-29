@@ -88,21 +88,21 @@ export class BrandController {
 
   @ApiOperation({ summary: 'Редактирование бренда' })
   @ApiParam({
-    name: 'slug',
-    type: 'string',
-    description: 'Slug бренда',
-    example: 'river-toys',
+    name: 'id',
+    type: 'number',
+    description: 'id бренда',
+    example: '1',
   })
   @ApiBody({ type: UpdateBrandDto })
   @ApiBearerAuth()
-  @Put('/:slug')
+  @Put('/:id')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async update(
-    @Param('slug') slug: string,
+    @Param('id') id: string,
     @Body() updateBrandDto: UpdateBrandDto,
   ) {
-    return await this.brandService.update(updateBrandDto, slug);
+    return await this.brandService.update(updateBrandDto, +id);
   }
 
   @ApiOperation({ summary: 'Удаление бренда' })
