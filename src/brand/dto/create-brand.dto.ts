@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateBrandDto {
   @ApiProperty({ example: '1', description: 'Id страны' })
@@ -16,12 +16,12 @@ export class CreateBrandDto {
     example: 'example.png',
     description: 'Название картинки-превью',
   })
-  @IsNotEmpty({ message: 'Картинка бренда не может быть пустым значением' })
+  @IsOptional()
   @IsString({ message: 'Название картинки бренда должно быть строкой' })
   image: string;
 
   @ApiProperty({ example: 'Моковый бренд', description: 'Описание бренда' })
-  @IsNotEmpty({ message: 'Описание бренда не может быть пустым' })
+  @IsOptional()
   @IsString({ message: 'Описание бренджа должно быть строкой' })
   description: string;
 }
