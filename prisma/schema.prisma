@@ -42,7 +42,7 @@ model Brand {
   slug        String
   image       String?
   Product     Product[]
-  country     Country   @relation(fields: [countryId], references: [id])
+  country     Country   @relation(fields: [countryId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
@@ -74,9 +74,9 @@ model Product {
   metaDescription    String?          @map("meta_description")
   metaKeyWords       String?          @map("meta_key_words")
   slug               String
-  country            Country          @relation(fields: [countryId], references: [id])
-  brand              Brand            @relation(fields: [brandId], references: [id])
-  category           Category         @relation(fields: [categoryId], references: [id])
+  country            Country          @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  brand              Brand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  category           Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   Basket             Basket[]
   Review             Review[]
   Product_variant    ProductVariant[]
@@ -103,8 +103,8 @@ model ProductVariant {
   inStock            Boolean  @default(true) @map("in_stock")
   price              Int      @default(0)
   images             String[]
-  product            Product  @relation(fields: [productId], references: [id])
-  color              Color    @relation(fields: [colorId], references: [id])
+  product            Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color              Color    @relation(fields: [colorId], references: [id], onDelete: Cascade)
 
   @@map("product_variants")
 }
@@ -116,7 +116,7 @@ model Review {
   title       String
   description String
   rating      Int
-  product     Product  @relation(fields: [productId], references: [id])
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   active      Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
@@ -147,10 +147,10 @@ model Basket {
   quantity        Int
   price           Int
   color           String?
-  Product         Product        @relation(fields: [productId], references: [id])
+  Product         Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt       DateTime       @default(now()) @map("created_at")
   updatedAt       DateTime       @updatedAt @map("updated_at")
-  Order           Order?         @relation(fields: [orderId], references: [id])
+  Order           Order?         @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("basket")
 }
@@ -185,8 +185,8 @@ model ProductsColors {
   id        Int     @id @default(autoincrement())
   productId Int     @map("product_id")
   colorId   Int     @map("color_id")
-  product   Product @relation(fields: [productId], references: [id])
-  color     Color   @relation(fields: [colorId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
 
   @@map("products_colors")
 }
