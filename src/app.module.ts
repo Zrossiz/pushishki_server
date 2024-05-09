@@ -25,6 +25,7 @@ import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
 import { ColorModule } from './color/color.module';
 import { CheckApiKey } from './shared/middleware';
+import { NotifyServiceModule } from './notify-service/notify-service.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CheckApiKey } from './shared/middleware';
     OrderModule,
     BasketModule,
     ColorModule,
+    NotifyServiceModule,
   ],
   controllers: [
     AuthController,
