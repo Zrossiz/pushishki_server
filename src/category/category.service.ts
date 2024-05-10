@@ -269,4 +269,32 @@ export class CategoryService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async delete (slug: string): Promise<Category | { message: string }> {
+    try {
+      const existCategory: ICategory = await this.prismaService.category.findFirst({
+        where: {
+          slug
+        }
+      });
+
+      if (!existCategory) {
+        throw new BadRequestException('Категория не найдена')
+      };
+
+      const deletedCategory: Category = await this.prismaService.category.delete({
+        where: {
+          id: existCategory.id
+        }
+      });
+
+      return deletedCategory;
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }

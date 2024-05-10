@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -75,6 +76,21 @@ export class CategoryController {
     @Body() updateCategory: UpdateCategoryDto,
   ) {
     return await this.categoryService.update(updateCategory, slug);
+  }
+
+
+  @ApiParam({
+    name: 'slug',
+    type: 'string',
+    description: 'Slug категории',
+    example: 'elektromobili',
+  })
+  @ApiOperation({ summary: 'Удалить категорию по slug' })
+  @ApiBearerAuth()
+  @Delete(':slug')
+  @UseGuards(JwtAuthGuard)
+  async delete(@Param('slug') slug: string,) {
+    return await this.categoryService.delete(slug);
   }
 
   @ApiOperation({ summary: 'Получить товары категории' })
