@@ -18,10 +18,6 @@ export class ColorService {
     try {
       const color: IColor = await this.prismaService.color.create({
         data: createColorDto,
-        select: {
-          id: true,
-          color: true,
-        },
       });
 
       return color;

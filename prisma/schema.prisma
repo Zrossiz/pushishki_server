@@ -171,7 +171,9 @@ model Order {
 
 model Color {
   id              Int              @id @default(autoincrement())
-  color           String
+  title           String
+  color           String?
+  image           String?
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
   products        Product[]
