@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCountryDto {
   @ApiProperty({ example: 'Китай' })
@@ -8,12 +8,12 @@ export class CreateCountryDto {
   name: string;
 
   @ApiProperty({ example: 'Моковое описание страны' })
-  @IsNotEmpty({ message: 'Описание страны не может быть пустым' })
+  @IsOptional()
   @IsString({ message: 'Описание страны должно быть строкой' })
   description: string;
 
   @ApiProperty({ example: 'example.png' })
-  @IsNotEmpty({ message: 'Изображение страны не может быть пустым' })
+  @IsOptional()
   @IsString({ message: 'Изображение страны должно быть строкой' })
   image: string;
 }
