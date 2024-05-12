@@ -177,7 +177,7 @@ export class ProductVariantService {
             },
           });
 
-          return (item.color = color.color);
+          return (item.color = color);
         }),
       );
 
