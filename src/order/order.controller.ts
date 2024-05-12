@@ -82,7 +82,7 @@ export class OrderController {
   @ApiParam({
     name: 'id',
     type: 'string',
-    description: 'Id цвета',
+    description: 'Id заказа',
     example: '1',
   })
   @ApiBearerAuth()
@@ -94,5 +94,21 @@ export class OrderController {
     @Body() updateOrderDto: UpdateOrderDto,
   ) {
     return await this.orderService.update(+orderId, updateOrderDto);
+  }
+
+  @ApiOperation({ summary: 'Прочитать заказ' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    description: 'Id заказа',
+    example: '1',
+  })
+  @ApiBearerAuth()
+  @Put('read/:id')
+  @UseGuards(JwtAuthGuard)
+  async setRead(
+    @Param('id') orderId: string,
+  ) {
+    return await this.orderService.setRead(+orderId)
   }
 }

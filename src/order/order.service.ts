@@ -136,4 +136,33 @@ export class OrderService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async setRead(orderId: number): Promise<Order | { message: string }> {
+    try {
+      const order: Order = await this.prismaService.order.findFirst({
+        where: { id: orderId },
+      });
+
+      if (!order) {
+        throw new BadRequestException('Заказ не найден');
+      };
+
+      const updatedOrder: Order = await this.prismaService.order.update({
+        where: {
+          id: orderId
+        }, 
+        data: {
+          read: true
+        }
+      });
+
+      return updatedOrder;
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new BadRequestException(err.message);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }
