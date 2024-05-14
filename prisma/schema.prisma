@@ -172,7 +172,7 @@ model Order {
 
 model Color {
   id              Int              @id @default(autoincrement())
-  title           String
+  title           String           @default("")
   color           String?
   image           String?
   createdAt       DateTime         @default(now()) @map("created_at")
