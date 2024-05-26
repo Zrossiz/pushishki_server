@@ -27,7 +27,7 @@ export class AuthService {
 
       if (existUser) {
         throw new BadRequestException(
-          'Пользователь с таким именем не зарегестрирован',
+          'Пользователь с таким именем уже зарегестрирован',
         );
       }
       const hashedPassword = hashSync(createUserDto.password, genSaltSync(10));

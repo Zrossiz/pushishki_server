@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateColorDto {
   @ApiProperty({ example: 'red' })
+  @IsOptional()
   @IsString({ message: 'Название цвета должно быть строкой' })
   color: string;
 
@@ -11,6 +12,7 @@ export class CreateColorDto {
   title: string;
 
   @ApiProperty({ example: "color.png" })
-  @IsString({message: 'Название для изображения должно быть строкой' })
+  @IsOptional()
+  @IsString({message: 'Изображения должно быть строкой' })
   image: string;
 }
