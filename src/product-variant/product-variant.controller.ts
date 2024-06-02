@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -23,8 +24,14 @@ export class ProductVariantController {
 
   @ApiOperation({ summary: 'Получить все варианты продукта' })
   @Get('product/:id')
-  async getAllVariantsByProduct(@Param('id') productId: string) {
-    return await this.productVariantService.getAllVariantsByProduct(+productId);
+  async getAllVariantsByProduct(
+    @Param('id') productId: string,
+    @Query('active') active: string,
+  ) {
+    return await this.productVariantService.getAllVariantsByProduct(
+      +productId,
+      active === 'false' ? false : true
+    );
   }
 
   @ApiOperation({ summary: 'Получить один вариант продукта' })

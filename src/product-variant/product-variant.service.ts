@@ -158,16 +158,23 @@ export class ProductVariantService {
     }
   }
 
-  async getAllVariantsByProduct(productId: number) {
+  async getAllVariantsByProduct(
+    productId: number,
+    active: boolean = true
+  ) {
     try {
+      
+      const filters: any = {
+        productId
+      }
+      if (active) {
+        filters.active = true
+      }
       const productVariants: ProductVariant[] =
         await this.prismaService.productVariant.findMany({
-          where: { 
-            productId,
-            active: true
-          },
+          where: filters,
         });
-
+      
       if (!productVariants) {
         throw new BadRequestException(`Варианты продуктов не найдены`);
       }
