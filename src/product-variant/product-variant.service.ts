@@ -162,7 +162,10 @@ export class ProductVariantService {
     try {
       const productVariants: ProductVariant[] =
         await this.prismaService.productVariant.findMany({
-          where: { productId },
+          where: { 
+            productId,
+            active: true
+          },
         });
 
       if (!productVariants) {

@@ -103,6 +103,7 @@ model ProductVariant {
   inStock            Boolean  @default(true) @map("in_stock")
   price              Int      @default(0)
   images             String[]
+  active             Boolean  @default(true)
   product            Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   color              Color    @relation(fields: [colorId], references: [id], onDelete: Cascade)
 
