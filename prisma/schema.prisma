@@ -54,6 +54,7 @@ model Product {
   countryId          Int              @map("country_id")
   brandId            Int              @map("brand_id")
   categoryId         Int              @map("category_id")
+  voltageId          Int?              @map("voltage_id")
   name               String
   description        String
   characteristics    String?
@@ -74,16 +75,18 @@ model Product {
   metaDescription    String?          @map("meta_description")
   metaKeyWords       String?          @map("meta_key_words")
   slug               String
-  country            Country          @relation(fields: [countryId], references: [id], onDelete: Cascade)
-  brand              Brand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  category           Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  Basket             Basket[]
-  Review             Review[]
-  Product_variant    ProductVariant[]
   createdAt          DateTime         @default(now()) @map("created_at")
   updatedAt          DateTime         @updatedAt @map("updated_at")
   colors             Color[]
   ProductsColors     ProductsColors[]
+  Basket             Basket[]
+  Review             Review[]
+  Product_variant    ProductVariant[]
+
+  country            Country          @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  brand              Brand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  category           Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  voltage            Voltage?          @relation(fields: [voltageId], references: [id], onDelete: Cascade)
 
   @@map("products")
 }
@@ -193,4 +196,12 @@ model ProductsColors {
   color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
 
   @@map("products_colors")
+}
+
+model Voltage {
+  id        Int     @id @default(autoincrement())
+  value     Int
+  products  Product[]
+
+  @@map("voltage")
 }
