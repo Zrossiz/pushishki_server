@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateVoltageDto } from './dto/create-voltage.dto';
-import { UpdateVoltageDto } from './dto/update-voltage.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class VoltageService {
-  create(createVoltageDto: CreateVoltageDto) {
-    return 'This action adds a new voltage';
-  }
+    constructor (private readonly prismaService: PrismaService) {}
 
-  findAll() {
-    return `This action returns all voltage`;
-  }
+    async create(createVoltageDto: CreateVoltageDto) {
+        try {
+            const product = await this.prismaService.product.findFirst({
+                where: {
+                    id: createVoltageDto.productId
+                }
+            });
 
-  findOne(id: number) {
-    return `This action returns a #${id} voltage`;
-  }
+            if (!product) {
+                throw new BadRequestException("Товар не найден")
+            };
 
-  update(id: number, updateVoltageDto: UpdateVoltageDto) {
-    return `This action updates a #${id} voltage`;
-  }
+            const voltage = await this.prismaService.voltage.create({
+                data: {
+                    value: createVoltageDto.value
+                }
+            });
 
-  remove(id: number) {
-    return `This action removes a #${id} voltage`;
-  }
+            return voltage;
+        } catch (err) {
+            if (`${err.status}`.startsWith('4')) {
+                throw new HttpException(err.response, err.status);
+            }
+            console.log(err);
+            throw new InternalServerErrorException('Ошибка сервера')
+        }
+    }
 }
