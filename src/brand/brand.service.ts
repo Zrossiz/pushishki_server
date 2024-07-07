@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -7,13 +8,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import {
   IBrand,
   IBrandWithLength,
-  IProduct,
   IProductWithLength,
 } from 'src/shared/interfaces';
 import { UpdateBrandDto } from 'src/brand/dto/update-brand.dto';
 import { generateSlug } from 'src/shared/helpers';
 import { CreateBrandDto } from './dto/create-brand.dto';
-import { Brand, Category, Country, Product } from '@prisma/client';
+import { Brand, Country } from '@prisma/client';
 
 @Injectable()
 export class BrandService {
@@ -51,20 +51,12 @@ export class BrandService {
 
       const brand: IBrand = await this.prismaService.brand.create({
         data: brandData,
-        select: {
-          id: true,
-          countryId: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
       });
 
       return brand;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -80,14 +72,6 @@ export class BrandService {
       );
 
       const brands: IBrand[] = await this.prismaService.brand.findMany({
-        select: {
-          id: true,
-          countryId: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
         take: 10,
         skip,
       });
@@ -105,7 +89,7 @@ export class BrandService {
       return data;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -116,14 +100,6 @@ export class BrandService {
     try {
       const brand: IBrand = await this.prismaService.brand.findFirst({
         where: { slug },
-        select: {
-          id: true,
-          countryId: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
       });
 
       if (!brand) {
@@ -133,7 +109,7 @@ export class BrandService {
       return brand;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -153,12 +129,14 @@ export class BrandService {
         throw new BadRequestException(`Бренд ${id} не найден`);
       }
 
+      const slug = updateBrandDto.name
+        ? generateSlug(updateBrandDto.name).toLowerCase()
+        : brand.slug
+
       const brandData = {
         countryId: updateBrandDto.countryId,
         name: updateBrandDto.name,
-        slug: updateBrandDto.name
-          ? generateSlug(updateBrandDto.name).toLowerCase()
-          : brand.slug,
+        slug,
         image: updateBrandDto.image,
         description: updateBrandDto.description,
       };
@@ -174,20 +152,12 @@ export class BrandService {
           id: brand.id,
         },
         data: brandData,
-        select: {
-          id: true,
-          countryId: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
       });
 
       return updatedBrand;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -204,49 +174,14 @@ export class BrandService {
         throw new BadRequestException(`Бренд ${slug} не найден`);
       }
 
-      const brandProducts: Product[] =
-        await this.prismaService.product.findMany({
-          where: { brandId: brand.id },
-        });
-
-      const brandProductVariantsIds: number[] = [];
-
-      for (let i = 0; i <= brandProducts.length; i++) {
-        if (brandProducts[i]) {
-          brandProductVariantsIds.push(brandProducts[i].id);
-        }
-      }
-
-      await this.prismaService.productVariant.deleteMany({
-        where: {
-          productId: {
-            in: brandProductVariantsIds,
-          },
-        },
-      });
-
-      await this.prismaService.product.deleteMany({
-        where: {
-          brandId: brand.id,
-        },
-      });
-
       const deletedBrand: IBrand = await this.prismaService.brand.delete({
         where: { id: brand.id },
-        select: {
-          id: true,
-          countryId: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
       });
 
       return deletedBrand;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -256,7 +191,7 @@ export class BrandService {
   async getProductsBySlug(
     slug: string,
     page: number,
-  ): Promise<IProductWithLength | { message: string }> {
+  ): Promise<IProductWithLength> {
     try {
       const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug },
@@ -272,54 +207,27 @@ export class BrandService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         take: 10,
         skip,
         where: { brandId: brand.id },
+        include: {
+          category: true,
+          country: true,
+          brand: true,
+        }
       });
 
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
-
-      const populatedData: IProductWithLength = {
+      const populatedData = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: updatedData,
+        data: products,
       };
 
       return populatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
