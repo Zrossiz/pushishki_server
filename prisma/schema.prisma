@@ -54,7 +54,8 @@ model Product {
   countryId          Int              @map("country_id")
   brandId            Int              @map("brand_id")
   categoryId         Int              @map("category_id")
-  voltageId          Int?              @map("voltage_id")
+  voltageId          Int?             @map("voltage_id")
+  ageId              Int?             @map("age_id")
   name               String
   description        String
   characteristics    String?
@@ -86,7 +87,8 @@ model Product {
   country            Country          @relation(fields: [countryId], references: [id], onDelete: Cascade)
   brand              Brand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
   category           Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  voltage            Voltage?          @relation(fields: [voltageId], references: [id], onDelete: Cascade)
+  voltage            Voltage?         @relation(fields: [voltageId], references: [id], onDelete: Cascade)
+  age                Age?             @relation(fields: [ageId], references: [id], onDelete: Cascade)
 
   @@map("products")
 }
@@ -204,4 +206,12 @@ model Voltage {
   products  Product[]
 
   @@map("voltage")
+}
+
+model Age {
+  id       Int       @id @default(autoincrement())
+  value    String
+  products Product[]
+
+  @@map("age")
 }
