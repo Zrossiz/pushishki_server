@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateReviewDto } from 'src/review/dto/create-review-dto';
-import { IReview, IReviewWithLength } from 'src/shared/interfaces';
+import { IReview } from 'src/shared/interfaces';
 import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
 import { Product, Review } from '@prisma/client';
 

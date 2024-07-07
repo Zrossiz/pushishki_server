@@ -111,14 +111,6 @@ export class ProductVariantService {
         );
       }
 
-      const deletedRelations =
-        await this.prismaService.productsColors.deleteMany({
-          where: {
-            colorId: productVariant.colorId,
-            productId: productVariant.productId,
-          },
-        });
-
       const deletedProductVariant: ProductVariant =
         await this.prismaService.productVariant.delete({
           where: { id: productVariantId },
@@ -174,23 +166,14 @@ export class ProductVariantService {
       const productVariants: ProductVariant[] =
         await this.prismaService.productVariant.findMany({
           where: filters,
+          include: {
+            color: true,
+          }
         });
       
       if (!productVariants) {
         throw new BadRequestException(`Варианты продуктов не найдены`);
       }
-
-      await Promise.all(
-        productVariants.map(async (item: any) => {
-          const color: Color = await this.prismaService.color.findFirst({
-            where: {
-              id: item.colorId,
-            },
-          });
-
-          return (item.color = color);
-        }),
-      );
 
       return productVariants;
     } catch (err) {
