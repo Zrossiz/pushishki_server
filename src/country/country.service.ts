@@ -90,48 +90,21 @@ export class CountryService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         take: 10,
         where: { countryId: country.id },
         skip,
+        include: {
+          category: true,
+          country: true,
+          brand: true,
+        }
       });
-
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: updatedData,
+        data: products,
       };
 
       return populatedData;
@@ -157,12 +130,14 @@ export class CountryService {
         throw new BadRequestException(`Страна ${slug} не найдена`);
       }
 
+      const newSlug = updateCountryDto.name
+      ? generateSlug(updateCountryDto.name).toLowerCase()
+      : country.slug
+
       const countryData = {
         name: updateCountryDto.name,
         description: updateCountryDto.description,
-        slug: updateCountryDto.name
-          ? generateSlug(updateCountryDto.name).toLowerCase()
-          : country.slug,
+        slug: newSlug,
         image: updateCountryDto.image,
       };
 
@@ -233,37 +208,6 @@ export class CountryService {
       if (!country) {
         throw new BadRequestException(`Страна ${slug} не найдена`);
       }
-
-      const productsCountry: Product[] =
-        await this.prismaService.product.findMany({
-          where: {
-            countryId: country.id,
-          },
-        });
-
-      const productsIds: number[] = [];
-
-      for (let i = 0; i <= productsCountry.length; i++) {
-        if (productsCountry[i]) {
-          productsIds.push(productsCountry[i].id);
-        }
-      }
-
-      await this.prismaService.productVariant.deleteMany({
-        where: {
-          productId: {
-            in: productsIds,
-          },
-        },
-      });
-
-      await this.prismaService.product.deleteMany({
-        where: { countryId: country.id },
-      });
-
-      await this.prismaService.brand.deleteMany({
-        where: { countryId: country.id },
-      });
 
       const deletedCountry: ICountry = await this.prismaService.country.delete({
         where: { id: country.id },

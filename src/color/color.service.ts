@@ -41,18 +41,6 @@ export class ColorService {
         throw new BadRequestException('Цвет не найден');
       }
 
-      await this.prismaService.productVariant.deleteMany({
-        where: {
-          colorId,
-        },
-      });
-
-      await this.prismaService.productsColors.deleteMany({
-        where: {
-          colorId,
-        },
-      });
-
       const color: IColor = await this.prismaService.color.delete({
         where: {
           id: colorId,

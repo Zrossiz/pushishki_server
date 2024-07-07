@@ -92,47 +92,20 @@ export class ProductService {
         (await this.prismaService.product.count()) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         take: 10,
         skip,
+        include: {
+          country: true,
+          brand: true,
+          category: true,
+        }
       });
-
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: updatedData,
+        data: products,
       };
 
       return populatedData;
@@ -145,42 +118,22 @@ export class ProductService {
     }
   }
 
-  async getOne(slug: string): Promise<IProduct> {
+  async getOne(slug: string): Promise<Product> {
     try {
-      const product: Product = await this.prismaService.product.findFirst({
+      const product = await this.prismaService.product.findFirst({
         where: { slug },
+        include: {
+          country: true,
+          brand: true,
+          category: true,
+        }
       });
 
       if (!product) {
         throw new BadRequestException(`Товар ${slug} не найден`);
       }
-
-      const category: Category = await this.prismaService.category.findFirst({
-        where: {
-          id: product.categoryId,
-        },
-      });
-
-      const brand: Brand = await this.prismaService.brand.findFirst({
-        where: {
-          id: product.brandId,
-        },
-      });
-
-      const country: Country = await this.prismaService.country.findFirst({
-        where: {
-          id: product.countryId,
-        },
-      });
-
-      const res = {
-        ...product,
-        country: country,
-        brand: brand,
-        category: category,
-      };
-
-      return res;
+      
+      return product;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -192,47 +145,20 @@ export class ProductService {
 
   async getBestsellers(): Promise<IProduct[]> {
     try {
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         where: { bestseller: true },
+        include: {
+          country: true,
+          brand: true,
+          category: true,
+        }
       });
 
       if (!products) {
         throw new BadRequestException(`Ничего не найдено`);
       }
 
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
-
-      return updatedData;
+      return products;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -244,47 +170,20 @@ export class ProductService {
 
   async getNewProducts(): Promise<IProduct[]> {
     try {
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         where: { new: true },
+        include: {
+          country: true,
+          brand: true,
+          category: true,
+        }
       });
 
       if (!products) {
         throw new BadRequestException(`Ничего не найдено`);
       }
 
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
-
-      return updatedData;
+      return products;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -315,39 +214,19 @@ export class ProductService {
         }
       });
 
-      const updatedProduct: Product = await this.prismaService.product.update({
+      const updatedProduct = await this.prismaService.product.update({
         where: {
           id: productId,
         },
         data: updateProductDto,
+        include: {
+          country: true,
+          brand: true,
+          category: true,
+        }
       });
 
-      const category: Category = await this.prismaService.category.findFirst({
-        where: {
-          id: product.categoryId,
-        },
-      });
-
-      const brand: Brand = await this.prismaService.brand.findFirst({
-        where: {
-          id: product.brandId,
-        },
-      });
-
-      const country: Country = await this.prismaService.country.findFirst({
-        where: {
-          id: product.countryId,
-        },
-      });
-
-      const res = {
-        country: country,
-        brand: brand,
-        category: category,
-        ...updatedProduct,
-      };
-
-      return res;
+      return updatedProduct;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -365,39 +244,6 @@ export class ProductService {
 
       if (!product) {
         throw new BadRequestException(`Товар ${productId} не найден`);
-      }
-
-      const productVariants = await this.prismaService.productVariant.findMany({
-        where: {
-          productId,
-        },
-      });
-
-      const productReviews = await this.prismaService.review.findMany({
-        where: {
-          productId,
-        },
-      });
-
-      if (productReviews.length >= 1) {
-        await this.prismaService.review.deleteMany({
-          where: {
-            productId,
-          },
-        });
-      }
-
-      if (productVariants.length >= 1) {
-        await this.prismaService.productsColors.deleteMany({
-          where: {
-            productId,
-          },
-        });
-        await this.prismaService.productVariant.deleteMany({
-          where: {
-            productId,
-          },
-        });
       }
 
       const deletedProduct: Product = await this.prismaService.product.delete({
@@ -437,7 +283,7 @@ export class ProductService {
 
       const totalPages: number = Math.ceil(productsIds.length / 10);
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         where: {
           id: {
             in: productsIds,
@@ -445,44 +291,17 @@ export class ProductService {
         },
         take: 10,
         skip,
+        include: {
+          country: true,
+          brand: true,
+          category: true,
+        }
       });
-
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: updatedData,
+        data: products,
       };
 
       return populatedData;
@@ -538,7 +357,7 @@ export class ProductService {
         })) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         where: {
           OR: [
             {
@@ -576,48 +395,21 @@ export class ProductService {
             defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
           },
         ],
+        include: {
+          country: true,
+          brand: true,
+          category: true,
+        }
       });
 
       if (!products) {
         throw new BadRequestException(`Ничего не найдено`);
       }
 
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
-
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: updatedData,
+        data: products,
       };
 
       return populatedData;
