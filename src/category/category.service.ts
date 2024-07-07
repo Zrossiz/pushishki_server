@@ -8,13 +8,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import {
   ICategory,
   ICategoryWithLength,
-  IProduct,
   IProductWithLength,
 } from 'src/shared/interfaces';
 import { generateSlug } from 'src/shared/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { Brand, Category, Country, Product } from '@prisma/client';
+import { Category } from '@prisma/client';
 
 @Injectable()
 export class CategoryService {
@@ -102,10 +101,12 @@ export class CategoryService {
         throw new BadRequestException(`Категория ${slug} не найдена`);
       }
 
+      const newSlug = updateCategoryDto.name
+      ? generateSlug(updateCategoryDto.name).toLowerCase()
+      : existCategory.slug
+
       const categoryData = {
-        slug: updateCategoryDto.name
-          ? generateSlug(updateCategoryDto.name).toLowerCase()
-          : existCategory.slug,
+        slug: newSlug,
         ...updateCategoryDto,
       };
 
@@ -142,7 +143,13 @@ export class CategoryService {
       }
 
       return category;
-    } catch (err) {}
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
   }
 
   async getProductsBySlug(
@@ -212,7 +219,7 @@ export class CategoryService {
         })) / 10,
       );
 
-      const products: Product[] = await this.prismaService.product.findMany({
+      const products = await this.prismaService.product.findMany({
         take: 10,
         where: filter,
         skip,
@@ -221,44 +228,17 @@ export class CategoryService {
             defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
           },
         ],
+        include: {
+          category: true,
+          country: true,
+          brand: true,
+        }
       });
-
-      const updatedData: IProduct[] = await Promise.all(
-        products.map(async (item) => {
-          const category: Category =
-            await this.prismaService.category.findFirst({
-              where: {
-                id: item.categoryId,
-              },
-            });
-
-          const country: Country = await this.prismaService.country.findFirst({
-            where: {
-              id: item.countryId,
-            },
-          });
-
-          const brand: Brand = await this.prismaService.brand.findFirst({
-            where: {
-              id: item.brandId,
-            },
-          });
-
-          const product: IProduct = {
-            ...item,
-            country: country,
-            brand: brand,
-            category: category,
-          };
-
-          return product;
-        }),
-      );
 
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
-        data: updatedData,
+        data: products,
       };
 
       return populatedData;
