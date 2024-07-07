@@ -20,7 +20,7 @@ export class ProductService {
 
   async create(
     createProductDto: CreateProductDto,
-  ): Promise<IProduct | { message: string }> {
+  ): Promise<IProduct> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
         where: { id: Number(createProductDto.countryId) },
@@ -84,7 +84,7 @@ export class ProductService {
 
   async getAll(
     page: number,
-  ): Promise<IProductWithLength | { message: string }> {
+  ): Promise<IProductWithLength> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
@@ -145,7 +145,7 @@ export class ProductService {
     }
   }
 
-  async getOne(slug: string): Promise<IProduct | { message: string }> {
+  async getOne(slug: string): Promise<IProduct> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { slug },
@@ -190,7 +190,7 @@ export class ProductService {
     }
   }
 
-  async getBestsellers(): Promise<IProduct[] | { message: string }> {
+  async getBestsellers(): Promise<IProduct[]> {
     try {
       const products: Product[] = await this.prismaService.product.findMany({
         where: { bestseller: true },
@@ -242,7 +242,7 @@ export class ProductService {
     }
   }
 
-  async getNewProducts(): Promise<IProduct[] | { message: string }> {
+  async getNewProducts(): Promise<IProduct[]> {
     try {
       const products: Product[] = await this.prismaService.product.findMany({
         where: { new: true },
@@ -297,7 +297,7 @@ export class ProductService {
   async update(
     productId: number,
     updateProductDto: UpdateProductDto,
-  ): Promise<IProduct | { message: string }> {
+  ): Promise<IProduct> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: {
@@ -357,7 +357,7 @@ export class ProductService {
     }
   }
 
-  async delete(productId: number): Promise<Product | { message: string }> {
+  async delete(productId: number): Promise<Product> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
@@ -417,7 +417,7 @@ export class ProductService {
   async getProductsByColor(
     colorId: number,
     page: number,
-  ): Promise<IProductWithLength | { message: string }> {
+  ): Promise<IProductWithLength> {
     try {
       const productsByColor = await this.prismaService.productsColors.findMany({
         where: {
@@ -499,7 +499,7 @@ export class ProductService {
     search: string,
     page: number,
     sort: string,
-  ): Promise<IProductWithLength | { message: string }> {
+  ): Promise<IProductWithLength> {
     try {
       const skip: number = +page ? (page - 1) * 10 : 0;
       const searchLower = search.toLowerCase();

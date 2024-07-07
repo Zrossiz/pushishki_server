@@ -21,7 +21,7 @@ export class BrandService {
 
   async create(
     createBrandDto: CreateBrandDto,
-  ): Promise<IBrand | { message: string }> {
+  ): Promise<IBrand> {
     try {
       const existCountry: Country = await this.prismaService.country.findFirst({
         where: { id: createBrandDto.countryId },
@@ -63,7 +63,7 @@ export class BrandService {
     }
   }
 
-  async getAll(page: number): Promise<IBrandWithLength | { message: string }> {
+  async getAll(page: number): Promise<IBrandWithLength> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
@@ -96,7 +96,7 @@ export class BrandService {
     }
   }
 
-  async getOne(slug: string): Promise<IBrand | { message: string }> {
+  async getOne(slug: string): Promise<IBrand> {
     try {
       const brand: IBrand = await this.prismaService.brand.findFirst({
         where: { slug },
@@ -119,7 +119,7 @@ export class BrandService {
   async update(
     updateBrandDto: UpdateBrandDto,
     id: number,
-  ): Promise<IBrand | { message: string }> {
+  ): Promise<IBrand> {
     try {
       const brand: IBrand = await this.prismaService.brand.findFirst({
         where: { id },
@@ -164,7 +164,7 @@ export class BrandService {
     }
   }
 
-  async delete(slug: string): Promise<IBrand | { message: string }> {
+  async delete(slug: string): Promise<IBrand> {
     try {
       const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug },

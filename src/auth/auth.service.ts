@@ -20,7 +20,7 @@ export class AuthService {
 
   async registration(
     createUserDto: CreateUserDto,
-  ): Promise<IUserWithToken | { message: string }> {
+  ): Promise<IUserWithToken> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: createUserDto.username },
@@ -60,7 +60,7 @@ export class AuthService {
 
   async login(
     loginUserDto: LoginUserDto,
-  ): Promise<IUserWithToken | { message: string }> {
+  ): Promise<IUserWithToken> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: loginUserDto.username },

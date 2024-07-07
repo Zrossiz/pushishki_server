@@ -22,7 +22,7 @@ export class CountryService {
 
   async getAll(
     page: number,
-  ): Promise<ICountryWithLength | { message: string }> {
+  ): Promise<ICountryWithLength> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
@@ -51,7 +51,7 @@ export class CountryService {
     }
   }
 
-  async getOne(slug: string): Promise<ICountry | { message: string }> {
+  async getOne(slug: string): Promise<ICountry> {
     try {
       const country: ICountry = await this.prismaService.country.findFirst({
         where: { slug: slug },
@@ -74,7 +74,7 @@ export class CountryService {
   async getProductsBySlug(
     slug: string,
     page: number,
-  ): Promise<IProductWithLength | { message: string }> {
+  ): Promise<IProductWithLength> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },
@@ -147,7 +147,7 @@ export class CountryService {
   async update(
     slug: string,
     updateCountryDto: UpdateCountryDto,
-  ): Promise<ICountry | { message: string }> {
+  ): Promise<ICountry> {
     try {
       const country = await this.prismaService.country.findFirst({
         where: { slug: slug },
@@ -191,7 +191,7 @@ export class CountryService {
 
   async create(
     createCountryDto: CreateCountryDto,
-  ): Promise<ICountry | { message: string }> {
+  ): Promise<ICountry> {
     try {
       const existCountry: Country = await this.prismaService.country.findFirst({
         where: { name: createCountryDto.name },
@@ -224,7 +224,7 @@ export class CountryService {
     }
   }
 
-  async delete(slug: string): Promise<ICountry | { message: string }> {
+  async delete(slug: string): Promise<ICountry> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },

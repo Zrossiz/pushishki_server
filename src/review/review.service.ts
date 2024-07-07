@@ -16,7 +16,7 @@ export class ReviewService {
 
   async create(
     createReviewDto: CreateReviewDto,
-  ): Promise<IReview | { message: string }> {
+  ): Promise<IReview> {
     try {
       const review: IReview = await this.prismaService.review.create({
         data: createReviewDto,
@@ -39,7 +39,7 @@ export class ReviewService {
   async update(
     reviewId: number,
     updateReviewDto: UpdateReviewDto,
-  ): Promise<IReview | { message: string }> {
+  ): Promise<IReview> {
     try {
       const review: Review = await this.prismaService.review.findFirst({
         where: { id: reviewId },
@@ -74,7 +74,7 @@ export class ReviewService {
   async getAllReviewsByProduct(
     productId: number,
     all: string,
-  ): Promise<IReview[] | { message: string }> {
+  ): Promise<IReview[]> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
@@ -114,7 +114,7 @@ export class ReviewService {
 
   async switchActiveReview(
     reviewId: number,
-  ): Promise<IReview | { message: string }> {
+  ): Promise<IReview> {
     try {
       const updatedReview: IReview = await this.prismaService.review.update({
         where: { id: reviewId },
@@ -156,7 +156,7 @@ export class ReviewService {
     }
   }
 
-  async delete(reviewId: number): Promise<IReview | { message: string }> {
+  async delete(reviewId: number): Promise<IReview> {
     try {
       const review: Review = await this.prismaService.review.findFirst({
         where: { id: reviewId },

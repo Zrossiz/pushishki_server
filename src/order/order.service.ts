@@ -16,7 +16,7 @@ export class OrderService {
 
   async create(
     createOrderDto: CreateOrderDto,
-  ): Promise<Order | { message: string }> {
+  ): Promise<Order> {
     try {
       const order: Order = await this.prismaService.order.create({
         data: createOrderDto,
@@ -35,7 +35,7 @@ export class OrderService {
   async update(
     orderId: number,
     updateOrderDto: UpdateOrderDto,
-  ): Promise<Order | { message: string }> {
+  ): Promise<Order> {
     const order: Order = await this.prismaService.order.findFirst({
       where: { id: orderId },
     });
@@ -58,7 +58,7 @@ export class OrderService {
     return updatedOrder;
   }
 
-  async getAll(page: number): Promise<IOrderWithLength | { message: string }> {
+  async getAll(page: number): Promise<IOrderWithLength> {
     try {
       const skip: number = page ? (page - 1) * 40 : 0;
 
@@ -94,7 +94,7 @@ export class OrderService {
     }
   }
 
-  async getOne(orderId: number): Promise<Order | { message: string }> {
+  async getOne(orderId: number): Promise<Order> {
     try {
       const order: Order = await this.prismaService.order.findFirst({
         where: { id: orderId },
@@ -114,7 +114,7 @@ export class OrderService {
     }
   }
 
-  async delete(orderId: number): Promise<Order | { message: string }> {
+  async delete(orderId: number): Promise<Order> {
     try {
       const order: Order = await this.prismaService.order.findFirst({
         where: { id: orderId },
@@ -138,7 +138,7 @@ export class OrderService {
     }
   }
 
-  async setRead(orderId: number): Promise<Order | { message: string }> {
+  async setRead(orderId: number): Promise<Order> {
     try {
       const order: Order = await this.prismaService.order.findFirst({
         where: { id: orderId },

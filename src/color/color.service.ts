@@ -15,7 +15,7 @@ export class ColorService {
 
   async create(
     createColorDto: CreateColorDto,
-  ): Promise<IColor | { message: string }> {
+  ): Promise<IColor> {
     try {
       const color: IColor = await this.prismaService.color.create({
         data: createColorDto,
@@ -31,7 +31,7 @@ export class ColorService {
     }
   }
 
-  async delete(colorId: number): Promise<IColor | { message: string }> {
+  async delete(colorId: number): Promise<IColor> {
     try {
       const foundColor: Color = await this.prismaService.color.findFirst({
         where: { id: colorId },
@@ -69,7 +69,7 @@ export class ColorService {
     }
   }
 
-  async getAll(): Promise<IColor[] | { message: string }> {
+  async getAll(): Promise<IColor[]> {
     try {
       const colors: IColor[] = await this.prismaService.color.findMany();
 

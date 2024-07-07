@@ -15,7 +15,7 @@ export class ProductVariantService {
 
   async create(
     createProductVariantDto: CreateProductVariantDto,
-  ): Promise<ProductVariant | { message: string }> {
+  ): Promise<ProductVariant> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: createProductVariantDto.productId },
@@ -61,7 +61,7 @@ export class ProductVariantService {
   async update(
     productVariantId: number,
     updateProductVariantDto: UpdateProductVariantDto,
-  ): Promise<ProductVariant | { message: string }> {
+  ): Promise<ProductVariant> {
     try {
       const productVariant: ProductVariant =
         await this.prismaService.productVariant.findFirst({
@@ -98,7 +98,7 @@ export class ProductVariantService {
 
   async delete(
     productVariantId: number,
-  ): Promise<ProductVariant | { message: string }> {
+  ): Promise<ProductVariant> {
     try {
       const productVariant: ProductVariant =
         await this.prismaService.productVariant.findFirst({
@@ -136,7 +136,7 @@ export class ProductVariantService {
 
   async getOne(
     productVariantId: number,
-  ): Promise<ProductVariant | { message: string }> {
+  ): Promise<ProductVariant> {
     try {
       const productVariant: ProductVariant =
         await this.prismaService.productVariant.findFirst({

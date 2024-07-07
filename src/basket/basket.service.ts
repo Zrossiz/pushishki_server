@@ -13,7 +13,7 @@ export class BasketService {
 
   async create(
     createBasketDto: CreateBasketDto,
-  ): Promise<{ count: number } | { message: string }> {
+  ): Promise<{ count: number }> {
     try {
       const orders = await this.prismaService.basket.createMany({
         data: createBasketDto.objects,

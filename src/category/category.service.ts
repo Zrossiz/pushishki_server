@@ -22,7 +22,7 @@ export class CategoryService {
 
   async create(
     createCategoryDto: CreateCategoryDto,
-  ): Promise<ICategory | { message: string }> {
+  ): Promise<ICategory> {
     try {
       const existCategory: Category =
         await this.prismaService.category.findFirst({
@@ -58,7 +58,7 @@ export class CategoryService {
 
   async getAll(
     page: number,
-  ): Promise<ICategoryWithLength | { message: string }> {
+  ): Promise<ICategoryWithLength> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
@@ -91,7 +91,7 @@ export class CategoryService {
   async update(
     updateCategoryDto: UpdateCategoryDto,
     slug: string,
-  ): Promise<ICategory | { message: string }> {
+  ): Promise<ICategory> {
     try {
       const existCategory: Category =
         await this.prismaService.category.findFirst({
@@ -131,7 +131,7 @@ export class CategoryService {
     }
   }
 
-  async getOne(slug: string): Promise<ICategory | { message: string }> {
+  async getOne(slug: string): Promise<ICategory> {
     try {
       const category: ICategory = await this.prismaService.category.findFirst({
         where: { slug },
@@ -155,7 +155,7 @@ export class CategoryService {
     countries: string,
     inStock: string,
     maximumLoad: number,
-  ): Promise<IProductWithLength | { message: string }> {
+  ): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
         where: { slug },
@@ -271,7 +271,7 @@ export class CategoryService {
     }
   }
 
-  async delete (slug: string): Promise<Category | { message: string }> {
+  async delete (slug: string): Promise<Category> {
     try {
       const existCategory: ICategory = await this.prismaService.category.findFirst({
         where: {
