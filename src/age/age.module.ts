@@ -7,6 +7,6 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   controllers: [AgeController],
   providers: [AgeService, PrismaService],
-  imports: [AuthModule]
+  imports: [AuthModule],
 })
 export class AgeModule {}

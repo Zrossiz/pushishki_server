@@ -115,7 +115,7 @@ export class CreateProductDto {
 
   @ApiProperty({
     example: 1,
-    description: 'Внешний ключ на объект вольтажа'
+    description: 'Внешний ключ на объект вольтажа',
   })
   voltageId: number;
 }
