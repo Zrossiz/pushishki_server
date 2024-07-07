@@ -10,13 +10,7 @@ import {
 } from '@nestjs/common';
 import { BasketDto, CreateBasketDto } from 'src/basket/dto/create-basket.dto';
 import { BasketService } from 'src/basket/basket.service';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Basket')

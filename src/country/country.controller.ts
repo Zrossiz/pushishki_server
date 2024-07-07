@@ -14,13 +14,7 @@ import {
 import { CreateCountryDto } from 'src/country/dto/create-country.dto';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { CountryService } from 'src/country/country.service';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiProperty,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Country')
@@ -60,10 +54,7 @@ export class CountryController {
   @Put(':slug')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  async update(
-    @Param('slug') slug: string,
-    @Body() updateCountryDto: UpdateCountryDto,
-  ) {
+  async update(@Param('slug') slug: string, @Body() updateCountryDto: UpdateCountryDto) {
     return this.countryService.update(slug, updateCountryDto);
   }
 
@@ -80,10 +71,7 @@ export class CountryController {
     required: false,
   })
   @Get(':slug/products')
-  async getProductsBySlug(
-    @Param('slug') slug: string,
-    @Query('page') page: number,
-  ) {
+  async getProductsBySlug(@Param('slug') slug: string, @Query('page') page: number) {
     return this.countryService.getProductsBySlug(slug, page);
   }
 

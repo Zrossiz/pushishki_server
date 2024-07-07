@@ -14,14 +14,7 @@ import {
 import { BrandService } from 'src/brand/brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Brand')
@@ -79,10 +72,7 @@ export class BrandController {
     required: false,
   })
   @Get('/:slug/products')
-  async getProductsBySlug(
-    @Param('slug') slug: string,
-    @Query('page') page: number,
-  ) {
+  async getProductsBySlug(@Param('slug') slug: string, @Query('page') page: number) {
     return this.brandService.getProductsBySlug(slug, page);
   }
 
@@ -98,10 +88,7 @@ export class BrandController {
   @Put('/:id')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  async update(
-    @Param('id') id: string,
-    @Body() updateBrandDto: UpdateBrandDto,
-  ) {
+  async update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
     return await this.brandService.update(updateBrandDto, +id);
   }
 

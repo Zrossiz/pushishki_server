@@ -5,11 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  IBrand,
-  IBrandWithLength,
-  IProductWithLength,
-} from 'src/shared/interfaces';
+import { IBrand, IBrandWithLength, IProductWithLength } from 'src/shared/interfaces';
 import { UpdateBrandDto } from 'src/brand/dto/update-brand.dto';
 import { generateSlug } from 'src/shared/helpers';
 import { CreateBrandDto } from './dto/create-brand.dto';
@@ -19,9 +15,7 @@ import { Brand, Country } from '@prisma/client';
 export class BrandService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createBrandDto: CreateBrandDto,
-  ): Promise<IBrand> {
+  async create(createBrandDto: CreateBrandDto): Promise<IBrand> {
     try {
       const existCountry: Country = await this.prismaService.country.findFirst({
         where: { id: createBrandDto.countryId },
@@ -67,9 +61,7 @@ export class BrandService {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.brand.count()) / 10,
-      );
+      const totalPages: number = Math.ceil((await this.prismaService.brand.count()) / 10);
 
       const brands: IBrand[] = await this.prismaService.brand.findMany({
         take: 10,
@@ -116,10 +108,7 @@ export class BrandService {
     }
   }
 
-  async update(
-    updateBrandDto: UpdateBrandDto,
-    id: number,
-  ): Promise<IBrand> {
+  async update(updateBrandDto: UpdateBrandDto, id: number): Promise<IBrand> {
     try {
       const brand: IBrand = await this.prismaService.brand.findFirst({
         where: { id },
@@ -131,7 +120,7 @@ export class BrandService {
 
       const slug = updateBrandDto.name
         ? generateSlug(updateBrandDto.name).toLowerCase()
-        : brand.slug
+        : brand.slug;
 
       const brandData = {
         countryId: updateBrandDto.countryId,
@@ -188,10 +177,7 @@ export class BrandService {
     }
   }
 
-  async getProductsBySlug(
-    slug: string,
-    page: number,
-  ): Promise<IProductWithLength> {
+  async getProductsBySlug(slug: string, page: number): Promise<IProductWithLength> {
     try {
       const brand: Brand = await this.prismaService.brand.findFirst({
         where: { slug },
@@ -203,9 +189,7 @@ export class BrandService {
 
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.product.count()) / 10,
-      );
+      const totalPages: number = Math.ceil((await this.prismaService.product.count()) / 10);
 
       const products = await this.prismaService.product.findMany({
         take: 10,
@@ -215,7 +199,7 @@ export class BrandService {
           category: true,
           country: true,
           brand: true,
-        }
+        },
       });
 
       const populatedData = {

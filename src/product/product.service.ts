@@ -5,10 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  IProduct,
-  IProductWithLength,
-} from 'src/shared/interfaces';
+import { IProduct, IProductWithLength } from 'src/shared/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Brand, Country, Product, Category } from '@prisma/client';
@@ -18,9 +15,7 @@ import { generateSlug } from 'src/shared/helpers';
 export class ProductService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createProductDto: CreateProductDto,
-  ): Promise<IProduct> {
+  async create(createProductDto: CreateProductDto): Promise<IProduct> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
         where: { id: Number(createProductDto.countryId) },
@@ -82,15 +77,11 @@ export class ProductService {
     }
   }
 
-  async getAll(
-    page: number,
-  ): Promise<IProductWithLength> {
+  async getAll(page: number): Promise<IProductWithLength> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.product.count()) / 10,
-      );
+      const totalPages: number = Math.ceil((await this.prismaService.product.count()) / 10);
 
       const products = await this.prismaService.product.findMany({
         take: 10,
@@ -99,7 +90,7 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
-        }
+        },
       });
 
       const populatedData: IProductWithLength = {
@@ -126,13 +117,13 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
-        }
+        },
       });
 
       if (!product) {
         throw new BadRequestException(`Товар ${slug} не найден`);
       }
-      
+
       return product;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
@@ -151,7 +142,7 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
-        }
+        },
       });
 
       if (!products) {
@@ -176,7 +167,7 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
-        }
+        },
       });
 
       if (!products) {
@@ -193,10 +184,7 @@ export class ProductService {
     }
   }
 
-  async update(
-    productId: number,
-    updateProductDto: UpdateProductDto,
-  ): Promise<IProduct> {
+  async update(productId: number, updateProductDto: UpdateProductDto): Promise<IProduct> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: {
@@ -223,7 +211,7 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
-        }
+        },
       });
 
       return updatedProduct;
@@ -260,10 +248,7 @@ export class ProductService {
     }
   }
 
-  async getProductsByColor(
-    colorId: number,
-    page: number,
-  ): Promise<IProductWithLength> {
+  async getProductsByColor(colorId: number, page: number): Promise<IProductWithLength> {
     try {
       const productsByColor = await this.prismaService.productsColors.findMany({
         where: {
@@ -295,7 +280,7 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
-        }
+        },
       });
 
       const populatedData: IProductWithLength = {
@@ -314,11 +299,7 @@ export class ProductService {
     }
   }
 
-  async find(
-    search: string,
-    page: number,
-    sort: string,
-  ): Promise<IProductWithLength> {
+  async find(search: string, page: number, sort: string): Promise<IProductWithLength> {
     try {
       const skip: number = +page ? (page - 1) * 10 : 0;
       const searchLower = search.toLowerCase();
@@ -343,8 +324,7 @@ export class ProductService {
               },
               {
                 name: {
-                  startsWith:
-                    searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
+                  startsWith: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
                 },
               },
               {
@@ -377,8 +357,7 @@ export class ProductService {
             },
             {
               name: {
-                startsWith:
-                  searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
+                startsWith: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
               },
             },
             {
@@ -399,7 +378,7 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
-        }
+        },
       });
 
       if (!products) {

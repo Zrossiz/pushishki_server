@@ -13,9 +13,7 @@ import { IColor } from 'src/shared/interfaces';
 export class ColorService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createColorDto: CreateColorDto,
-  ): Promise<IColor> {
+  async create(createColorDto: CreateColorDto): Promise<IColor> {
     try {
       const color: IColor = await this.prismaService.color.create({
         data: createColorDto,

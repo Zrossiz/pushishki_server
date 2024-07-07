@@ -5,12 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  ICountry,
-  ICountryWithLength,
-  IProduct,
-  IProductWithLength,
-} from 'src/shared/interfaces';
+import { ICountry, ICountryWithLength, IProduct, IProductWithLength } from 'src/shared/interfaces';
 import { generateSlug } from 'src/shared/helpers';
 import { UpdateCountryDto } from 'src/country/dto/update-country.dto';
 import { Brand, Category, Country, Product } from '@prisma/client';
@@ -20,15 +15,11 @@ import { CreateCountryDto } from './dto/create-country.dto';
 export class CountryService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getAll(
-    page: number,
-  ): Promise<ICountryWithLength> {
+  async getAll(page: number): Promise<ICountryWithLength> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.country.count()) / 10,
-      );
+      const totalPages: number = Math.ceil((await this.prismaService.country.count()) / 10);
 
       const countries: ICountry[] = await this.prismaService.country.findMany({
         take: 10,
@@ -71,10 +62,7 @@ export class CountryService {
     }
   }
 
-  async getProductsBySlug(
-    slug: string,
-    page: number,
-  ): Promise<IProductWithLength> {
+  async getProductsBySlug(slug: string, page: number): Promise<IProductWithLength> {
     try {
       const country: Country = await this.prismaService.country.findFirst({
         where: { slug: slug },
@@ -86,9 +74,7 @@ export class CountryService {
 
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.product.count()) / 10,
-      );
+      const totalPages: number = Math.ceil((await this.prismaService.product.count()) / 10);
 
       const products = await this.prismaService.product.findMany({
         take: 10,
@@ -98,7 +84,7 @@ export class CountryService {
           category: true,
           country: true,
           brand: true,
-        }
+        },
       });
 
       const populatedData: IProductWithLength = {
@@ -117,10 +103,7 @@ export class CountryService {
     }
   }
 
-  async update(
-    slug: string,
-    updateCountryDto: UpdateCountryDto,
-  ): Promise<ICountry> {
+  async update(slug: string, updateCountryDto: UpdateCountryDto): Promise<ICountry> {
     try {
       const country = await this.prismaService.country.findFirst({
         where: { slug: slug },
@@ -131,8 +114,8 @@ export class CountryService {
       }
 
       const newSlug = updateCountryDto.name
-      ? generateSlug(updateCountryDto.name).toLowerCase()
-      : country.slug
+        ? generateSlug(updateCountryDto.name).toLowerCase()
+        : country.slug;
 
       const countryData = {
         name: updateCountryDto.name,
@@ -164,9 +147,7 @@ export class CountryService {
     }
   }
 
-  async create(
-    createCountryDto: CreateCountryDto,
-  ): Promise<ICountry> {
+  async create(createCountryDto: CreateCountryDto): Promise<ICountry> {
     try {
       const existCountry: Country = await this.prismaService.country.findFirst({
         where: { name: createCountryDto.name },

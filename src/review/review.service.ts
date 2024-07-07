@@ -14,9 +14,7 @@ import { Product, Review } from '@prisma/client';
 export class ReviewService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createReviewDto: CreateReviewDto,
-  ): Promise<IReview> {
+  async create(createReviewDto: CreateReviewDto): Promise<IReview> {
     try {
       const review: IReview = await this.prismaService.review.create({
         data: createReviewDto,
@@ -36,10 +34,7 @@ export class ReviewService {
     }
   }
 
-  async update(
-    reviewId: number,
-    updateReviewDto: UpdateReviewDto,
-  ): Promise<IReview> {
+  async update(reviewId: number, updateReviewDto: UpdateReviewDto): Promise<IReview> {
     try {
       const review: Review = await this.prismaService.review.findFirst({
         where: { id: reviewId },
@@ -58,7 +53,6 @@ export class ReviewService {
       const updatedReview: IReview = await this.prismaService.review.update({
         where: { id: reviewId },
         data: updateReviewDto,
-
       });
 
       return updatedReview;
@@ -71,10 +65,7 @@ export class ReviewService {
     }
   }
 
-  async getAllReviewsByProduct(
-    productId: number,
-    all: string,
-  ): Promise<IReview[]> {
+  async getAllReviewsByProduct(productId: number, all: string): Promise<IReview[]> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: productId },
@@ -112,9 +103,7 @@ export class ReviewService {
     }
   }
 
-  async switchActiveReview(
-    reviewId: number,
-  ): Promise<IReview> {
+  async switchActiveReview(reviewId: number): Promise<IReview> {
     try {
       const updatedReview: IReview = await this.prismaService.review.update({
         where: { id: reviewId },

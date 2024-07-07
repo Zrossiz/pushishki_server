@@ -13,18 +13,14 @@ import { Color, Product, ProductVariant } from '@prisma/client';
 export class ProductVariantService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createProductVariantDto: CreateProductVariantDto,
-  ): Promise<ProductVariant> {
+  async create(createProductVariantDto: CreateProductVariantDto): Promise<ProductVariant> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
         where: { id: createProductVariantDto.productId },
       });
 
       if (!product) {
-        throw new BadRequestException(
-          `Товар ${createProductVariantDto.productId} не найден`,
-        );
+        throw new BadRequestException(`Товар ${createProductVariantDto.productId} не найден`);
       }
 
       const color: Color = await this.prismaService.color.findFirst({
@@ -37,10 +33,9 @@ export class ProductVariantService {
         throw new BadRequestException('Цвет не найден');
       }
 
-      const productVariant: ProductVariant =
-        await this.prismaService.productVariant.create({
-          data: createProductVariantDto,
-        });
+      const productVariant: ProductVariant = await this.prismaService.productVariant.create({
+        data: createProductVariantDto,
+      });
 
       await this.prismaService.productsColors.create({
         data: {
@@ -63,15 +58,12 @@ export class ProductVariantService {
     updateProductVariantDto: UpdateProductVariantDto,
   ): Promise<ProductVariant> {
     try {
-      const productVariant: ProductVariant =
-        await this.prismaService.productVariant.findFirst({
-          where: { id: productVariantId },
-        });
+      const productVariant: ProductVariant = await this.prismaService.productVariant.findFirst({
+        where: { id: productVariantId },
+      });
 
       if (!productVariant) {
-        throw new BadRequestException(
-          `Вариант продукта ${productVariantId} не найден`,
-        );
+        throw new BadRequestException(`Вариант продукта ${productVariantId} не найден`);
       }
 
       Object.keys(updateProductVariantDto).forEach((key) => {
@@ -80,11 +72,10 @@ export class ProductVariantService {
         }
       });
 
-      const updatedProductVariant: ProductVariant =
-        await this.prismaService.productVariant.update({
-          where: { id: productVariantId },
-          data: updateProductVariantDto,
-        });
+      const updatedProductVariant: ProductVariant = await this.prismaService.productVariant.update({
+        where: { id: productVariantId },
+        data: updateProductVariantDto,
+      });
 
       return updatedProductVariant;
     } catch (err) {
@@ -96,25 +87,19 @@ export class ProductVariantService {
     }
   }
 
-  async delete(
-    productVariantId: number,
-  ): Promise<ProductVariant> {
+  async delete(productVariantId: number): Promise<ProductVariant> {
     try {
-      const productVariant: ProductVariant =
-        await this.prismaService.productVariant.findFirst({
-          where: { id: productVariantId },
-        });
+      const productVariant: ProductVariant = await this.prismaService.productVariant.findFirst({
+        where: { id: productVariantId },
+      });
 
       if (!productVariant) {
-        throw new BadRequestException(
-          `Вариант продукта ${productVariantId} не найден`,
-        );
+        throw new BadRequestException(`Вариант продукта ${productVariantId} не найден`);
       }
 
-      const deletedProductVariant: ProductVariant =
-        await this.prismaService.productVariant.delete({
-          where: { id: productVariantId },
-        });
+      const deletedProductVariant: ProductVariant = await this.prismaService.productVariant.delete({
+        where: { id: productVariantId },
+      });
 
       return deletedProductVariant;
     } catch (err) {
@@ -126,19 +111,14 @@ export class ProductVariantService {
     }
   }
 
-  async getOne(
-    productVariantId: number,
-  ): Promise<ProductVariant> {
+  async getOne(productVariantId: number): Promise<ProductVariant> {
     try {
-      const productVariant: ProductVariant =
-        await this.prismaService.productVariant.findFirst({
-          where: { id: productVariantId },
-        });
+      const productVariant: ProductVariant = await this.prismaService.productVariant.findFirst({
+        where: { id: productVariantId },
+      });
 
       if (!productVariant) {
-        throw new BadRequestException(
-          `Вариант продукта ${productVariantId} не найден`,
-        );
+        throw new BadRequestException(`Вариант продукта ${productVariantId} не найден`);
       }
 
       return productVariant;
@@ -151,26 +131,21 @@ export class ProductVariantService {
     }
   }
 
-  async getAllVariantsByProduct(
-    productId: number,
-    active: boolean = true
-  ) {
+  async getAllVariantsByProduct(productId: number, active: boolean = true) {
     try {
-      
       const filters: any = {
-        productId
-      }
+        productId,
+      };
       if (active) {
-        filters.active = true
+        filters.active = true;
       }
-      const productVariants: ProductVariant[] =
-        await this.prismaService.productVariant.findMany({
-          where: filters,
-          include: {
-            color: true,
-          }
-        });
-      
+      const productVariants: ProductVariant[] = await this.prismaService.productVariant.findMany({
+        where: filters,
+        include: {
+          color: true,
+        },
+      });
+
       if (!productVariants) {
         throw new BadRequestException(`Варианты продуктов не найдены`);
       }

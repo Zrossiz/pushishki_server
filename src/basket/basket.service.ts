@@ -11,9 +11,7 @@ import { CreateBasketDto } from 'src/basket/dto/create-basket.dto';
 export class BasketService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createBasketDto: CreateBasketDto,
-  ): Promise<{ count: number }> {
+  async create(createBasketDto: CreateBasketDto): Promise<{ count: number }> {
     try {
       const orders = await this.prismaService.basket.createMany({
         data: createBasketDto.objects,
@@ -35,10 +33,10 @@ export class BasketService {
         include: {
           Product: {
             select: {
-              name: true
-            }
-          }
-        }
+              name: true,
+            },
+          },
+        },
       });
 
       return basketWithProducts;

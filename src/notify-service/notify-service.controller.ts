@@ -14,7 +14,7 @@ export class NotifyServiceController {
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post('')
-  async notifyMember (@Body() dto: CreateNotifyDto) {
-    return await this.notifyServiceService.notifyMember(dto)
+  async notifyMember(@Body() dto: CreateNotifyDto) {
+    return await this.notifyServiceService.notifyMember(dto);
   }
 }

@@ -24,13 +24,10 @@ export class ProductVariantController {
 
   @ApiOperation({ summary: 'Получить все варианты продукта' })
   @Get('product/:id')
-  async getAllVariantsByProduct(
-    @Param('id') productId: string,
-    @Query('active') active: string,
-  ) {
+  async getAllVariantsByProduct(@Param('id') productId: string, @Query('active') active: string) {
     return await this.productVariantService.getAllVariantsByProduct(
       +productId,
-      active === 'false' ? false : true
+      active === 'false' ? false : true,
     );
   }
 
@@ -49,10 +46,7 @@ export class ProductVariantController {
     @Param('id') productVariantId: string,
     @Body() updateProductVariantDto: UpdateProductVariantDto,
   ) {
-    return await this.productVariantService.update(
-      +productVariantId,
-      updateProductVariantDto,
-    );
+    return await this.productVariantService.update(+productVariantId, updateProductVariantDto);
   }
 
   @ApiOperation({ summary: 'Удалить вариант продукта' })

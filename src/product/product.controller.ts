@@ -78,19 +78,13 @@ export class ProductController {
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @ApiBearerAuth()
-  async update(
-    @Param('id') productId: string,
-    @Body() updateProductDto: UpdateProductDto,
-  ) {
+  async update(@Param('id') productId: string, @Body() updateProductDto: UpdateProductDto) {
     return await this.productService.update(+productId, updateProductDto);
   }
 
   @ApiOperation({ summary: 'Получить товары по цвету' })
   @Get('color/:id')
-  async getProductsByColor(
-    @Param('id') colorId: string,
-    @Query('page') page: number,
-  ) {
+  async getProductsByColor(@Param('id') colorId: string, @Query('page') page: number) {
     return await this.productService.getProductsByColor(+colorId, page);
   }
 }

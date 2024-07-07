@@ -14,13 +14,7 @@ import {
 import { OrderService } from 'src/order/order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Order')
@@ -89,10 +83,7 @@ export class OrderController {
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  async update(
-    @Param('id') orderId: string,
-    @Body() updateOrderDto: UpdateOrderDto,
-  ) {
+  async update(@Param('id') orderId: string, @Body() updateOrderDto: UpdateOrderDto) {
     return await this.orderService.update(+orderId, updateOrderDto);
   }
 
@@ -106,9 +97,7 @@ export class OrderController {
   @ApiBearerAuth()
   @Put('read/:id')
   @UseGuards(JwtAuthGuard)
-  async setRead(
-    @Param('id') orderId: string,
-  ) {
-    return await this.orderService.setRead(+orderId)
+  async setRead(@Param('id') orderId: string) {
+    return await this.orderService.setRead(+orderId);
   }
 }

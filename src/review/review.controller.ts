@@ -11,12 +11,7 @@ import {
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiProperty,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateReviewDto } from 'src/review/dto/create-review-dto';
 import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
@@ -43,10 +38,7 @@ export class ReviewController {
   @Put(':id/update')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  async update(
-    @Param('id') reviewId: number,
-    @Body() updateReviewDto: UpdateReviewDto,
-  ) {
+  async update(@Param('id') reviewId: number, @Body() updateReviewDto: UpdateReviewDto) {
     return await this.reviewService.update(+reviewId, updateReviewDto);
   }
 
@@ -78,10 +70,7 @@ export class ReviewController {
     type: 'string',
   })
   @Get('/product/:id')
-  async getAllReviewsByProduct(
-    @Param('id') productId: string,
-    @Query('all') all: string,
-  ) {
+  async getAllReviewsByProduct(@Param('id') productId: string, @Query('all') all: string) {
     return await this.reviewService.getAllReviewsByProduct(+productId, all);
   }
 }

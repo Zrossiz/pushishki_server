@@ -5,11 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  ICategory,
-  ICategoryWithLength,
-  IProductWithLength,
-} from 'src/shared/interfaces';
+import { ICategory, ICategoryWithLength, IProductWithLength } from 'src/shared/interfaces';
 import { generateSlug } from 'src/shared/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -19,19 +15,14 @@ import { Category } from '@prisma/client';
 export class CategoryService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createCategoryDto: CreateCategoryDto,
-  ): Promise<ICategory> {
+  async create(createCategoryDto: CreateCategoryDto): Promise<ICategory> {
     try {
-      const existCategory: Category =
-        await this.prismaService.category.findFirst({
-          where: { name: createCategoryDto.name },
-        });
+      const existCategory: Category = await this.prismaService.category.findFirst({
+        where: { name: createCategoryDto.name },
+      });
 
       if (existCategory) {
-        throw new BadRequestException(
-          'Категория с таким названием уже существует',
-        );
+        throw new BadRequestException('Категория с таким названием уже существует');
       }
 
       const slug = generateSlug(createCategoryDto.name).toLowerCase();
@@ -55,21 +46,16 @@ export class CategoryService {
     }
   }
 
-  async getAll(
-    page: number,
-  ): Promise<ICategoryWithLength> {
+  async getAll(page: number): Promise<ICategoryWithLength> {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.category.count()) / 10,
-      );
+      const totalPages: number = Math.ceil((await this.prismaService.category.count()) / 10);
 
-      const categories: ICategory[] =
-        await this.prismaService.category.findMany({
-          take: 10,
-          skip,
-        });
+      const categories: ICategory[] = await this.prismaService.category.findMany({
+        take: 10,
+        skip,
+      });
 
       const populatedData: ICategoryWithLength = {
         length: categories.length,
@@ -87,23 +73,19 @@ export class CategoryService {
     }
   }
 
-  async update(
-    updateCategoryDto: UpdateCategoryDto,
-    slug: string,
-  ): Promise<ICategory> {
+  async update(updateCategoryDto: UpdateCategoryDto, slug: string): Promise<ICategory> {
     try {
-      const existCategory: Category =
-        await this.prismaService.category.findFirst({
-          where: { slug },
-        });
+      const existCategory: Category = await this.prismaService.category.findFirst({
+        where: { slug },
+      });
 
       if (!existCategory) {
         throw new BadRequestException(`Категория ${slug} не найдена`);
       }
 
       const newSlug = updateCategoryDto.name
-      ? generateSlug(updateCategoryDto.name).toLowerCase()
-      : existCategory.slug
+        ? generateSlug(updateCategoryDto.name).toLowerCase()
+        : existCategory.slug;
 
       const categoryData = {
         slug: newSlug,
@@ -116,11 +98,10 @@ export class CategoryService {
         }
       });
 
-      const updatedCategory: ICategory =
-        await this.prismaService.category.update({
-          where: { id: existCategory.id },
-          data: categoryData,
-        });
+      const updatedCategory: ICategory = await this.prismaService.category.update({
+        where: { id: existCategory.id },
+        data: categoryData,
+      });
 
       return updatedCategory;
     } catch (err) {
@@ -174,9 +155,7 @@ export class CategoryService {
 
       const priceFromForFilter: number = priceFrom || 0;
       const priceToForFilter: number = priceTo || 999999;
-      const brandsForFilter: number[] | undefined = brands
-        ? JSON.parse(brands)
-        : undefined;
+      const brandsForFilter: number[] | undefined = brands ? JSON.parse(brands) : undefined;
       const countriesForFilter: number[] | undefined = countries
         ? JSON.parse(countries)
         : undefined;
@@ -232,7 +211,7 @@ export class CategoryService {
           category: true,
           country: true,
           brand: true,
-        }
+        },
       });
 
       const populatedData: IProductWithLength = {
@@ -251,22 +230,22 @@ export class CategoryService {
     }
   }
 
-  async delete (slug: string): Promise<Category> {
+  async delete(slug: string): Promise<Category> {
     try {
       const existCategory: ICategory = await this.prismaService.category.findFirst({
         where: {
-          slug
-        }
+          slug,
+        },
       });
 
       if (!existCategory) {
-        throw new BadRequestException('Категория не найдена')
-      };
+        throw new BadRequestException('Категория не найдена');
+      }
 
       const deletedCategory: Category = await this.prismaService.category.delete({
         where: {
-          id: existCategory.id
-        }
+          id: existCategory.id,
+        },
       });
 
       return deletedCategory;

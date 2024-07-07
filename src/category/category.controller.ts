@@ -1,25 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CategoryService } from 'src/category/category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Category')
@@ -71,13 +54,9 @@ export class CategoryController {
   @ApiBearerAuth()
   @Put(':slug')
   @UseGuards(JwtAuthGuard)
-  async update(
-    @Param('slug') slug: string,
-    @Body() updateCategory: UpdateCategoryDto,
-  ) {
+  async update(@Param('slug') slug: string, @Body() updateCategory: UpdateCategoryDto) {
     return await this.categoryService.update(updateCategory, slug);
   }
-
 
   @ApiParam({
     name: 'slug',
@@ -89,7 +68,7 @@ export class CategoryController {
   @ApiBearerAuth()
   @Delete(':slug')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('slug') slug: string,) {
+  async delete(@Param('slug') slug: string) {
     return await this.categoryService.delete(slug);
   }
 

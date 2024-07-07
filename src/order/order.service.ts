@@ -14,9 +14,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 export class OrderService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(
-    createOrderDto: CreateOrderDto,
-  ): Promise<Order> {
+  async create(createOrderDto: CreateOrderDto): Promise<Order> {
     try {
       const order: Order = await this.prismaService.order.create({
         data: createOrderDto,
@@ -32,10 +30,7 @@ export class OrderService {
     }
   }
 
-  async update(
-    orderId: number,
-    updateOrderDto: UpdateOrderDto,
-  ): Promise<Order> {
+  async update(orderId: number, updateOrderDto: UpdateOrderDto): Promise<Order> {
     const order: Order = await this.prismaService.order.findFirst({
       where: { id: orderId },
     });
@@ -62,16 +57,14 @@ export class OrderService {
     try {
       const skip: number = page ? (page - 1) * 40 : 0;
 
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.order.count()) / 40,
-      );
+      const totalPages: number = Math.ceil((await this.prismaService.order.count()) / 40);
 
       const orders: Order[] = await this.prismaService.order.findMany({
         take: 40,
         skip,
         orderBy: {
-          createdAt: 'desc'
-        }
+          createdAt: 'desc',
+        },
       });
 
       if (!orders) {
@@ -146,15 +139,15 @@ export class OrderService {
 
       if (!order) {
         throw new BadRequestException('Заказ не найден');
-      };
+      }
 
       const updatedOrder: Order = await this.prismaService.order.update({
         where: {
-          id: orderId
-        }, 
+          id: orderId,
+        },
         data: {
-          read: true
-        }
+          read: true,
+        },
       });
 
       return updatedOrder;

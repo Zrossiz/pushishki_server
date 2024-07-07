@@ -11,8 +11,8 @@ export class CreateColorDto {
   @IsString({ message: 'Заголовок для цвета должно быть строкой' })
   title: string;
 
-  @ApiProperty({ example: "color.png" })
+  @ApiProperty({ example: 'color.png' })
   @IsOptional()
-  @IsString({message: 'Изображения должно быть строкой' })
+  @IsString({ message: 'Изображения должно быть строкой' })
   image: string;
 }

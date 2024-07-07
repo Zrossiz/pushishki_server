@@ -18,18 +18,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async registration(
-    createUserDto: CreateUserDto,
-  ): Promise<IUserWithToken> {
+  async registration(createUserDto: CreateUserDto): Promise<IUserWithToken> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: createUserDto.username },
       });
 
       if (existUser) {
-        throw new BadRequestException(
-          'Пользователь с таким именем уже зарегестрирован',
-        );
+        throw new BadRequestException('Пользователь с таким именем уже зарегестрирован');
       }
       const hashedPassword = hashSync(createUserDto.password, genSaltSync(10));
       const userData = {
@@ -58,24 +54,17 @@ export class AuthService {
     }
   }
 
-  async login(
-    loginUserDto: LoginUserDto,
-  ): Promise<IUserWithToken> {
+  async login(loginUserDto: LoginUserDto): Promise<IUserWithToken> {
     try {
       const existUser = await this.prismaService.user.findFirst({
         where: { username: loginUserDto.username },
       });
 
       if (!existUser) {
-        throw new BadRequestException(
-          'Пользователь с таким именем не зарегестрирован',
-        );
+        throw new BadRequestException('Пользователь с таким именем не зарегестрирован');
       }
 
-      const isPasswordValid = compareSync(
-        loginUserDto.password,
-        existUser.password,
-      );
+      const isPasswordValid = compareSync(loginUserDto.password, existUser.password);
 
       if (!isPasswordValid) {
         throw new BadRequestException('Неверный логин или пароль');
