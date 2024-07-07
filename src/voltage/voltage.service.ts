@@ -1,12 +1,13 @@
 import { BadRequestException, HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateVoltageDto } from './dto/create-voltage.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Voltage } from '@prisma/client';
 
 @Injectable()
 export class VoltageService {
     constructor (private readonly prismaService: PrismaService) {}
 
-    async create(createVoltageDto: CreateVoltageDto) {
+    async create(createVoltageDto: CreateVoltageDto): Promise<Voltage> {
         try {
             const product = await this.prismaService.product.findFirst({
                 where: {

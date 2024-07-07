@@ -112,4 +112,10 @@ export class CreateProductDto {
   @IsOptional()
   @IsString()
   metaKeyWords: string;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Внешний ключ на объект вольтажа'
+  })
+  voltageId: number;
 }

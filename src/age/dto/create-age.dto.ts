@@ -1,14 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateVoltageDto {
+export class CreateAgeDto {
     @ApiProperty({
-        example: 24,
-        description: 'Значение вольтажа'
+        example: "2-4",
+        description: 'Значение возраста'
     })
-    @IsNotEmpty({ message: "Вольтаж не может быть пустым" })
-    @IsNumber({}, { message: "Вольтаж должен быть числом" })
-    value: number;
+    @IsNotEmpty({ message: "Возраст не может быть пустым" })
+    @IsString({ message: "Возраст должен быть строкой" })
+    value: string;
 
     @ApiProperty({
         example: 1,
