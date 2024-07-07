@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -23,7 +24,7 @@ export class ColorService {
       return color;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -65,7 +66,7 @@ export class ColorService {
       return color;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -79,7 +80,7 @@ export class ColorService {
       return colors;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');

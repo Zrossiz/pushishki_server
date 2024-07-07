@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -50,7 +51,7 @@ export class CountryService {
       return data;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -77,7 +78,7 @@ export class CountryService {
       return country;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -150,7 +151,7 @@ export class CountryService {
       return populatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -209,7 +210,7 @@ export class CountryService {
       return updatedCountry;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -251,7 +252,7 @@ export class CountryService {
       return country;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -313,7 +314,7 @@ export class CountryService {
       return deletedCountry;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');

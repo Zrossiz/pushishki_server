@@ -1,13 +1,11 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
-  IBrand,
-  ICategory,
-  ICountry,
   IProduct,
   IProductWithLength,
 } from 'src/shared/interfaces';
@@ -77,7 +75,7 @@ export class ProductService {
       return res;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -140,7 +138,7 @@ export class ProductService {
       return populatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -185,7 +183,7 @@ export class ProductService {
       return res;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -237,7 +235,7 @@ export class ProductService {
       return updatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -289,7 +287,7 @@ export class ProductService {
       return updatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -352,7 +350,7 @@ export class ProductService {
       return res;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -409,7 +407,7 @@ export class ProductService {
       return deletedProduct;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -490,7 +488,7 @@ export class ProductService {
       return populatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -625,7 +623,7 @@ export class ProductService {
       return populatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
-        throw new BadRequestException(err.message);
+        throw new HttpException(err.response, err.status);
       }
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
