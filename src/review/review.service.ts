@@ -20,15 +20,6 @@ export class ReviewService {
     try {
       const review: IReview = await this.prismaService.review.create({
         data: createReviewDto,
-        select: {
-          id: true,
-          productId: true,
-          username: true,
-          title: true,
-          description: true,
-          rating: true,
-          active: true,
-        },
       });
 
       if (!review) {
@@ -67,15 +58,7 @@ export class ReviewService {
       const updatedReview: IReview = await this.prismaService.review.update({
         where: { id: reviewId },
         data: updateReviewDto,
-        select: {
-          id: true,
-          productId: true,
-          username: true,
-          title: true,
-          description: true,
-          rating: true,
-          active: true,
-        },
+
       });
 
       return updatedReview;
@@ -185,15 +168,6 @@ export class ReviewService {
 
       const deletedReview: IReview = await this.prismaService.review.delete({
         where: { id: reviewId },
-        select: {
-          id: true,
-          productId: true,
-          username: true,
-          title: true,
-          description: true,
-          rating: true,
-          active: true,
-        },
       });
 
       return deletedReview;

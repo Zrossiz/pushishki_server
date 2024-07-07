@@ -57,10 +57,6 @@ export class ColorService {
         where: {
           id: colorId,
         },
-        select: {
-          id: true,
-          color: true,
-        },
       });
 
       return color;

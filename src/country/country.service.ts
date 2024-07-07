@@ -31,13 +31,6 @@ export class CountryService {
       );
 
       const countries: ICountry[] = await this.prismaService.country.findMany({
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
         take: 10,
         skip,
       });
@@ -62,13 +55,6 @@ export class CountryService {
     try {
       const country: ICountry = await this.prismaService.country.findFirst({
         where: { slug: slug },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
       });
 
       if (!country) {
@@ -165,13 +151,6 @@ export class CountryService {
     try {
       const country = await this.prismaService.country.findFirst({
         where: { slug: slug },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          image: true,
-          slug: true,
-        },
       });
 
       if (!country) {
@@ -198,13 +177,6 @@ export class CountryService {
           id: country.id,
         },
         data: countryData,
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          image: true,
-          slug: true,
-        },
       });
 
       return updatedCountry;
@@ -240,13 +212,6 @@ export class CountryService {
 
       const country: ICountry = await this.prismaService.country.create({
         data: countryData,
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
       });
 
       return country;
@@ -302,13 +267,6 @@ export class CountryService {
 
       const deletedCountry: ICountry = await this.prismaService.country.delete({
         where: { id: country.id },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          slug: true,
-          image: true,
-        },
       });
 
       return deletedCountry;
