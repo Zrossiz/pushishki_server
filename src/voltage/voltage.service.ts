@@ -14,16 +14,6 @@ export class VoltageService {
 
   async create(createVoltageDto: CreateVoltageDto): Promise<Voltage> {
     try {
-      const product = await this.prismaService.product.findFirst({
-        where: {
-          id: createVoltageDto.productId,
-        },
-      });
-
-      if (!product) {
-        throw new BadRequestException('Товар не найден');
-      }
-
       const voltage = await this.prismaService.voltage.create({
         data: {
           value: createVoltageDto.value,

@@ -110,4 +110,20 @@ export class UpdateProductDto {
   @IsOptional()
   @IsString()
   metaKeyWords: string;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Внешний ключ на объект вольтажа',
+  })
+  @IsOptional()
+  @IsNumber({}, { message: "Ключ вольтажа должен быть числом" })
+  voltageId: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Внешний ключ на объект возраста',
+  })
+  @IsOptional()
+  @IsNumber({}, { message: "Ключ возраста должен быть числом" })
+  ageId: number;
 }

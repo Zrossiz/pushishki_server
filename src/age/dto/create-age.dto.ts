@@ -9,12 +9,4 @@ export class CreateAgeDto {
   @IsNotEmpty({ message: 'Возраст не может быть пустым' })
   @IsString({ message: 'Возраст должен быть строкой' })
   value: string;
-
-  @ApiProperty({
-    example: 1,
-    description: 'Внешний ключ на продукт',
-  })
-  @IsNotEmpty({ message: 'Ключ на продукт не может быть пустым' })
-  @IsNumber({}, { message: 'Ключ на продукт должен быть числом' })
-  productId: number;
 }

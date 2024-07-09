@@ -143,6 +143,8 @@ export class CategoryService {
     countries: string,
     inStock: string,
     maximumLoad: number,
+    age: number,
+    voltage: number,
   ): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
@@ -190,6 +192,14 @@ export class CategoryService {
         };
       }
 
+      if (age) {
+        filter.ageId = age;
+      }
+
+      if (voltage) {
+        filter.voltageId = voltage;
+      }
+
       const skip: number = page ? (page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(
@@ -211,6 +221,8 @@ export class CategoryService {
           category: true,
           country: true,
           brand: true,
+          age: true,
+          voltage: true,
         },
       });
 
