@@ -116,7 +116,7 @@ export class UpdateProductDto {
     description: 'Внешний ключ на объект вольтажа',
   })
   @IsOptional()
-  @IsNumber({}, { message: "Ключ вольтажа должен быть числом" })
+  @IsNumber({}, { message: 'Ключ вольтажа должен быть числом' })
   voltageId: number;
 
   @ApiProperty({
@@ -124,6 +124,6 @@ export class UpdateProductDto {
     description: 'Внешний ключ на объект возраста',
   })
   @IsOptional()
-  @IsNumber({}, { message: "Ключ возраста должен быть числом" })
+  @IsNumber({}, { message: 'Ключ возраста должен быть числом' })
   ageId: number;
 }

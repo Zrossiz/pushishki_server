@@ -193,18 +193,18 @@ export class CategoryService {
       }
 
       if (age) {
-        const arr: string[] = age.split(",");
-        arr.forEach(item => +item);
+        const arr: string[] = age.split(',');
+        arr.forEach((item) => +item);
         filter.ageId = {
-          in: arr
+          in: arr,
         };
       }
 
       if (voltage) {
-        const arr: string[] = voltage.split(",")
-        arr.forEach(item => +item);
+        const arr: string[] = voltage.split(',');
+        arr.forEach((item) => +item);
         filter.voltageId = {
-          in: arr
+          in: arr,
         };
       }
 

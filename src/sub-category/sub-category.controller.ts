@@ -4,15 +4,15 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags("Подкатегории")
+@ApiTags('Подкатегории')
 @Controller('sub-category')
 export class SubCategoryController {
   constructor(private readonly subCategoryService: SubCategoryService) {}
 
-  @ApiOperation({ summary: "SubCategory" })
+  @ApiOperation({ summary: 'SubCategory' })
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  @Post("")
+  @Post('')
   async create(@Body() createSubCategoryDto: CreateSubCategoryDto) {
     return await this.subCategoryService.create(createSubCategoryDto);
   }

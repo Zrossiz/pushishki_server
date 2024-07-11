@@ -105,7 +105,7 @@ export class CategoryController {
     @Query('in-stock') inStock: string,
     @Query('maximum-load') maximumLoad: string,
     @Query('age') age: string,
-    @Query('voltage') voltage: string
+    @Query('voltage') voltage: string,
   ) {
     return await this.categoryService.getProductsBySlug(
       slug,
