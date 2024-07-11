@@ -74,4 +74,32 @@ export class SubCategoryService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async getAllByCategory(categoryId: number): Promise<SubCategory[]>  {
+    try {
+      const category = await this.prismaService.category.findFirst({
+        where: {
+          id: categoryId
+        }
+      });
+
+      if (!category) {
+        throw new BadRequestException("Категория не найдена")
+      };
+
+      const subCategories: SubCategory[] = await this.prismaService.subCategory.findMany({
+        where: {
+          categoryId: category.id
+        }
+      });
+
+      return subCategories;
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }
