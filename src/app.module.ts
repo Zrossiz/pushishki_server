@@ -23,6 +23,7 @@ import { CheckApiKey } from './shared/middleware';
 import { NotifyServiceModule } from './notify-service/notify-service.module';
 import { AgeModule } from './age/age.module';
 import { VoltageModule } from './voltage/voltage.module';
+import { SubCategoryModule } from './sub-category/sub-category.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { VoltageModule } from './voltage/voltage.module';
     NotifyServiceModule,
     AgeModule,
     VoltageModule,
+    SubCategoryModule,
   ],
   controllers: [
     AuthController,
