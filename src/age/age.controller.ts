@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AgeService } from './age.service';
 import { ApiOperation, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
@@ -16,5 +16,11 @@ export class AgeController {
   @UsePipes(ValidationPipe)
   async create(@Body() сreateAgeDto: CreateAgeDto) {
     return await this.ageService.create(сreateAgeDto);
+  }
+
+  @ApiOperation({ summary: "Получить все записи возраста" })
+  @Get('')
+  async getAll() {
+    return await this.ageService.getAll();
   }
 }

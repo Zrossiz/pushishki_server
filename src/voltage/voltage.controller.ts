@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe, Get } from '@nestjs/common';
 import { VoltageService } from './voltage.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateVoltageDto } from './dto/create-voltage.dto';
@@ -16,5 +16,11 @@ export class VoltageController {
   @UsePipes(ValidationPipe)
   async create(@Body() createVoltageDto: CreateVoltageDto) {
     return await this.voltageService.create(createVoltageDto);
+  }
+
+  @ApiOperation({ summary: 'Получить все записи вольтажа' })
+  @Get('')
+  async getAll() {
+    return await this.voltageService.getAll();
   }
 }

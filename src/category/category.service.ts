@@ -55,6 +55,9 @@ export class CategoryService {
       const categories: ICategory[] = await this.prismaService.category.findMany({
         take: 10,
         skip,
+        include: {
+          SubCategory: true
+        }
       });
 
       const populatedData: ICategoryWithLength = {
