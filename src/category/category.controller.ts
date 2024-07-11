@@ -117,8 +117,8 @@ export class CategoryController {
       countries,
       inStock,
       +maximumLoad,
-      +age,
-      +voltage,
+      age,
+      voltage,
     );
   }
 }

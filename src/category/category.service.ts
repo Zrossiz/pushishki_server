@@ -143,8 +143,8 @@ export class CategoryService {
     countries: string,
     inStock: string,
     maximumLoad: number,
-    age: number,
-    voltage: number,
+    age: string,
+    voltage: string,
   ): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
@@ -193,11 +193,19 @@ export class CategoryService {
       }
 
       if (age) {
-        filter.ageId = age;
+        const arr: string[] = age.split(",");
+        arr.forEach(item => +item);
+        filter.ageId = {
+          in: arr
+        };
       }
 
       if (voltage) {
-        filter.voltageId = voltage;
+        const arr: string[] = voltage.split(",")
+        arr.forEach(item => +item);
+        filter.voltageId = {
+          in: arr
+        };
       }
 
       const skip: number = page ? (page - 1) * 10 : 0;
