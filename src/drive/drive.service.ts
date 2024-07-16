@@ -5,19 +5,19 @@ import { Drive } from '@prisma/client';
 
 @Injectable()
 export class DriveService {
-    constructor(private readonly prisnaService: PrismaService) {}
+  constructor(private readonly prisnaService: PrismaService) {}
 
-    async create(createDriveDto: CreateDriveDto): Promise<Drive> {
-        try {
-            return await this.prisnaService.drive.create({
-                data: createDriveDto
-            });
-        } catch (err) {
-            if (`${err.status}`.startsWith('4')) {
-                throw new HttpException(err.response, err.status);
-            }
-            console.log(err);
-            throw new InternalServerErrorException('Ошибка сервера');
-        }
+  async create(createDriveDto: CreateDriveDto): Promise<Drive> {
+    try {
+      return await this.prisnaService.drive.create({
+        data: createDriveDto,
+      });
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
     }
+  }
 }

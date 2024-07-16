@@ -7,6 +7,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Module({
   controllers: [DriveController],
   providers: [DriveService, PrismaService],
-  imports: [AuthModule]
+  imports: [AuthModule],
 })
 export class DriveModule {}

@@ -4,12 +4,12 @@ import { CreateDriveDto } from './dto/create-drive.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags("Drive")
+@ApiTags('Drive')
 @Controller('drive')
 export class DriveController {
   constructor(private readonly driveService: DriveService) {}
 
-  @ApiOperation({ summary: "Create drive"})
+  @ApiOperation({ summary: 'Create drive' })
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post()

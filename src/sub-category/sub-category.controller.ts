@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { SubCategoryService } from './sub-category.service';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
@@ -18,20 +27,20 @@ export class SubCategoryController {
     return await this.subCategoryService.create(createSubCategoryDto);
   }
 
-  @ApiOperation({ summary: "Обновить подкатегорию" })
+  @ApiOperation({ summary: 'Обновить подкатегорию' })
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post(':id')
   async update(
-    @Param("id") subCategoryId: string,
-    @Body() updateSubCategoryDto: UpdateSubCategoryDto
+    @Param('id') subCategoryId: string,
+    @Body() updateSubCategoryDto: UpdateSubCategoryDto,
   ) {
-    return await this.subCategoryService.update(+subCategoryId, updateSubCategoryDto)
+    return await this.subCategoryService.update(+subCategoryId, updateSubCategoryDto);
   }
 
-  @ApiOperation({ summary: "Получить все подкатегории из категории" })
-  @Get("/category/:id")
-  async getAllByCategory(@Param("id") categoryId: string) {
+  @ApiOperation({ summary: 'Получить все подкатегории из категории' })
+  @Get('/category/:id')
+  async getAllByCategory(@Param('id') categoryId: string) {
     return await this.subCategoryService.getAllByCategory(+categoryId);
   }
 }

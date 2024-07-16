@@ -18,7 +18,7 @@ export class AgeController {
     return await this.ageService.create(сreateAgeDto);
   }
 
-  @ApiOperation({ summary: "Получить все записи возраста" })
+  @ApiOperation({ summary: 'Получить все записи возраста' })
   @Get('')
   async getAll() {
     return await this.ageService.getAll();

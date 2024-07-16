@@ -49,21 +49,20 @@ export class SubCategoryService {
     try {
       const subCategory: SubCategory = await this.prismaService.subCategory.findFirst({
         where: {
-          id
-        }
+          id,
+        },
       });
 
       if (!subCategory) {
-        throw new BadRequestException("Подкатегория не найден")
-      };
+        throw new BadRequestException('Подкатегория не найден');
+      }
 
       const updatedSubCategory: SubCategory = await this.prismaService.subCategory.update({
         where: {
-          id: subCategory.id
+          id: subCategory.id,
         },
-        data: updateSubCategoryDto
+        data: updateSubCategoryDto,
       });
-
 
       return updatedSubCategory;
     } catch (err) {
@@ -75,22 +74,22 @@ export class SubCategoryService {
     }
   }
 
-  async getAllByCategory(categoryId: number): Promise<SubCategory[]>  {
+  async getAllByCategory(categoryId: number): Promise<SubCategory[]> {
     try {
       const category = await this.prismaService.category.findFirst({
         where: {
-          id: categoryId
-        }
+          id: categoryId,
+        },
       });
 
       if (!category) {
-        throw new BadRequestException("Категория не найдена")
-      };
+        throw new BadRequestException('Категория не найдена');
+      }
 
       const subCategories: SubCategory[] = await this.prismaService.subCategory.findMany({
         where: {
-          categoryId: category.id
-        }
+          categoryId: category.id,
+        },
       });
 
       return subCategories;

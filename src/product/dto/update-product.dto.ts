@@ -129,9 +129,9 @@ export class UpdateProductDto {
 
   @ApiProperty({
     example: 1,
-    description: "Внешний ключ на объект привода"
+    description: 'Внешний ключ на объект привода',
   })
   @IsOptional()
-  @IsNumber({}, { message: "Ключ на объект привода должен быть числом" })
+  @IsNumber({}, { message: 'Ключ на объект привода должен быть числом' })
   driveId: number;
 }

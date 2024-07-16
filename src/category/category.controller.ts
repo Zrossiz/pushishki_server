@@ -106,6 +106,7 @@ export class CategoryController {
     @Query('maximum-load') maximumLoad: string,
     @Query('age') age: string,
     @Query('voltage') voltage: string,
+    @Query('driveId') driveId: string,
   ) {
     return await this.categoryService.getProductsBySlug(
       slug,
@@ -119,6 +120,7 @@ export class CategoryController {
       +maximumLoad,
       age,
       voltage,
+      driveId,
     );
   }
 }

@@ -1,8 +1,4 @@
-import {
-  HttpException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateVoltageDto } from './dto/create-voltage.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Voltage } from '@prisma/client';

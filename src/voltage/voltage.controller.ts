@@ -18,7 +18,7 @@ export class VoltageController {
     return await this.voltageService.create(createVoltageDto);
   }
 
-  @ApiOperation({ summary: 'Получить все записи вольтажа' })
+  @ApiOperation({ summary: 'Получить все записи вольтажа' })
   @Get('')
   async getAll() {
     return await this.voltageService.getAll();

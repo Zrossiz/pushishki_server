@@ -56,8 +56,8 @@ export class CategoryService {
         take: 10,
         skip,
         include: {
-          SubCategory: true
-        }
+          SubCategory: true,
+        },
       });
 
       const populatedData: ICategoryWithLength = {
@@ -148,6 +148,7 @@ export class CategoryService {
     maximumLoad: number,
     age: string,
     voltage: string,
+    driveId: string,
   ): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
@@ -207,6 +208,14 @@ export class CategoryService {
         const arr: string[] = voltage.split(',');
         arr.forEach((item) => +item);
         filter.voltageId = {
+          in: arr,
+        };
+      }
+
+      if (driveId) {
+        const arr: string[] = driveId.split(',');
+        arr.forEach((item) => +item);
+        filter.driveId = {
           in: arr,
         };
       }

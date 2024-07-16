@@ -117,6 +117,9 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
+          voltage: true,
+          age: true,
+          drive: true,
         },
       });
 
