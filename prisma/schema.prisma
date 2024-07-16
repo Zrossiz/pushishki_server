@@ -57,6 +57,7 @@ model Product {
   voltageId          Int?             @map("voltage_id")
   ageId              Int?             @map("age_id")
   subCategoryId      Int?             @map("sub_category_id")
+  driveId            Int?             @map("drive_id")
   name               String
   description        String
   characteristics    String?
@@ -90,6 +91,7 @@ model Product {
   category           Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   voltage            Voltage?         @relation(fields: [voltageId], references: [id], onDelete: Cascade)
   age                Age?             @relation(fields: [ageId], references: [id], onDelete: Cascade)
+  drive              Drive?           @relation(fields: [driveId], references: [id], onDelete: Cascade)
 
   @@map("products")
 }
@@ -216,6 +218,14 @@ model Age {
   products Product[]
 
   @@map("age")
+}
+
+model Drive {
+  id       Int       @id @default(autoincrement())
+  value    String
+  product  Product[]
+
+  @@map("drive")
 }
 
 model SubCategory {

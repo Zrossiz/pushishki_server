@@ -24,6 +24,7 @@ import { NotifyServiceModule } from './notify-service/notify-service.module';
 import { AgeModule } from './age/age.module';
 import { VoltageModule } from './voltage/voltage.module';
 import { SubCategoryModule } from './sub-category/sub-category.module';
+import { DriveModule } from './drive/drive.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { SubCategoryModule } from './sub-category/sub-category.module';
     AgeModule,
     VoltageModule,
     SubCategoryModule,
+    DriveModule,
   ],
   controllers: [
     AuthController,
