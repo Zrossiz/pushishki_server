@@ -128,4 +128,12 @@ export class CreateProductDto {
   @IsOptional()
   @IsNumber({}, { message: 'Ключ возраста должен быть числом' })
   ageId: number;
+
+  @ApiProperty({
+    example: 1,
+    description: "Внешний ключ на объект привода"
+  })
+  @IsOptional()
+  @IsNumber({}, { message: "Ключ на объект привода должен быть числом" })
+  driveId: number;
 }
