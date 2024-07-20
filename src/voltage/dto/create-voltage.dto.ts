@@ -8,5 +8,5 @@ export class CreateVoltageDto {
   })
   @IsNotEmpty({ message: 'Вольтаж не может быть пустым' })
   @IsNumber({}, { message: 'Вольтаж должен быть числом' })
-  value: number;
+  name: number;
 }

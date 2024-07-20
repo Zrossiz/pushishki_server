@@ -8,5 +8,5 @@ export class CreateAgeDto {
   })
   @IsNotEmpty({ message: 'Возраст не может быть пустым' })
   @IsString({ message: 'Возраст должен быть строкой' })
-  value: string;
+  name: string;
 }

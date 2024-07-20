@@ -11,7 +11,7 @@ export class AgeService {
     try {
       const age = await this.prismaService.age.create({
         data: {
-          value: createAgeDto.value,
+          name: createAgeDto.name,
         },
       });
 

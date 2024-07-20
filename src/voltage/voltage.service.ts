@@ -11,7 +11,7 @@ export class VoltageService {
     try {
       const voltage = await this.prismaService.voltage.create({
         data: {
-          value: createVoltageDto.value,
+          name: createVoltageDto.name,
         },
       });
 
