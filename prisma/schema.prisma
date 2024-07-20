@@ -206,7 +206,7 @@ model ProductsColors {
 
 model Voltage {
   id        Int     @id @default(autoincrement())
-  value     Int
+  name      Int
   products  Product[]
 
   @@map("voltage")
@@ -214,7 +214,7 @@ model Voltage {
 
 model Age {
   id       Int       @id @default(autoincrement())
-  value    String
+  name     String
   products Product[]
 
   @@map("age")
@@ -222,7 +222,7 @@ model Age {
 
 model Drive {
   id       Int       @id @default(autoincrement())
-  value    String
+  name     String
   product  Product[]
 
   @@map("drive")
