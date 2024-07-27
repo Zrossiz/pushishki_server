@@ -146,9 +146,9 @@ export class CategoryService {
     countries: string,
     inStock: string,
     maximumLoad: number,
-    age: string,
-    voltage: string,
-    driveId: string,
+    ages: string,
+    voltages: string,
+    drives: string,
   ): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
@@ -165,6 +165,9 @@ export class CategoryService {
       const countriesForFilter: number[] | undefined = countries
         ? JSON.parse(countries)
         : undefined;
+      const agesForFilter: number[] | undefined = ages ? JSON.parse(ages) : undefined;
+      const drivesForFilter: number[] | undefined = drives ? JSON.parse(drives): undefined;
+      const voltagesForFilter: number[] | undefined = voltages ? JSON.parse(voltages) : undefined;
 
       const filter: any = {
         categoryId: category.id,
@@ -196,30 +199,23 @@ export class CategoryService {
         };
       }
 
-      if (age) {
-        const arr: string[] = age.split(',');
-        arr.forEach((item) => +item);
+      if (agesForFilter) {
         filter.ageId = {
-          in: arr,
+          in: agesForFilter,
         };
       }
 
-      if (voltage) {
-        const arr: string[] = voltage.split(',');
-        arr.forEach((item) => +item);
+      if (voltagesForFilter) {
         filter.voltageId = {
-          in: arr,
+          in: voltagesForFilter,
         };
       }
 
-      if (driveId) {
-        const arr: string[] = driveId.split(',');
-        arr.forEach((item) => +item);
+      if (drivesForFilter) {
         filter.driveId = {
-          in: arr,
+          in: drivesForFilter,
         };
       }
-
       const skip: number = page ? (page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(

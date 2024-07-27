@@ -104,9 +104,9 @@ export class CategoryController {
     @Query('countries') countries: string,
     @Query('in-stock') inStock: string,
     @Query('maximum-load') maximumLoad: string,
-    @Query('age') age: string,
-    @Query('voltage') voltage: string,
-    @Query('drive') driveId: string,
+    @Query('ages') age: string,
+    @Query('voltages') voltage: string,
+    @Query('drives') driveId: string,
   ) {
     return await this.categoryService.getProductsBySlug(
       slug,
