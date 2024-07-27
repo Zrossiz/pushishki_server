@@ -74,11 +74,11 @@ export class SubCategoryService {
     }
   }
 
-  async getAllByCategory(categoryId: number): Promise<SubCategory[]> {
+  async getAllByCategory(slug: string): Promise<SubCategory[]> {
     try {
       const category = await this.prismaService.category.findFirst({
         where: {
-          id: categoryId,
+          slug: slug,
         },
       });
 

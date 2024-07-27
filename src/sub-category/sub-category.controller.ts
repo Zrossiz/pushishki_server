@@ -39,8 +39,8 @@ export class SubCategoryController {
   }
 
   @ApiOperation({ summary: 'Получить все подкатегории из категории' })
-  @Get('/category/:id')
-  async getAllByCategory(@Param('id') categoryId: string) {
-    return await this.subCategoryService.getAllByCategory(+categoryId);
+  @Get('/category/:slug')
+  async getAllByCategory(@Param('slug') slug: string) {
+    return await this.subCategoryService.getAllByCategory(slug);
   }
 }
