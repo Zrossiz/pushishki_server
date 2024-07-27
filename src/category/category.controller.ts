@@ -4,7 +4,6 @@ import { CategoryService } from 'src/category/category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { GetProductsCategoryDto } from './dto/get-product-category.dto';
 
 @ApiTags('Category')
 @Controller('category')
@@ -95,7 +94,33 @@ export class CategoryController {
     required: false,
   })
   @Get(':slug/products')
-  async getProductsBySlug(@Body() searchProductDto: GetProductsCategoryDto) {
-    return await this.categoryService.getProductsBySlug(searchProductDto);
+  async getProductsBySlug(
+    @Param('slug') slug: string,
+    @Query('page') page: number,
+    @Query('sort') sort: string,
+    @Query('price-from') priceFrom: string,
+    @Query('price-to') priceTo: string,
+    @Query('brands') brands: string,
+    @Query('countries') countries: string,
+    @Query('in-stock') inStock: string,
+    @Query('maximum-load') maximumLoad: string,
+    @Query('age') age: string,
+    @Query('voltage') voltage: string,
+    @Query('driveId') driveId: string,
+  ) {
+    return await this.categoryService.getProductsBySlug(
+      slug,
+      page,
+      sort,
+      +priceFrom,
+      +priceTo,
+      brands,
+      countries,
+      inStock,
+      +maximumLoad,
+      age,
+      voltage,
+      driveId,
+    );
   }
 }

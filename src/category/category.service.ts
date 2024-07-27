@@ -10,7 +10,6 @@ import { generateSlug } from 'src/shared/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from '@prisma/client';
-import { GetProductsCategoryDto } from './dto/get-product-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -137,20 +136,35 @@ export class CategoryService {
     }
   }
 
-  async getProductsBySlug(searchProductDto: GetProductsCategoryDto): Promise<IProductWithLength> {
+  async getProductsBySlug(
+    slug: string,
+    page: number,
+    sort: string,
+    priceFrom: number,
+    priceTo: number,
+    brands: string,
+    countries: string,
+    inStock: string,
+    maximumLoad: number,
+    age: string,
+    voltage: string,
+    driveId: string,
+  ): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
-        where: {
-          slug: searchProductDto.slug,
-        },
+        where: { slug },
       });
 
       if (!category) {
-        throw new BadRequestException(`Категория ${searchProductDto.slug} не найдена`);
+        throw new BadRequestException(`Категория ${slug} не найдена`);
       }
 
-      const priceFromForFilter: number = searchProductDto.priceFrom || 0;
-      const priceToForFilter: number = searchProductDto.priceTo || 999999;
+      const priceFromForFilter: number = priceFrom || 0;
+      const priceToForFilter: number = priceTo || 999999;
+      const brandsForFilter: number[] | undefined = brands ? JSON.parse(brands) : undefined;
+      const countriesForFilter: number[] | undefined = countries
+        ? JSON.parse(countries)
+        : undefined;
 
       const filter: any = {
         categoryId: category.id,
@@ -160,47 +174,53 @@ export class CategoryService {
         },
       };
 
-      if (searchProductDto.brands) {
+      if (brandsForFilter) {
         filter.brandId = {
-          in: searchProductDto.brands,
+          in: brandsForFilter,
         };
       }
 
-      if (searchProductDto.countries) {
+      if (countriesForFilter) {
         filter.countryId = {
-          in: searchProductDto.countries,
+          in: countriesForFilter,
         };
       }
 
-      if (searchProductDto.inStock === true) {
+      if (inStock === 'true') {
         filter.inStock = true;
       }
 
-      if (searchProductDto.maximumLoad >= 1) {
+      if (maximumLoad >= 1) {
         filter.maximumLoad = {
-          lte: searchProductDto.maximumLoad,
+          lte: maximumLoad,
         };
       }
 
-      if (searchProductDto.age) {
+      if (age) {
+        const arr: string[] = age.split(',');
+        arr.forEach((item) => +item);
         filter.ageId = {
-          in: searchProductDto.age,
+          in: arr,
         };
       }
 
-      if (searchProductDto.voltage) {
+      if (voltage) {
+        const arr: string[] = voltage.split(',');
+        arr.forEach((item) => +item);
         filter.voltageId = {
-          in: searchProductDto.voltage,
+          in: arr,
         };
       }
 
-      if (searchProductDto.drive) {
+      if (driveId) {
+        const arr: string[] = driveId.split(',');
+        arr.forEach((item) => +item);
         filter.driveId = {
-          in: searchProductDto.drive,
+          in: arr,
         };
       }
 
-      const skip: number = searchProductDto.page ? (searchProductDto.page - 1) * 10 : 0;
+      const skip: number = page ? (page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(
         (await this.prismaService.product.count({
@@ -208,16 +228,13 @@ export class CategoryService {
         })) / 10,
       );
 
-      const defaultPriceSortSetting: 'desc' | 'asc' =
-        searchProductDto.sort === 1 || !searchProductDto.sort ? 'desc' : 'asc';
-
       const products = await this.prismaService.product.findMany({
         take: 10,
         where: filter,
         skip,
         orderBy: [
           {
-            defaultPrice: defaultPriceSortSetting,
+            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
           },
         ],
         include: {
