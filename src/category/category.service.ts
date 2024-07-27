@@ -10,6 +10,7 @@ import { generateSlug } from 'src/shared/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from '@prisma/client';
+import { GetProductsCategoryDto } from './dto/get-product-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -136,35 +137,20 @@ export class CategoryService {
     }
   }
 
-  async getProductsBySlug(
-    slug: string,
-    page: number,
-    sort: string,
-    priceFrom: number,
-    priceTo: number,
-    brands: string,
-    countries: string,
-    inStock: string,
-    maximumLoad: number,
-    age: string,
-    voltage: string,
-    driveId: string,
-  ): Promise<IProductWithLength> {
+  async getProductsBySlug(searchProductDto: GetProductsCategoryDto): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
-        where: { slug },
+        where: {
+          slug: searchProductDto.slug,
+        },
       });
 
       if (!category) {
-        throw new BadRequestException(`Категория ${slug} не найдена`);
+        throw new BadRequestException(`Категория ${searchProductDto.slug} не найдена`);
       }
 
-      const priceFromForFilter: number = priceFrom || 0;
-      const priceToForFilter: number = priceTo || 999999;
-      const brandsForFilter: number[] | undefined = brands ? JSON.parse(brands) : undefined;
-      const countriesForFilter: number[] | undefined = countries
-        ? JSON.parse(countries)
-        : undefined;
+      const priceFromForFilter: number = searchProductDto.priceFrom || 0;
+      const priceToForFilter: number = searchProductDto.priceTo || 999999;
 
       const filter: any = {
         categoryId: category.id,
@@ -174,53 +160,47 @@ export class CategoryService {
         },
       };
 
-      if (brandsForFilter) {
+      if (searchProductDto.brands) {
         filter.brandId = {
-          in: brandsForFilter,
+          in: searchProductDto.brands,
         };
       }
 
-      if (countriesForFilter) {
+      if (searchProductDto.countries) {
         filter.countryId = {
-          in: countriesForFilter,
+          in: searchProductDto.countries,
         };
       }
 
-      if (inStock === 'true') {
+      if (searchProductDto.inStock === true) {
         filter.inStock = true;
       }
 
-      if (maximumLoad >= 1) {
+      if (searchProductDto.maximumLoad >= 1) {
         filter.maximumLoad = {
-          lte: maximumLoad,
+          lte: searchProductDto.maximumLoad,
         };
       }
 
-      if (age) {
-        const arr: string[] = age.split(',');
-        arr.forEach((item) => +item);
+      if (searchProductDto.age) {
         filter.ageId = {
-          in: arr,
+          in: searchProductDto.age,
         };
       }
 
-      if (voltage) {
-        const arr: string[] = voltage.split(',');
-        arr.forEach((item) => +item);
+      if (searchProductDto.voltage) {
         filter.voltageId = {
-          in: arr,
+          in: searchProductDto.voltage,
         };
       }
 
-      if (driveId) {
-        const arr: string[] = driveId.split(',');
-        arr.forEach((item) => +item);
+      if (searchProductDto.drive) {
         filter.driveId = {
-          in: arr,
+          in: searchProductDto.drive,
         };
       }
 
-      const skip: number = page ? (page - 1) * 10 : 0;
+      const skip: number = searchProductDto.page ? (searchProductDto.page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(
         (await this.prismaService.product.count({
@@ -228,13 +208,16 @@ export class CategoryService {
         })) / 10,
       );
 
+      const defaultPriceSortSetting: 'desc' | 'asc' =
+        searchProductDto.sort === 1 || !searchProductDto.sort ? 'desc' : 'asc';
+
       const products = await this.prismaService.product.findMany({
         take: 10,
         where: filter,
         skip,
         orderBy: [
           {
-            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
+            defaultPrice: defaultPriceSortSetting,
           },
         ],
         include: {
