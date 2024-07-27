@@ -86,12 +86,12 @@ model Product {
   Review             Review[]
   Product_variant    ProductVariant[]
 
-  country            Country          @relation(fields: [countryId], references: [id], onDelete: Cascade)
-  brand              Brand            @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  category           Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  voltage            Voltage?         @relation(fields: [voltageId], references: [id], onDelete: Cascade)
-  age                Age?             @relation(fields: [ageId], references: [id], onDelete: Cascade)
-  drive              Drive?           @relation(fields: [driveId], references: [id], onDelete: Cascade)
+  country  Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  brand    Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  voltage  Voltage? @relation(fields: [voltageId], references: [id], onDelete: Cascade)
+  age      Age?     @relation(fields: [ageId], references: [id], onDelete: Cascade)
+  drive    Drive?   @relation(fields: [driveId], references: [id], onDelete: Cascade)
 
   @@map("products")
 }
@@ -134,48 +134,48 @@ model Review {
 }
 
 model Category {
-  id                 Int              @id @default(autoincrement())
-  name               String
-  slug               String
-  description        String?
-  image              String
-  Product            Product[]
-  createdAt          DateTime         @default(now()) @map("created_at")
-  updatedAt          DateTime         @updatedAt @map("updated_at")
-  metaTitle          String?          @map("meta_tile")
-  metaDescription    String?          @map("meta_description")
-  metaKeyWords       String?          @map("meta_key_words")
-  SubCategory        SubCategory[]
+  id              Int           @id @default(autoincrement())
+  name            String
+  slug            String
+  description     String?
+  image           String
+  Product         Product[]
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  metaTitle       String?       @map("meta_tile")
+  metaDescription String?       @map("meta_description")
+  metaKeyWords    String?       @map("meta_key_words")
+  SubCategory     SubCategory[]
 
   @@map("categories")
 }
 
 model Basket {
-  id              Int            @id @default(autoincrement())
-  productId       Int            @map("product_id")
-  orderId         Int            @map("order_id")
-  quantity        Int
-  price           Int
-  color           String?
-  Product         Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
-  createdAt       DateTime       @default(now()) @map("created_at")
-  updatedAt       DateTime       @updatedAt @map("updated_at")
-  Order           Order?         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  productId Int      @map("product_id")
+  orderId   Int      @map("order_id")
+  quantity  Int
+  price     Int
+  color     String?
+  Product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Order     Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("basket")
 }
 
 model Order {
-  id         Int      @id @default(autoincrement())
-  name       String
-  lastname   String
-  phone      String
-  address    String?
-  price      Int
-  read       Boolean  @default(false)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  orderId    Basket[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  lastname  String
+  phone     String
+  address   String?
+  price     Int
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  orderId   Basket[]
 
   @@map("orders")
 }
@@ -205,11 +205,11 @@ model ProductsColors {
 }
 
 model Voltage {
-  id        Int     @id @default(autoincrement())
-  name      Int
-  products  Product[]
+  id       Int       @id @default(autoincrement())
+  name     Int
+  products Product[]
 
-  @@map("voltage")
+  @@map("voltages")
 }
 
 model Age {
@@ -217,25 +217,25 @@ model Age {
   name     String
   products Product[]
 
-  @@map("age")
+  @@map("ages")
 }
 
 model Drive {
-  id       Int       @id @default(autoincrement())
-  name     String
-  product  Product[]
+  id      Int       @id @default(autoincrement())
+  name    String
+  product Product[]
 
-  @@map("drive")
+  @@map("drives")
 }
 
 model SubCategory {
-  id              Int              @id @default(autoincrement())
-  name            String
-  slug            String
-  categoryId      Int              @map("category_id")
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  Category        Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  name       String
+  slug       String
+  categoryId Int      @map("category_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  Category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  @@map("sub_category")
+  @@map("sub_categories")
 }
