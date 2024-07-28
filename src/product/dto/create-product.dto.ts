@@ -139,7 +139,7 @@ export class CreateProductDto {
 
   @ApiProperty({
     example: 1,
-    description: 'Внешний ключ на объект подкатегории'
+    description: 'Внешний ключ на объект подкатегории',
   })
   @IsOptional()
   @IsNumber({}, { message: 'Ключ на объект подкатегории должен быть числом' })

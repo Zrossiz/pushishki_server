@@ -17,7 +17,7 @@ export class DriveController {
     return await this.driveService.create(createDriveDto);
   }
 
-  @ApiOperation({ summary: "Get all" })
+  @ApiOperation({ summary: 'Get all' })
   @Get()
   async getAll() {
     return await this.driveService.getAll();

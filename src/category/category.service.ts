@@ -167,7 +167,7 @@ export class CategoryService {
         ? JSON.parse(countries)
         : undefined;
       const agesForFilter: number[] | undefined = ages ? JSON.parse(ages) : undefined;
-      const drivesForFilter: number[] | undefined = drives ? JSON.parse(drives): undefined;
+      const drivesForFilter: number[] | undefined = drives ? JSON.parse(drives) : undefined;
       const voltagesForFilter: number[] | undefined = voltages ? JSON.parse(voltages) : undefined;
 
       const filter: any = {
@@ -187,10 +187,10 @@ export class CategoryService {
       if (subCategory) {
         const dbSubCategory = await this.prismaService.subCategory.findFirst({
           where: {
-            slug: subCategory
-          }
-        })
-        filter.subCategoryId = dbSubCategory.id
+            slug: subCategory,
+          },
+        });
+        filter.subCategoryId = dbSubCategory.id;
       }
 
       if (countriesForFilter) {

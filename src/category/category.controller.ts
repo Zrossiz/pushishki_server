@@ -122,7 +122,7 @@ export class CategoryController {
       age,
       voltage,
       driveId,
-      subCategory
+      subCategory,
     );
   }
 }
