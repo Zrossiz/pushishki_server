@@ -107,6 +107,7 @@ export class CategoryController {
     @Query('ages') age: string,
     @Query('voltages') voltage: string,
     @Query('drives') driveId: string,
+    @Query('subCategory') subCategory: string,
   ) {
     return await this.categoryService.getProductsBySlug(
       slug,
@@ -121,6 +122,7 @@ export class CategoryController {
       age,
       voltage,
       driveId,
+      subCategory
     );
   }
 }

@@ -134,4 +134,12 @@ export class UpdateProductDto {
   @IsOptional()
   @IsNumber({}, { message: 'Ключ на объект привода должен быть числом' })
   driveId: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Внешний ключ на объект подкатегории'
+  })
+  @IsOptional()
+  @IsNumber({}, { message: 'Ключ на объект подкатегории должен быть числом' })
+  subCategoryId: number;
 }

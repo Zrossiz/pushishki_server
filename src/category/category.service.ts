@@ -149,6 +149,7 @@ export class CategoryService {
     ages: string,
     voltages: string,
     drives: string,
+    subCategory?: string,
   ): Promise<IProductWithLength> {
     try {
       const category: Category = await this.prismaService.category.findFirst({
@@ -181,6 +182,15 @@ export class CategoryService {
         filter.brandId = {
           in: brandsForFilter,
         };
+      }
+
+      if (subCategory) {
+        const dbSubCategory = await this.prismaService.subCategory.findFirst({
+          where: {
+            slug: subCategory
+          }
+        })
+        filter.subCategoryId = dbSubCategory.id
       }
 
       if (countriesForFilter) {
@@ -216,6 +226,7 @@ export class CategoryService {
           in: drivesForFilter,
         };
       }
+
       const skip: number = page ? (page - 1) * 10 : 0;
 
       const totalPages: number = Math.ceil(
