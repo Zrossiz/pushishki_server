@@ -101,4 +101,20 @@ export class SubCategoryService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async getOne(slug: string): Promise<SubCategory> {
+    try {
+      return await this.prismaService.subCategory.findFirst({
+        where: {
+          slug,
+        },
+      });
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }
