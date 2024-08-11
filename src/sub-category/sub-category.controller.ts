@@ -19,6 +19,12 @@ import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
 export class SubCategoryController {
   constructor(private readonly subCategoryService: SubCategoryService) {}
 
+  @ApiOperation({ summary: 'Получить все подкатегории' })
+  @Get('')
+  async getAll() {
+    return await this.subCategoryService.getAll();
+  }
+
   @ApiOperation({ summary: 'Создать подкатегорию' })
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)

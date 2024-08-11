@@ -117,4 +117,16 @@ export class SubCategoryService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async getAll(): Promise<SubCategory[]> {
+    try {
+      return await this.prismaService.subCategory.findMany();
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }
