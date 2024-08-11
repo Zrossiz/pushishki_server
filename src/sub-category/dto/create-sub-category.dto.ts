@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateSubCategoryDto {
   @ApiProperty({ example: 'От 2 до 6' })
@@ -11,4 +11,28 @@ export class CreateSubCategoryDto {
   @IsNotEmpty({ message: 'Ключ категории не может быть пустым' })
   @IsNumber({}, { message: 'Ключ категории должен быть числом' })
   categoryId: number;
+
+  @ApiProperty({
+    example: 'Название категории',
+    description: 'Meta title for category',
+  })
+  @IsOptional()
+  @IsString()
+  metaTitle: string;
+
+  @ApiProperty({
+    example: 'Описание категории',
+    description: 'Meta description for category',
+  })
+  @IsOptional()
+  @IsString()
+  metaDescription: string;
+
+  @ApiProperty({
+    example: 'Ключевые слова категории',
+    description: 'Meta key words for category',
+  })
+  @IsOptional()
+  @IsString()
+  metaKeyWords: string;
 }

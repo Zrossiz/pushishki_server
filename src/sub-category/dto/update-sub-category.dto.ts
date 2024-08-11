@@ -1,9 +1,33 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateSubCategoryDto {
   @ApiProperty({ example: 'От 2 до 6' })
-  @IsNotEmpty({ message: 'Название категории не может быть пустым' })
+  @IsOptional()
   @IsString({ message: 'Название категории должно быть строкой' })
   name: string;
+
+  @ApiProperty({
+    example: 'Название категории',
+    description: 'Meta title for category',
+  })
+  @IsOptional()
+  @IsString()
+  metaTitle: string;
+
+  @ApiProperty({
+    example: 'Описание категории',
+    description: 'Meta description for category',
+  })
+  @IsOptional()
+  @IsString()
+  metaDescription: string;
+
+  @ApiProperty({
+    example: 'Ключевые слова категории',
+    description: 'Meta key words for category',
+  })
+  @IsOptional()
+  @IsString()
+  metaKeyWords: string;
 }
