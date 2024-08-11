@@ -14,6 +14,20 @@ import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
 export class SubCategoryService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async delete(id: number): Promise<SubCategory> {
+    const subCategory = await this.prismaService.subCategory.delete({
+      where: {
+        id
+      }
+    });
+
+    if (!subCategory) {
+      throw new BadRequestException('Ошибка при удалении категории')
+    }
+
+    return subCategory;
+  };
+
   async create(createSubCategoryDto: CreateSubCategoryDto): Promise<SubCategory> {
     try {
       const category = await this.prismaService.category.findFirst({

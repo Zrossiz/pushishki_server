@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -11,7 +12,7 @@ import {
 import { SubCategoryService } from './sub-category.service';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
 
 @ApiTags('Подкатегории')
@@ -54,5 +55,13 @@ export class SubCategoryController {
   @Get(':slug')
   async getOne(@Param('slug') slug: string) {
     return await this.subCategoryService.getOne(slug);
+  }
+
+  @ApiOperation({ summary: 'Удалить подкатегорию' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return await this.subCategoryService.delete(+id);
   }
 }
