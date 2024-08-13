@@ -36,4 +36,20 @@ export class VoltageService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async delete(id: number): Promise<Voltage> {
+    try {
+      return await this.prismaService.voltage.delete({
+        where: {
+          id
+        }
+      })
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }

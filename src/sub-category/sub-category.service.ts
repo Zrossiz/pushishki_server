@@ -17,16 +17,16 @@ export class SubCategoryService {
   async delete(id: number): Promise<SubCategory> {
     const subCategory = await this.prismaService.subCategory.delete({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     if (!subCategory) {
-      throw new BadRequestException('Ошибка при удалении категории')
+      throw new BadRequestException('Ошибка при удалении категории');
     }
 
     return subCategory;
-  };
+  }
 
   async create(createSubCategoryDto: CreateSubCategoryDto): Promise<SubCategory> {
     try {

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe, Get, Delete, Param } from '@nestjs/common';
 import { VoltageService } from './voltage.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateVoltageDto } from './dto/create-voltage.dto';
@@ -22,5 +22,12 @@ export class VoltageController {
   @Get('')
   async getAll() {
     return await this.voltageService.getAll();
+  }
+
+  @ApiOperation({ summary: 'Удалить вольтаж' })
+  @Delete('')
+  @UseGuards(JwtAuthGuard)
+  async deleteItem(@Param('id') id: string) {
+    return await this.voltageService.delete(+id);
   }
 }
