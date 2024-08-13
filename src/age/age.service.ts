@@ -7,6 +7,22 @@ import { CreateAgeDto } from './dto/create-age.dto';
 export class AgeService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async delete(id: number): Promise<Age> {
+    try {
+      return await this.prismaService.age.delete({
+        where: {
+          id
+        }
+      })
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
+
   async create(createAgeDto: CreateAgeDto): Promise<Age> {
     try {
       const age = await this.prismaService.age.create({

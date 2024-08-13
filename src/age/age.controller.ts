@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AgeService } from './age.service';
 import { ApiOperation, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
@@ -22,5 +22,12 @@ export class AgeController {
   @Get('')
   async getAll() {
     return await this.ageService.getAll();
+  }
+
+  @ApiOperation({ summary: 'Удалить возраст' })
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async deleteItem(@Param('id') id: string) {
+    return await this.ageService.delete(+id);
   }
 }
