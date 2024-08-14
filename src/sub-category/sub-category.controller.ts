@@ -27,6 +27,7 @@ export class SubCategoryController {
   }
 
   @ApiOperation({ summary: 'Создать подкатегорию' })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post('')
@@ -35,6 +36,7 @@ export class SubCategoryController {
   }
 
   @ApiOperation({ summary: 'Обновить подкатегорию' })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post(':id')

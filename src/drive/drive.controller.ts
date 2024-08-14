@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from
 import { DriveService } from './drive.service';
 import { CreateDriveDto } from './dto/create-drive.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Drive')
 @Controller('drive')
@@ -10,6 +10,7 @@ export class DriveController {
   constructor(private readonly driveService: DriveService) {}
 
   @ApiOperation({ summary: 'Create drive' })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post()

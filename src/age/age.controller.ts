@@ -25,6 +25,7 @@ export class AgeController {
   }
 
   @ApiOperation({ summary: 'Удалить возраст' })
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async deleteItem(@Param('id') id: string) {
@@ -32,6 +33,7 @@ export class AgeController {
   }
 
   @ApiOperation({ summary: 'Обновить возраст' })
+  @ApiBearerAuth()
   @Post(':id')
   @UseGuards(JwtAuthGuard)
   async update(

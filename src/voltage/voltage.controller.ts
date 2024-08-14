@@ -25,6 +25,7 @@ export class VoltageController {
   }
 
   @ApiOperation({ summary: 'Удалить вольтаж' })
+  @ApiBearerAuth()
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async deleteItem(@Param('id') id: string) {
