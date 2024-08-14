@@ -7,6 +7,22 @@ import { Drive } from '@prisma/client';
 export class DriveService {
   constructor(private readonly prisnaService: PrismaService) {}
 
+  async delete(id: number): Promise<Drive> {
+    try {
+      return await this.prisnaService.drive.delete({
+        where: {
+          id
+        }
+      })
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
+
   async create(createDriveDto: CreateDriveDto): Promise<Drive> {
     try {
       return await this.prisnaService.drive.create({
