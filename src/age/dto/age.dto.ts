@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateAgeDto {
+export class AgeDto {
   @ApiProperty({
     example: '2-4',
     description: 'Значение возраста',
