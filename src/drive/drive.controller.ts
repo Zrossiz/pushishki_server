@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { DriveService } from './drive.service';
-import { CreateDriveDto } from './dto/create-drive.dto';
+import { DriveDto } from './dto/drive.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -14,7 +14,7 @@ export class DriveController {
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post()
-  async create(@Body() createDriveDto: CreateDriveDto) {
+  async create(@Body() createDriveDto: DriveDto) {
     return await this.driveService.create(createDriveDto);
   }
 
@@ -30,5 +30,16 @@ export class DriveController {
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
     return await this.driveService.delete(+id);
+  }
+
+  @ApiOperation({ summary: 'Обновить привод' })
+  @ApiBearerAuth()
+  @Post(':id')
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @Param('id') id: string,
+    @Body() driveDto: DriveDto
+  ) {
+    return await this.driveService.update(+id, driveDto);
   }
 }
