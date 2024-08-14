@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AgeService } from './age.service';
 import { ApiOperation, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
@@ -36,10 +46,7 @@ export class AgeController {
   @ApiBearerAuth()
   @Post(':id')
   @UseGuards(JwtAuthGuard)
-  async update(
-    @Param('id') id: string, 
-    @Body() updateAgeDto: AgeDto
-  ) {
-    return await this.ageService.updateAge(+id, updateAgeDto)
+  async update(@Param('id') id: string, @Body() updateAgeDto: AgeDto) {
+    return await this.ageService.updateAge(+id, updateAgeDto);
   }
 }

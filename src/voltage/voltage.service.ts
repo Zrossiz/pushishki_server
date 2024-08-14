@@ -41,9 +41,9 @@ export class VoltageService {
     try {
       return await this.prismaService.voltage.delete({
         where: {
-          id
-        }
-      })
+          id,
+        },
+      });
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -57,10 +57,10 @@ export class VoltageService {
     try {
       return await this.prismaService.voltage.update({
         where: {
-          id
+          id,
         },
-        data: voltageDto
-      })
+        data: voltageDto,
+      });
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);

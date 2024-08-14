@@ -3,7 +3,6 @@ import { Age } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AgeDto } from './dto/age.dto';
 
-
 @Injectable()
 export class AgeService {
   constructor(private readonly prismaService: PrismaService) {}
@@ -12,9 +11,9 @@ export class AgeService {
     try {
       return await this.prismaService.age.delete({
         where: {
-          id
-        }
-      })
+          id,
+        },
+      });
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -53,12 +52,12 @@ export class AgeService {
 
   async updateAge(id: number, updateAgeDto: AgeDto): Promise<Age> {
     try {
-       return await this.prismaService.age.update({
+      return await this.prismaService.age.update({
         where: {
           id,
         },
-        data: updateAgeDto
-       });
+        data: updateAgeDto,
+      });
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);

@@ -1,4 +1,14 @@
-import { Controller, Post, Body, UseGuards, UsePipes, ValidationPipe, Get, Delete, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+  Get,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { VoltageService } from './voltage.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { VoltageDto } from './dto/voltage.dto';
@@ -36,10 +46,7 @@ export class VoltageController {
   @ApiBearerAuth()
   @Post(':id')
   @UseGuards(JwtAuthGuard)
-  async update(
-    @Param('id') id: string, 
-    @Body() voltageDto: VoltageDto
-  ) {
-    return await this.voltageService.update(+id, voltageDto)
+  async update(@Param('id') id: string, @Body() voltageDto: VoltageDto) {
+    return await this.voltageService.update(+id, voltageDto);
   }
 }

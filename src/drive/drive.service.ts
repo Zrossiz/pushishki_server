@@ -11,9 +11,9 @@ export class DriveService {
     try {
       return await this.prisnaService.drive.delete({
         where: {
-          id
-        }
-      })
+          id,
+        },
+      });
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -27,9 +27,9 @@ export class DriveService {
     try {
       return await this.prisnaService.drive.update({
         where: {
-          id
+          id,
         },
-        data: driveDto
+        data: driveDto,
       });
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
