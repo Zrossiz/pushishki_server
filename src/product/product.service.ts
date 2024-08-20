@@ -389,7 +389,7 @@ export class ProductService {
       }
 
       for (let i = 0; i < products.length; i++) {
-        if (products[i].subCategory.id) {
+        if (products[i].subCategoryId) {
           products[i].subCategory = await this.prismaService.subCategory.findFirst({
             where: {
               id: products[i].subCategory.id
