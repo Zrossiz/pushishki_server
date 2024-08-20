@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { IProduct, IProductWithLength } from 'src/shared/interfaces';
+import { IProduct, IProductWithLength, IProductWithSubCategory } from 'src/shared/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Brand, Country, Product, Category } from '@prisma/client';
@@ -340,7 +340,7 @@ export class ProductService {
         })) / 10,
       );
 
-      const products = await this.prismaService.product.findMany({
+      const products: IProductWithSubCategory[] = await this.prismaService.product.findMany({
         where: {
           OR: [
             {
@@ -386,6 +386,16 @@ export class ProductService {
 
       if (!products) {
         throw new BadRequestException(`Ничего не найдено`);
+      }
+
+      for (let i = 0; i < products.length; i++) {
+        if (products[i].subCategory.id) {
+          products[i].subCategory = await this.prismaService.subCategory.findFirst({
+            where: {
+              id: products[i].subCategory.id
+            }
+          })
+        }
       }
 
       const populatedData: IProductWithLength = {

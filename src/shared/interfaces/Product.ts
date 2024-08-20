@@ -1,9 +1,9 @@
-import { Country, Brand, Category } from '@prisma/client';
+import { Country, Brand, Category, SubCategory } from '@prisma/client';
 
 export interface IProductWithLength {
   length: number;
   totalPages: number;
-  data: IProduct[];
+  data: IProductWithSubCategory[];
 }
 
 export interface IProduct {
@@ -28,4 +28,8 @@ export interface IProduct {
   metaKeyWords: string;
   characteristics?: string;
   slug: string;
+}
+
+export interface IProductWithSubCategory extends IProduct {
+  subCategory?: SubCategory
 }
