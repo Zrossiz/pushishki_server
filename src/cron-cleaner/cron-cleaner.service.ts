@@ -2,22 +2,23 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Cron } from '@nestjs/schedule';
+import { Product, ProductVariant } from '@prisma/client';
 
 @Injectable()
 export class CronCleanerService {
     constructor (private readonly prismaService: PrismaService) {}
 
     @Cron("0 1 * * *")
-    async clear() {
+    async clear(): Promise<string[]> {
         try {
             const filesInUsage: string[] = [];
 
-            const products = await this.prismaService.product.findMany();
+            const products: Product[] = await this.prismaService.product.findMany();
 
             for (let i = 0; i < products.length; i++) {
                 filesInUsage.push(products[i].image);
 
-                const productsVariants = await this.prismaService.productVariant.findMany({
+                const productsVariants: ProductVariant[] = await this.prismaService.productVariant.findMany({
                     where: {
                         productId: products[i].id
                     }
