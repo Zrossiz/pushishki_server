@@ -392,9 +392,9 @@ export class ProductService {
         if (products[i].subCategoryId) {
           products[i].subCategory = await this.prismaService.subCategory.findFirst({
             where: {
-              id: products[i].subCategoryId
-            }
-          })
+              id: products[i].subCategoryId,
+            },
+          });
         }
       }
 

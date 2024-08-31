@@ -6,38 +6,40 @@ import { Product, ProductVariant } from '@prisma/client';
 
 @Injectable()
 export class CronCleanerService {
-    constructor (private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
-    @Cron("0 1 * * *")
-    async clear(): Promise<string[]> {
-        try {
-            const filesInUsage: string[] = [];
+  @Cron('0 1 * * *')
+  async clear(): Promise<string[]> {
+    try {
+      const filesInUsage: string[] = [];
 
-            const products: Product[] = await this.prismaService.product.findMany();
+      const products: Product[] = await this.prismaService.product.findMany();
 
-            for (let i = 0; i < products.length; i++) {
-                filesInUsage.push(products[i].image);
+      for (let i = 0; i < products.length; i++) {
+        filesInUsage.push(products[i].image);
 
-                const productsVariants: ProductVariant[] = await this.prismaService.productVariant.findMany({
-                    where: {
-                        productId: products[i].id
-                    }
-                })
+        const productsVariants: ProductVariant[] = await this.prismaService.productVariant.findMany(
+          {
+            where: {
+              productId: products[i].id,
+            },
+          },
+        );
 
-                if (productsVariants.length > 0) {
-                    for (let j = 0; j < productsVariants.length; j++) {
-                        filesInUsage.push(...productsVariants[j].images)
-                    }
-                }
-            };
-
-            const { data } = await axios.post(`${process.env.FILE_SERVER_URL}/cron-cleaner`, {
-                filesInUsage: filesInUsage
-            });
-
-            return data;
-        } catch (err) {
-            console.log(err);
+        if (productsVariants.length > 0) {
+          for (let j = 0; j < productsVariants.length; j++) {
+            filesInUsage.push(...productsVariants[j].images);
+          }
         }
+      }
+
+      const { data } = await axios.post(`${process.env.FILE_SERVER_URL}/cron-cleaner`, {
+        filesInUsage: filesInUsage,
+      });
+
+      return data;
+    } catch (err) {
+      console.log(err);
     }
+  }
 }

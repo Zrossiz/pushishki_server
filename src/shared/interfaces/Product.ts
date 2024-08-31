@@ -31,5 +31,5 @@ export interface IProduct {
 }
 
 export interface IProductWithSubCategory extends Product {
-  subCategory?: SubCategory
+  subCategory?: SubCategory;
 }
