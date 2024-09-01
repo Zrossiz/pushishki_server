@@ -61,10 +61,10 @@ export class BrandService {
     try {
       const skip: number = page ? (page - 1) * 10 : 0;
 
-      const totalPages: number = Math.ceil((await this.prismaService.brand.count()) / 10);
+      const totalPages: number = Math.ceil((await this.prismaService.brand.count()) / 100);
 
       const brands: IBrand[] = await this.prismaService.brand.findMany({
-        take: 10,
+        take: 100,
         skip,
       });
 
