@@ -332,7 +332,7 @@ export class ProductService {
               },
               {
                 articul: {
-                  equals: searchLower,
+                  equals: search,
                 },
               },
             ],
@@ -365,7 +365,7 @@ export class ProductService {
             },
             {
               articul: {
-                equals: searchLower,
+                equals: search,
               },
             },
           ],
