@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -56,7 +53,6 @@ model Product {
   categoryId         Int              @map("category_id")
   voltageId          Int?             @map("voltage_id")
   ageId              Int?             @map("age_id")
-  subCategoryId      Int?             @map("sub_category_id")
   driveId            Int?             @map("drive_id")
   name               String
   description        String
@@ -74,7 +70,7 @@ model Product {
   inStock            Boolean          @default(true) @map("in_stock")
   defaultPrice       Int              @default(0) @map("default_price")
   rating             Float            @default(0)
-  metaTitle          String?          @map("meta_tile")
+  metaTitle          String?          @map("meta_title")
   metaDescription    String?          @map("meta_description")
   metaKeyWords       String?          @map("meta_key_words")
   slug               String
@@ -84,7 +80,8 @@ model Product {
   ProductsColors     ProductsColors[]
   Basket             Basket[]
   Review             Review[]
-  Product_variant    ProductVariant[]
+  ProductVariant     ProductVariant[]
+  SubCategoryProduct SubCategoryProduct[]
 
   country  Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
   brand    Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
@@ -142,7 +139,7 @@ model Category {
   Product         Product[]
   createdAt       DateTime      @default(now()) @map("created_at")
   updatedAt       DateTime      @updatedAt @map("updated_at")
-  metaTitle       String?       @map("meta_tile")
+  metaTitle       String?       @map("meta_title")
   metaDescription String?       @map("meta_description")
   metaKeyWords    String?       @map("meta_key_words")
   SubCategory     SubCategory[]
@@ -189,7 +186,7 @@ model Color {
   updatedAt       DateTime         @updatedAt @map("updated_at")
   products        Product[]
   ProductsColors  ProductsColors[]
-  Product_variant ProductVariant[]
+  ProductVariant  ProductVariant[]
 
   @@map("colors")
 }
@@ -228,17 +225,28 @@ model Drive {
   @@map("drives")
 }
 
+model SubCategoryProduct {
+  id              Int         @id @default(autoincrement())
+  subCategoryId   Int         @map("sub_category_id")
+  productId       Int         @map("product_id")
+  product         Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  subCategory     SubCategory @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+
+  @@map("sub_category_products")
+}
+
 model SubCategory {
   id              Int      @id @default(autoincrement())
   name            String
   slug            String
   categoryId      Int      @map("category_id")
-  metaTitle       String?  @map("meta_tile")
+  metaTitle       String?  @map("meta_title")
   metaDescription String?  @map("meta_description")
   metaKeyWords    String?  @map("meta_key_words")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   Category        Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  SubCategoryProduct SubCategoryProduct[]
 
   @@map("sub_categories")
 }
