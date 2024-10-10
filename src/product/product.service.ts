@@ -60,6 +60,17 @@ export class ProductService {
         },
       });
 
+      if (createProductDto.subCategoryIds.length > 0) {
+        for (let i = 0; i < createProductDto.subCategoryIds.length; i++) {
+          await this.prismaService.subCategoryProduct.create({
+            data: {
+              productId: product.id,
+              subCategoryId: createProductDto.subCategoryIds[i]
+            }
+          })
+        }
+      }
+
       const res = {
         ...product,
         country: country,
@@ -189,26 +200,20 @@ export class ProductService {
 
   async update(productId: number, updateProductDto: UpdateProductDto): Promise<IProduct> {
     try {
-      const product: Product = await this.prismaService.product.findFirst({
-        where: {
-          id: productId,
-        },
-      });
-
+      const product = await this.prismaService.product.findFirst({ where: { id: productId } });
+  
       if (!product) {
         throw new BadRequestException(`Товар с id: ${productId} не найден`);
       }
-
+  
       Object.keys(updateProductDto).forEach((key) => {
         if (updateProductDto[key] === undefined) {
           delete updateProductDto[key];
         }
       });
-
+  
       const updatedProduct = await this.prismaService.product.update({
-        where: {
-          id: productId,
-        },
+        where: { id: productId },
         data: updateProductDto,
         include: {
           country: true,
@@ -216,17 +221,45 @@ export class ProductService {
           category: true,
         },
       });
-
+  
+      if (updateProductDto.subCategoryIds.length === 0) {
+        return updatedProduct;
+      }
+  
+      const currentSubCategories = await this.prismaService.subCategoryProduct.findMany({
+        where: { productId }
+      });
+  
+      const currentSubCategoryIds = new Set(currentSubCategories.map(item => item.subCategoryId));
+      const newSubCategoryIds = new Set(updateProductDto.subCategoryIds);
+  
+      const areEqual = currentSubCategoryIds.size === newSubCategoryIds.size &&
+                       [...currentSubCategoryIds].every(id => newSubCategoryIds.has(id));
+  
+      if (!areEqual) {
+        await this.prismaService.$transaction(async (prisma) => {
+          await prisma.subCategoryProduct.deleteMany({ where: { productId } });
+          
+          await prisma.subCategoryProduct.createMany({
+            data: Array.from(newSubCategoryIds).map(subCategoryId => ({
+              productId,
+              subCategoryId,
+            })),
+          });
+        });
+      }
+  
       return updatedProduct;
+  
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
       }
-      console.log(err);
+      console.error('Ошибка:', err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
-
+  
   async delete(productId: number): Promise<Product> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
@@ -240,6 +273,12 @@ export class ProductService {
       const deletedProduct: Product = await this.prismaService.product.delete({
         where: { id: product.id },
       });
+
+      await this.prismaService.subCategoryProduct.deleteMany({
+        where: {
+          productId
+        }
+      })
 
       return deletedProduct;
     } catch (err) {
@@ -381,21 +420,12 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
+          SubCategoryProduct: true,
         },
       });
 
       if (!products) {
         throw new BadRequestException(`Ничего не найдено`);
-      }
-
-      for (let i = 0; i < products.length; i++) {
-        if (products[i].subCategoryId) {
-          products[i].subCategory = await this.prismaService.subCategory.findFirst({
-            where: {
-              id: products[i].subCategoryId,
-            },
-          });
-        }
       }
 
       const populatedData: IProductWithLength = {

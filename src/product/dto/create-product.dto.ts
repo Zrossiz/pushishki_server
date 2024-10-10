@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @ApiProperty({ example: 1 })
@@ -142,6 +142,6 @@ export class CreateProductDto {
     description: 'Внешний ключ на объект подкатегории',
   })
   @IsOptional()
-  @IsNumber({}, { message: 'Ключ на объект подкатегории должен быть числом' })
-  subCategory: number;
+  @IsArray()
+  subCategoryIds: number[];
 }
