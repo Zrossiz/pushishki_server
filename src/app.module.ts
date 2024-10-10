@@ -26,6 +26,7 @@ import { VoltageModule } from './voltage/voltage.module';
 import { SubCategoryModule } from './sub-category/sub-category.module';
 import { DriveModule } from './drive/drive.module';
 import { CronCleanerModule } from './cron-cleaner/cron-cleaner.module';
+import { ManufacturerModule } from './manufacturer/manufacturer.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { CronCleanerModule } from './cron-cleaner/cron-cleaner.module';
     SubCategoryModule,
     DriveModule,
     CronCleanerModule,
+    ManufacturerModule,
   ],
   controllers: [
     AuthController,
