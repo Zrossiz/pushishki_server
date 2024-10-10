@@ -54,6 +54,7 @@ model Product {
   voltageId          Int?             @map("voltage_id")
   ageId              Int?             @map("age_id")
   driveId            Int?             @map("drive_id")
+  manufacturerId     Int?             @map("manufacturer_id")
   name               String
   description        String
   characteristics    String?
@@ -83,12 +84,13 @@ model Product {
   ProductVariant     ProductVariant[]
   SubCategoryProduct SubCategoryProduct[]
 
-  country  Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
-  brand    Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  voltage  Voltage? @relation(fields: [voltageId], references: [id], onDelete: Cascade)
-  age      Age?     @relation(fields: [ageId], references: [id], onDelete: Cascade)
-  drive    Drive?   @relation(fields: [driveId], references: [id], onDelete: Cascade)
+  country       Country       @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  brand         Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  category      Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  voltage       Voltage?      @relation(fields: [voltageId], references: [id], onDelete: Cascade)
+  age           Age?          @relation(fields: [ageId], references: [id], onDelete: Cascade)
+  drive         Drive?        @relation(fields: [driveId], references: [id], onDelete: Cascade)
+  manufacturer  Manufacturer? @relation(fields: [manufacturerId], references: [id], onDelete: Cascade)
 
   @@map("products")
 }
@@ -249,4 +251,15 @@ model SubCategory {
   SubCategoryProduct SubCategoryProduct[]
 
   @@map("sub_categories")
+}
+
+model Manufacturer {
+  id              Int      @id @default(autoincrement())
+  name            String
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  Product Product[]
+
+  @@map("manufacturers")
 }
