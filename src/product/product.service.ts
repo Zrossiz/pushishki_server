@@ -60,7 +60,7 @@ export class ProductService {
         },
       });
 
-      if (createProductDto.subCategoryIds.length > 0) {
+      if (createProductDto.subCategoryIds?.length > 0) {
         for (let i = 0; i < createProductDto.subCategoryIds.length; i++) {
           await this.prismaService.subCategoryProduct.create({
             data: {
@@ -101,6 +101,7 @@ export class ProductService {
           country: true,
           brand: true,
           category: true,
+          manufacturer: true,
         },
       });
 
@@ -131,6 +132,7 @@ export class ProductService {
           voltage: true,
           age: true,
           drive: true,
+          manufacturer: true,
         },
       });
 
@@ -222,7 +224,7 @@ export class ProductService {
         },
       });
   
-      if (updateProductDto.subCategoryIds.length === 0) {
+      if (updateProductDto.subCategoryIds?.length === 0) {
         return updatedProduct;
       }
   
@@ -421,6 +423,7 @@ export class ProductService {
           brand: true,
           category: true,
           SubCategoryProduct: true,
+          manufacturer: true,
         },
       });
 

@@ -51,9 +51,7 @@ export class ManufacturerController {
   }
 
   @ApiOperation({ summary: "Получение всех производителей" })
-  @ApiBearerAuth()
   @Get("")
-  @UseGuards(JwtAuthGuard)
   async getAll() {
     return await this.manufacturerService.getAll();
   }

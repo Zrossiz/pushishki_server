@@ -142,4 +142,12 @@ export class UpdateProductDto {
   @IsOptional()
   @IsArray()
   subCategoryIds: number[];
+
+  @ApiProperty({
+    example: 1,
+    description: 'Внешний ключ на объект производителя'
+  })
+  @IsOptional()
+  @IsNumber({}, { message: "Внешний ключ на объект производителя должен быть числом" })
+  manufacturerId: number;
 }
