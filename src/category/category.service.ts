@@ -152,89 +152,85 @@ export class CategoryService {
     subCategory?: string,
   ): Promise<IProductWithLength> {
     try {
-      const category: Category = await this.prismaService.category.findFirst({
+      const category = await this.prismaService.category.findFirst({
         where: { slug },
       });
-
+  
       if (!category) {
         throw new BadRequestException(`Категория ${slug} не найдена`);
       }
-
+  
       const priceFromForFilter: number = priceFrom || 0;
       const priceToForFilter: number = priceTo || 999999;
       const brandsForFilter: number[] | undefined = brands ? JSON.parse(brands) : undefined;
-      const countriesForFilter: number[] | undefined = countries
-        ? JSON.parse(countries)
-        : undefined;
+      const countriesForFilter: number[] | undefined = countries ? JSON.parse(countries) : undefined;
       const agesForFilter: number[] | undefined = ages ? JSON.parse(ages) : undefined;
       const drivesForFilter: number[] | undefined = drives ? JSON.parse(drives) : undefined;
       const voltagesForFilter: number[] | undefined = voltages ? JSON.parse(voltages) : undefined;
-
+  
       const filter: any = {
         categoryId: category.id,
         defaultPrice: {
-          gte: +priceFromForFilter,
-          lte: +priceToForFilter,
+          gte: priceFromForFilter,
+          lte: priceToForFilter,
         },
       };
-
+  
       if (brandsForFilter) {
-        filter.brandId = {
-          in: brandsForFilter,
-        };
+        filter.brandId = { in: brandsForFilter };
       }
-
-      if (subCategory) {
-        const dbSubCategory = await this.prismaService.subCategory.findFirst({
-          where: {
-            slug: subCategory,
-          },
-        });
-        filter.subCategoryId = dbSubCategory.id;
-      }
-
+  
       if (countriesForFilter) {
-        filter.countryId = {
-          in: countriesForFilter,
-        };
+        filter.countryId = { in: countriesForFilter };
       }
-
+  
       if (inStock === 'true') {
         filter.inStock = true;
       }
-
+  
       if (maximumLoad >= 1) {
-        filter.maximumLoad = {
-          lte: maximumLoad,
-        };
+        filter.maximumLoad = { lte: maximumLoad };
       }
-
+  
       if (agesForFilter) {
-        filter.ageId = {
-          in: agesForFilter,
-        };
+        filter.ageId = { in: agesForFilter };
       }
-
+  
       if (voltagesForFilter) {
-        filter.voltageId = {
-          in: voltagesForFilter,
-        };
+        filter.voltageId = { in: voltagesForFilter };
       }
-
+  
       if (drivesForFilter) {
-        filter.driveId = {
-          in: drivesForFilter,
-        };
+        filter.driveId = { in: drivesForFilter };
       }
-
+  
+      if (subCategory) {
+        const dbSubCategory = await this.prismaService.subCategory.findFirst({
+          where: { slug: subCategory },
+        });
+  
+        if (dbSubCategory) {
+          const subCategoryProducts = await this.prismaService.subCategoryProduct.findMany({
+            where: { subCategoryId: dbSubCategory.id },
+            select: { productId: true },
+          });
+  
+          const productIds = subCategoryProducts.map((item) => item.productId);
+  
+          if (productIds.length > 0) {
+            filter.id = { in: productIds };
+          }
+        }
+      }
+  
       const skip: number = page ? (page - 1) * 10 : 0;
-
+  
       const totalPages: number = Math.ceil(
         (await this.prismaService.product.count({
           where: filter,
         })) / 10,
       );
-
+  
       const products = await this.prismaService.product.findMany({
         take: 10,
         where: filter,
@@ -253,13 +249,13 @@ export class CategoryService {
           SubCategoryProduct: true,
         },
       });
-
+  
       const populatedData: IProductWithLength = {
         length: products.length,
         totalPages: products.length === 0 ? 0 : totalPages,
         data: products,
       };
-
+  
       return populatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
@@ -269,6 +265,7 @@ export class CategoryService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+  
 
   async delete(slug: string): Promise<Category> {
     try {

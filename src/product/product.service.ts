@@ -413,6 +413,12 @@ export class ProductService {
     try {
       const addedValues: SubCategoryProduct[] = [];
 
+      await this.prismaService.subCategoryProduct.deleteMany({
+        where: {
+          productId
+        }
+      })
+
       await Promise.all(dto.subCategories.map(async (num) => {
         const subCategoryObject = await this.prismaService.subCategoryProduct.create({
           data: {
