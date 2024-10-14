@@ -90,7 +90,9 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: 'Добавить подкатегории для товара' })
+  @ApiBearerAuth()
   @Post("sub-categories/:id")
+  @UseGuards(JwtAuthGuard)
   async addSubCategoriesForProduct(
     @Param("id") productId: string,
     @Body() dto: AddSubCategoriesForProductDto
