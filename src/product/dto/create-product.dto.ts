@@ -139,14 +139,6 @@ export class CreateProductDto {
 
   @ApiProperty({
     example: 1,
-    description: 'Внешний ключ на объект подкатегории',
-  })
-  @IsOptional()
-  @IsArray()
-  subCategoryIds: number[];
-
-  @ApiProperty({
-    example: 1,
     description: 'Внешний ключ на объект производителя'
   })
   @IsOptional()

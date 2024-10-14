@@ -16,6 +16,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateProductDto } from 'src/product/dto/create-product.dto';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { ProductService } from 'src/product/product.service';
+import { AddSubCategoriesForProductDto } from './dto/add-sub-categories-for-product';
 
 @ApiTags('Product')
 @Controller('product')
@@ -86,5 +87,14 @@ export class ProductController {
   @Get('color/:id')
   async getProductsByColor(@Param('id') colorId: string, @Query('page') page: number) {
     return await this.productService.getProductsByColor(+colorId, page);
+  }
+
+  @ApiOperation({ summary: 'Добавить подкатегории для товара' })
+  @Post("sub-categories/:id")
+  async addSubCategoriesForProduct(
+    @Param("id") productId: string,
+    @Body() dto: AddSubCategoriesForProductDto
+  ) {
+    return await this.productService.addSubCategoriesForProductDto(+productId, dto);
   }
 }

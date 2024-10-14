@@ -8,8 +8,9 @@ import { PrismaService } from '../prisma/prisma.service';
 import { IProduct, IProductWithLength, IProductWithSubCategory } from 'src/shared/interfaces';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
-import { Brand, Country, Product, Category } from '@prisma/client';
+import { Brand, Country, Product, Category, SubCategoryProduct } from '@prisma/client';
 import { generateSlug } from 'src/shared/helpers';
+import { AddSubCategoriesForProductDto } from './dto/add-sub-categories-for-product';
 
 @Injectable()
 export class ProductService {
@@ -59,17 +60,6 @@ export class ProductService {
           slug,
         },
       });
-
-      if (createProductDto.subCategoryIds?.length > 0) {
-        for (let i = 0; i < createProductDto.subCategoryIds.length; i++) {
-          await this.prismaService.subCategoryProduct.create({
-            data: {
-              productId: product.id,
-              subCategoryId: createProductDto.subCategoryIds[i]
-            }
-          })
-        }
-      }
 
       const res = {
         ...product,
@@ -224,35 +214,7 @@ export class ProductService {
         },
       });
   
-      if (updateProductDto.subCategoryIds?.length === 0) {
-        return updatedProduct;
-      }
-  
-      const currentSubCategories = await this.prismaService.subCategoryProduct.findMany({
-        where: { productId }
-      });
-  
-      const currentSubCategoryIds = new Set(currentSubCategories.map(item => item.subCategoryId));
-      const newSubCategoryIds = new Set(updateProductDto.subCategoryIds);
-  
-      const areEqual = currentSubCategoryIds.size === newSubCategoryIds.size &&
-                       [...currentSubCategoryIds].every(id => newSubCategoryIds.has(id));
-  
-      if (!areEqual) {
-        await this.prismaService.$transaction(async (prisma) => {
-          await prisma.subCategoryProduct.deleteMany({ where: { productId } });
-          
-          await prisma.subCategoryProduct.createMany({
-            data: Array.from(newSubCategoryIds).map(subCategoryId => ({
-              productId,
-              subCategoryId,
-            })),
-          });
-        });
-      }
-  
       return updatedProduct;
-  
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
@@ -446,4 +408,31 @@ export class ProductService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async addSubCategoriesForProductDto(productId: number, dto: AddSubCategoriesForProductDto): Promise<SubCategoryProduct[] | { message: string }> {
+    try {
+      const addedValues: SubCategoryProduct[] = [];
+
+      await Promise.all(dto.subCategories.map(async (num) => {
+        const subCategoryObject = await this.prismaService.subCategoryProduct.create({
+          data: {
+            productId,
+            subCategoryId: num
+          }
+        })
+
+        addedValues.push(subCategoryObject)
+      }));
+
+
+      return addedValues;
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
 }
+

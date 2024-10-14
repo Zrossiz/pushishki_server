@@ -250,6 +250,7 @@ export class CategoryService {
           brand: true,
           age: true,
           voltage: true,
+          SubCategoryProduct: true,
         },
       });
 
