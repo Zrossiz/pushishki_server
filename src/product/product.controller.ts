@@ -91,11 +91,11 @@ export class ProductController {
 
   @ApiOperation({ summary: 'Добавить подкатегории для товара' })
   @ApiBearerAuth()
-  @Post("sub-categories/:id")
+  @Post('sub-categories/:id')
   @UseGuards(JwtAuthGuard)
   async addSubCategoriesForProduct(
-    @Param("id") productId: string,
-    @Body() dto: AddSubCategoriesForProductDto
+    @Param('id') productId: string,
+    @Body() dto: AddSubCategoriesForProductDto,
   ) {
     return await this.productService.addSubCategoriesForProductDto(+productId, dto);
   }

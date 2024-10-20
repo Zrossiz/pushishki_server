@@ -137,9 +137,9 @@ export class UpdateProductDto {
 
   @ApiProperty({
     example: 1,
-    description: 'Внешний ключ на объект производителя'
+    description: 'Внешний ключ на объект производителя',
   })
   @IsOptional()
-  @IsNumber({}, { message: "Внешний ключ на объект производителя должен быть числом" })
+  @IsNumber({}, { message: 'Внешний ключ на объект производителя должен быть числом' })
   manufacturerId: number;
 }

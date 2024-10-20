@@ -193,17 +193,17 @@ export class ProductService {
   async update(productId: number, updateProductDto: UpdateProductDto): Promise<IProduct> {
     try {
       const product = await this.prismaService.product.findFirst({ where: { id: productId } });
-  
+
       if (!product) {
         throw new BadRequestException(`Товар с id: ${productId} не найден`);
       }
-  
+
       Object.keys(updateProductDto).forEach((key) => {
         if (updateProductDto[key] === undefined) {
           delete updateProductDto[key];
         }
       });
-  
+
       const updatedProduct = await this.prismaService.product.update({
         where: { id: productId },
         data: updateProductDto,
@@ -213,7 +213,7 @@ export class ProductService {
           category: true,
         },
       });
-  
+
       return updatedProduct;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
@@ -223,7 +223,7 @@ export class ProductService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
-  
+
   async delete(productId: number): Promise<Product> {
     try {
       const product: Product = await this.prismaService.product.findFirst({
@@ -240,9 +240,9 @@ export class ProductService {
 
       await this.prismaService.subCategoryProduct.deleteMany({
         where: {
-          productId
-        }
-      })
+          productId,
+        },
+      });
 
       return deletedProduct;
     } catch (err) {
@@ -409,27 +409,31 @@ export class ProductService {
     }
   }
 
-  async addSubCategoriesForProductDto(productId: number, dto: AddSubCategoriesForProductDto): Promise<SubCategoryProduct[] | { message: string }> {
+  async addSubCategoriesForProductDto(
+    productId: number,
+    dto: AddSubCategoriesForProductDto,
+  ): Promise<SubCategoryProduct[] | { message: string }> {
     try {
       const addedValues: SubCategoryProduct[] = [];
 
       await this.prismaService.subCategoryProduct.deleteMany({
         where: {
-          productId
-        }
-      })
+          productId,
+        },
+      });
 
-      await Promise.all(dto.subCategories.map(async (num) => {
-        const subCategoryObject = await this.prismaService.subCategoryProduct.create({
-          data: {
-            productId,
-            subCategoryId: num
-          }
-        })
+      await Promise.all(
+        dto.subCategories.map(async (num) => {
+          const subCategoryObject = await this.prismaService.subCategoryProduct.create({
+            data: {
+              productId,
+              subCategoryId: num,
+            },
+          });
 
-        addedValues.push(subCategoryObject)
-      }));
-
+          addedValues.push(subCategoryObject);
+        }),
+      );
 
       return addedValues;
     } catch (err) {
@@ -441,4 +445,3 @@ export class ProductService {
     }
   }
 }
-
