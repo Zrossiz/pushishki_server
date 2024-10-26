@@ -204,9 +204,14 @@ export class ProductService {
         }
       });
 
+      const slug: string = generateSlug(updateProductDto.name);
+
       const updatedProduct = await this.prismaService.product.update({
         where: { id: productId },
-        data: updateProductDto,
+        data: { 
+          ...updateProductDto,
+          slug
+        },
         include: {
           country: true,
           brand: true,
