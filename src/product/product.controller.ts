@@ -11,7 +11,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateProductDto } from 'src/product/dto/create-product.dto';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
@@ -24,12 +24,16 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @ApiOperation({ summary: 'Получить все товары' })
+  @ApiQuery({ name: 'page', type: Number, description: 'Номер страницы', required: false })
   @Get('')
   async getAll(@Query('page') page: number) {
     return await this.productService.getAll(page);
   }
 
   @ApiOperation({ summary: 'Поиск товаров' })
+  @ApiQuery({ name: 'page', type: Number, description: 'Номер страницы', required: false })
+  @ApiQuery({ name: 'search', type: String, description: 'Строка поиска', required: false })
+  @ApiQuery({ name: 'sort', type: String, description: 'Параметр сортировки', required: false })
   @Get('search')
   async search(
     @Query('page') page: number,
@@ -51,7 +55,7 @@ export class ProductController {
     return await this.productService.getNewProducts();
   }
 
-  @ApiOperation({ summary: "Получить результаты опроса" })
+  @ApiOperation({ summary: 'Получить результаты опроса' })
   @ApiQuery({
     name: 'categoryId',
     type: String,
@@ -86,9 +90,9 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: 'Удалить товар' })
-  @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
   async delete(@Param('id') productId: string) {
     return await this.productService.delete(+productId);
   }
@@ -103,15 +107,16 @@ export class ProductController {
   }
 
   @ApiOperation({ summary: 'Редактирование товара' })
+  @ApiBearerAuth()
   @Put(':id/update')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  @ApiBearerAuth()
   async update(@Param('id') productId: string, @Body() updateProductDto: UpdateProductDto) {
     return await this.productService.update(+productId, updateProductDto);
   }
 
   @ApiOperation({ summary: 'Получить товары по цвету' })
+  @ApiQuery({ name: 'page', type: Number, description: 'Номер страницы', required: false })
   @Get('color/:id')
   async getProductsByColor(@Param('id') colorId: string, @Query('page') page: number) {
     return await this.productService.getProductsByColor(+colorId, page);
