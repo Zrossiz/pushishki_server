@@ -92,6 +92,7 @@ export class ProductService {
           brand: true,
           category: true,
           manufacturer: true,
+          SubCategoryProduct: true,
         },
       });
 
