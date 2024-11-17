@@ -25,11 +25,30 @@ export class AgeService {
 
   async create(createAgeDto: AgeDto): Promise<Age> {
     try {
-      const age = await this.prismaService.age.create({
-        data: {
-          name: createAgeDto.name,
+      const lastCreatedAge = await this.prismaService.age.findFirst({
+        orderBy: {
+          index: 'desc'
         },
-      });
+        take: 1
+      })
+
+      let age: Age;
+
+      if (lastCreatedAge) {
+        age = await this.prismaService.age.create({
+          data: {
+            name: createAgeDto.name,
+            index: lastCreatedAge.index + 1
+          },
+        });
+      } else {
+        age = await this.prismaService.age.create({
+          data: {
+            name: createAgeDto.name,
+            index: 0
+          },
+        });
+      }
 
       return age;
     } catch (err) {
@@ -40,7 +59,13 @@ export class AgeService {
 
   async getAll(): Promise<Age[]> {
     try {
-      return await this.prismaService.age.findMany();
+      const ages = await this.prismaService.age.findMany({
+        orderBy: {
+          index: 'asc'
+        }
+      });
+
+      return ages;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);

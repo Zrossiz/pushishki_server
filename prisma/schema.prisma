@@ -214,6 +214,7 @@ model Voltage {
 model Age {
   id       Int       @id @default(autoincrement())
   name     String
+  index    Int?
   products Product[]
 
   @@map("ages")
