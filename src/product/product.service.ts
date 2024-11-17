@@ -209,9 +209,9 @@ export class ProductService {
 
       const updatedProduct = await this.prismaService.product.update({
         where: { id: productId },
-        data: { 
+        data: {
           ...updateProductDto,
-          slug
+          slug,
         },
         include: {
           country: true,
@@ -450,4 +450,90 @@ export class ProductService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
+
+  async getQuizResults(categoryId: number, priceTo: number, maxAge: string): Promise<Product[]> {
+    try {
+      const ages = await this.prismaService.age.findMany();
+      let ageId: number | undefined;
+  
+      for (const age of ages) {
+        if (age.name.includes("-")) {
+          const matches = age.name.match(/\b[1-9]\b/g);
+          if (matches) {
+            const [startAge, endAge] = matches.map(Number);
+            const allPeriodAges = Array.from({ length: endAge - startAge + 1 }, (_, i) => startAge + i);
+  
+            if (allPeriodAges.includes(+maxAge)) {
+              ageId = age.id;
+              break;
+            }
+          }
+        } else {
+          const matches = age.name.match(/\b\d+\b/g);
+          if (matches) {
+            const numbers = matches.map(Number);
+  
+            const validNumber = numbers.find((num) => (num >= 0 && num <= 3) || (num >= 15 && num <= 100));
+  
+            if (
+              (validNumber && validNumber <= 3 && +maxAge <= 3) ||
+              (validNumber && validNumber >= 15 && +maxAge >= 15)
+            ) {
+              ageId = age.id;
+              break;
+            }
+          }
+        }
+      }
+
+      if (!ageId) {
+        throw {
+          message: "Неверный возраст"
+        } 
+      }
+  
+      let products = await this.prismaService.product.findMany({
+        where: {
+          defaultPrice: {
+            lte: priceTo,
+          },
+          ageId,
+          categoryId,
+        },
+        include: {
+          category: true,
+          country: true,
+          brand: true,
+          age: true,
+          voltage: true,
+          SubCategoryProduct: true,
+        },
+        take: 3,
+      });
+  
+      if (products.length === 0) {
+        products = await this.prismaService.product.findMany({
+          where: { categoryId },
+          include: {
+            category: true,
+            country: true,
+            brand: true,
+            age: true,
+            voltage: true,
+            SubCategoryProduct: true,
+          },
+          take: 3,
+        });
+      }
+  
+      return products;
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.error(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
+  
 }

@@ -11,7 +11,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CreateProductDto } from 'src/product/dto/create-product.dto';
 import { UpdateProductDto } from 'src/product/dto/update-product.dto';
@@ -49,6 +49,34 @@ export class ProductController {
   @Get('new')
   async getNewProducts() {
     return await this.productService.getNewProducts();
+  }
+
+  @ApiOperation({ summary: "Получить результаты опроса" })
+  @ApiQuery({
+    name: 'categoryId',
+    type: String,
+    description: 'ID категории продукта',
+    required: true,
+  })
+  @ApiQuery({
+    name: 'priceTo',
+    type: String,
+    description: 'Максимальная цена продукта',
+    required: true,
+  })
+  @ApiQuery({
+    name: 'maxAge',
+    type: String,
+    description: 'Максимальный возраст',
+    required: true,
+  })
+  @Get('quiz')
+  async getQuizResults(
+    @Query('categoryId') categoryId: string,
+    @Query('priceTo') priceTo: string,
+    @Query('maxAge') maxAge: string,
+  ) {
+    return await this.productService.getQuizResults(+categoryId, +priceTo, maxAge);
   }
 
   @ApiOperation({ summary: 'Получить товар по id' })
