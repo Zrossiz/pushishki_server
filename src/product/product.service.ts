@@ -326,24 +326,19 @@ export class ProductService {
               },
               {
                 name: {
-                  startsWith: searchLower,
-                },
-              },
-              {
-                name: {
-                  endsWith: searchLower,
-                },
-              },
-              {
-                name: {
-                  startsWith: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
+                  contains: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
                 },
               },
               {
                 articul: {
-                  equals: search,
+                  contains: search,
                 },
               },
+              {
+                metaKeyWords: {
+                  contains: search
+                }
+              }
             ],
           },
         })) / 10,
@@ -359,24 +354,19 @@ export class ProductService {
             },
             {
               name: {
-                startsWith: searchLower,
-              },
-            },
-            {
-              name: {
-                endsWith: searchLower,
-              },
-            },
-            {
-              name: {
-                startsWith: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
+                contains: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
               },
             },
             {
               articul: {
-                equals: search,
+                contains: search,
               },
             },
+            {
+              metaKeyWords: {
+                contains: search
+              }
+            }
           ],
         },
         take: 10,
