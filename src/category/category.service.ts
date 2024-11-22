@@ -9,7 +9,7 @@ import { ICategory, ICategoryWithLength, IProductWithLength } from 'src/shared/i
 import { generateSlug } from 'src/shared/helpers';
 import { UpdateCategoryDto } from 'src/category/dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { Category } from '@prisma/client';
+import { Category, SubCategory } from '@prisma/client';
 
 @Injectable()
 export class CategoryService {
@@ -287,6 +287,25 @@ export class CategoryService {
       });
 
       return deletedCategory;
+    } catch (err) {
+      if (`${err.status}`.startsWith('4')) {
+        throw new HttpException(err.response, err.status);
+      }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
+
+  async getSubCategoriesByCategory(
+    categoryId: number
+  ): Promise<SubCategory[] | { message: string }> {
+    try {
+      return await this.prismaService.subCategory.findMany({
+        where: {
+          categoryId
+        }
+      });
+      
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);

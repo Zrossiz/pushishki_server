@@ -33,6 +33,18 @@ export class CategoryController {
   }
 
   @ApiParam({
+    name: 'id',
+    type: 'string',
+    description: 'Id категории',
+    example: '1',
+  })
+  @ApiOperation({ summary: 'Получить подкатегории категории' })
+  @Get(':id/sub-categories')
+  async getSubCategoriesByCategory(@Param("id") id: string) {
+    return await this.categoryService.getSubCategoriesByCategory(+id);
+  }
+
+  @ApiParam({
     name: 'slug',
     type: 'string',
     description: 'Slug категории',
