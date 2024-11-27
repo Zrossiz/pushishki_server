@@ -346,7 +346,7 @@ export class ProductService {
               },
               {
                 metaKeyWords: {
-                  contains: search.toLowerCase()
+                  contains: searchLower
                 }
               }
             ],
@@ -384,7 +384,7 @@ export class ProductService {
             },
             {
               metaKeyWords: {
-                contains: search.toLowerCase()
+                contains: searchLower
               }
             }
           ],
