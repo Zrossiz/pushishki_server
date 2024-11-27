@@ -342,6 +342,11 @@ export class ProductService {
               {
                 metaKeyWords: {
                   contains: search
+                },
+              },
+              {
+                metaKeyWords: {
+                  contains: search.toLocaleLowerCase()
                 }
               }
             ],
@@ -363,6 +368,11 @@ export class ProductService {
               },
             },
             {
+              name: {
+                contains: search,
+              }
+            },
+            {
               articul: {
                 contains: search,
               },
@@ -370,6 +380,11 @@ export class ProductService {
             {
               metaKeyWords: {
                 contains: search
+              },
+            },
+            {
+              metaKeyWords: {
+                contains: search.toLocaleLowerCase()
               }
             }
           ],
