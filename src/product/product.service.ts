@@ -313,89 +313,31 @@ export class ProductService {
 
   async find(search: string, page: number, sort: string): Promise<IProductWithLength> {
     try {
-      const skip: number = +page ? (page - 1) * 10 : 0;
+      const skip = (page > 1 ? (page - 1) * 10 : 0);
       const searchLower = search.toLowerCase();
-      const totalPages: number = Math.ceil(
-        (await this.prismaService.product.count({
-          where: {
-            OR: [
-              {
-                name: {
-                  contains: searchLower,
-                },
-              },
-              {
-                name: {
-                  contains: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
-                },
-              },
-              {
-                name: {
-                  contains: search,
-                }
-              },
-              {
-                articul: {
-                  contains: search,
-                },
-              },
-              {
-                metaKeyWords: {
-                  contains: search
-                },
-              },
-              {
-                metaKeyWords: {
-                  contains: searchLower
-                }
-              }
-            ],
-          },
-        })) / 10,
-      );
-
+      const searchCapitalized = searchLower.charAt(0).toUpperCase() + searchLower.slice(1);
+  
+      const searchConditions = {
+        OR: [
+          { name: { contains: searchLower } },
+          { name: { contains: searchCapitalized } },
+          { name: { contains: search } },
+          { articul: { contains: search } },
+          { metaKeyWords: { contains: search } },
+          { metaKeyWords: { contains: searchLower } },
+        ],
+      };
+  
+      const totalCount = await this.prismaService.product.count({ where: searchConditions });
+      const totalPages = Math.ceil(totalCount / 10);
+  
       const products: IProductWithSubCategory[] = await this.prismaService.product.findMany({
-        where: {
-          OR: [
-            {
-              name: {
-                contains: searchLower,
-              },
-            },
-            {
-              name: {
-                contains: searchLower.charAt(0).toUpperCase() + searchLower.slice(1),
-              },
-            },
-            {
-              name: {
-                contains: search,
-              }
-            },
-            {
-              articul: {
-                contains: search,
-              },
-            },
-            {
-              metaKeyWords: {
-                contains: search
-              },
-            },
-            {
-              metaKeyWords: {
-                contains: searchLower
-              }
-            }
-          ],
-        },
+        where: searchConditions,
         take: 10,
         skip,
-        orderBy: [
-          {
-            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
-          },
-        ],
+        orderBy: {
+          defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
+        },
         include: {
           country: true,
           brand: true,
@@ -404,18 +346,17 @@ export class ProductService {
           manufacturer: true,
         },
       });
-
-      if (!products) {
-        throw new BadRequestException(`Ничего не найдено`);
+  
+  
+      if (!products.length) {
+        throw new BadRequestException('Ничего не найдено');
       }
-
-      const populatedData: IProductWithLength = {
+  
+      return {
         length: products.length,
-        totalPages: products.length === 0 ? 0 : totalPages,
+        totalPages: totalPages || 0,
         data: products,
       };
-
-      return populatedData;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
