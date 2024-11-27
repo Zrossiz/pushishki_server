@@ -330,6 +330,11 @@ export class ProductService {
                 },
               },
               {
+                name: {
+                  contains: search,
+                }
+              },
+              {
                 articul: {
                   contains: search,
                 },
