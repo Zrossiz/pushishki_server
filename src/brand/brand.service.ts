@@ -63,7 +63,7 @@ export class BrandService {
 
       const totalPages: number = Math.ceil((await this.prismaService.brand.count()) / 100);
 
-      const brands: IBrand[] = await this.prismaService.brand.findMany({
+      let brands: IBrand[] = await this.prismaService.brand.findMany({
         take: 100,
         skip,
       });
@@ -71,6 +71,14 @@ export class BrandService {
       if (brands.length === 0) {
         throw new BadRequestException('Упс, ничего не найдено');
       }
+
+      brands = brands.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return -1; 
+        if (nameA > nameB) return 1; 
+        return 0;
+      });
 
       const data: IBrandWithLength = {
         length: brands.length,
