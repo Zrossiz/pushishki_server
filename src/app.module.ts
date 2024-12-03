@@ -27,6 +27,7 @@ import { SubCategoryModule } from './sub-category/sub-category.module';
 import { DriveModule } from './drive/drive.module';
 import { CronCleanerModule } from './cron-cleaner/cron-cleaner.module';
 import { ManufacturerModule } from './manufacturer/manufacturer.module';
+import { DashbordModule } from './dashbord/dashbord.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ManufacturerModule } from './manufacturer/manufacturer.module';
     DriveModule,
     CronCleanerModule,
     ManufacturerModule,
+    DashbordModule,
   ],
   controllers: [
     AuthController,
