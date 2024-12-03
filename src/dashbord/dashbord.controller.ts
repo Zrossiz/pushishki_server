@@ -173,4 +173,56 @@ export class DashbordController {
 
     return res.status(200).json(products);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("average-sum")
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Получить среднюю сумму заказов за указанный период',
+    description: 'Возвращает среднюю сумму всех заказов за период между датами "dayFrom" и "dayTo".',
+  })
+  @ApiQuery({
+    name: 'dayFrom',
+    required: true,
+    type: String,
+    description: 'Дата начала периода (в формате yyyy-MM-dd)',
+  })
+  @ApiQuery({
+    name: 'dayTo',
+    required: true,
+    type: String,
+    description: 'Дата конца периода (в формате yyyy-MM-dd)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Средняя сумма заказов за указанный период',
+    schema: {
+      type: 'number',
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Неверный формат даты',
+  })
+  async getAverageSum(
+    @Query('dayFrom') dayFrom: string,
+    @Query('dayTo') dayTo: string,
+    @Res() res: Response,
+  ) {
+    if (!isValidDate(dayFrom)) {
+      return res.status(400).json({
+        dayFrom: 'invalid date format',
+      });
+    }
+
+    if (!isValidDate(dayTo)) {
+      return res.status(400).json({
+        dayTo: 'invalid date format',
+      });
+    }
+
+    const sum = await this.dashbordService.getAverageSum(dayFrom, dayTo);
+
+    return res.status(200).json(sum)
+  }
 }

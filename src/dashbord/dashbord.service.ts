@@ -96,8 +96,32 @@ export class DashbordService {
             const sortedProducts = productIds.map(productId => 
                 products.find(product => product.id === productId)
             );
-            
+
             return sortedProducts;
+        } catch (err) {
+            if (`${err.status}`.startsWith('4')) {
+                throw new HttpException(err.response, err.status);
+            }
+            console.log(err);
+            throw new InternalServerErrorException('Ошибка сервера');
+        }
+    }
+
+    async getAverageSum(dayFrom: string, dayTo: string) {
+        try {
+            const res = await this.prismaService.order.aggregate({
+                _avg: {
+                    price: true,
+                },
+                where: {
+                    createdAt: {
+                        gte: new Date(dayFrom),
+                        lte: new Date(dayTo)
+                    }
+                },
+            });
+
+            return res._avg
         } catch (err) {
             if (`${err.status}`.startsWith('4')) {
                 throw new HttpException(err.response, err.status);
