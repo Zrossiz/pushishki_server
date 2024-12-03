@@ -1,5 +1,5 @@
 import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { Order } from '@prisma/client';
+import { Order, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -53,6 +53,51 @@ export class DashbordService {
             return {
                 sum
             }
+        } catch (err) {
+            if (`${err.status}`.startsWith('4')) {
+                throw new HttpException(err.response, err.status);
+            }
+            console.log(err);
+            throw new InternalServerErrorException('Ошибка сервера');
+        }
+    }
+
+    async getMostSellingProducts(dayFrom: string, dayTo: string): Promise<Product[]> {
+        try {
+            const saledProducts = await this.prismaService.basket.groupBy({
+                by: ["productId"],
+                _sum: {
+                    quantity: true,
+                },
+                where: {
+                    createdAt: {
+                        gte: new Date(dayFrom),
+                        lte: new Date(dayTo)
+                    },
+                },
+                orderBy: {
+                    _sum: {
+                        quantity: 'desc'
+                    }
+                },
+                take: 5,
+            })
+
+            const productIds = saledProducts.map(item => item.productId);
+
+            const products = await this.prismaService.product.findMany({
+                where: {
+                    id: {
+                        in: productIds
+                    }
+                }
+            });
+
+            const sortedProducts = productIds.map(productId => 
+                products.find(product => product.id === productId)
+            );
+            
+            return sortedProducts;
         } catch (err) {
             if (`${err.status}`.startsWith('4')) {
                 throw new HttpException(err.response, err.status);

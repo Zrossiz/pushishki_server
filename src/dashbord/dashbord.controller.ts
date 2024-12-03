@@ -51,4 +51,27 @@ export class DashbordController {
 
     return res.status(200).json(sum)
   }
+
+  @Get("most-selling")
+  async getMostSellingProducts(
+    @Query("dayFrom") dayFrom: string,
+    @Query("dayTo") dayTo: string,
+    @Res() res: Response
+  ) {
+    if (!isValidDate(dayFrom)) {
+      return res.status(400).json({
+        dayFrom: "invalid date format"
+      })
+    }
+
+    if (!isValidDate(dayTo)) {
+      return res.status(400).json({
+        dayTo: "invalid date format"
+      })
+    };
+
+    const products = await this.dashbordService.getMostSellingProducts(dayFrom, dayTo);
+
+    return res.status(200).json(products);
+  }
 }
