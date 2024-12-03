@@ -58,7 +58,8 @@ export class DashbordController {
       });
     }
 
-    return await this.dashbordService.getOrdersNumber(dayFrom, dayTo);
+    const result = await this.dashbordService.getOrdersNumber(dayFrom, dayTo);
+    res.status(200).json(result);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -107,9 +108,7 @@ export class DashbordController {
         dayTo: 'invalid date format',
       });
     }
-
     const sum = await this.dashbordService.getOrdersSum(dayFrom, dayTo);
-
     return res.status(200).json(sum);
   }
 
