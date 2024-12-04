@@ -1,10 +1,11 @@
-import { Body, Controller, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, Get, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtAuthGuard } from './auth.guard';
+import { Response } from 'express';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -23,14 +24,26 @@ export class AuthController {
   @ApiBody({ type: LoginUserDto })
   @UsePipes(ValidationPipe)
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
-    return await this.authService.login(loginUserDto);
+  async login(
+    @Body() loginUserDto: LoginUserDto,
+    @Res() res: Response
+  ) {
+    const userWithToken = await this.authService.login(loginUserDto);
+    res.cookie('access_token', userWithToken.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24,
+    });
+  
+    return res.json(userWithToken);
   }
 
   @ApiOperation({ summary: 'Проверка токена' })
   @ApiHeader({ name: 'Authorization', description: 'Bearer token' })
   @UseGuards(JwtAuthGuard)
-  @Post('check')
+  @Get('check')
   async checkUser() {
     return {
       message: 'Success',

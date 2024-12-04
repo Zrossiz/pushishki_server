@@ -107,7 +107,7 @@ export class DashbordService {
         }
     }
 
-    async getAverageSum(dayFrom: string, dayTo: string) {
+    async getAverageSum(dayFrom: string, dayTo: string): Promise<{price: number}> {
         try {
             const res = await this.prismaService.order.aggregate({
                 _avg: {
@@ -120,6 +120,12 @@ export class DashbordService {
                     }
                 },
             });
+
+            if (!res._avg.price) {
+                return {
+                    price: 0
+                }
+            }
 
             return res._avg
         } catch (err) {
