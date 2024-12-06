@@ -313,10 +313,10 @@ export class ProductService {
 
   async find(search: string, page: number, sort: string): Promise<IProductWithLength> {
     try {
-      const skip = (page > 1 ? (page - 1) * 10 : 0);
+      const skip = page > 1 ? (page - 1) * 10 : 0;
       const searchLower = search.toLowerCase();
       const searchCapitalized = searchLower.charAt(0).toUpperCase() + searchLower.slice(1);
-  
+
       const searchConditions = {
         OR: [
           { name: { contains: searchLower } },
@@ -327,10 +327,10 @@ export class ProductService {
           { metaKeyWords: { contains: searchLower } },
         ],
       };
-  
+
       const totalCount = await this.prismaService.product.count({ where: searchConditions });
       const totalPages = Math.ceil(totalCount / 10);
-  
+
       const products: IProductWithSubCategory[] = await this.prismaService.product.findMany({
         where: searchConditions,
         take: 10,
@@ -346,12 +346,11 @@ export class ProductService {
           manufacturer: true,
         },
       });
-  
-  
+
       if (!products.length) {
         throw new BadRequestException('Ничего не найдено');
       }
-  
+
       return {
         length: products.length,
         totalPages: totalPages || 0,
@@ -406,14 +405,17 @@ export class ProductService {
     try {
       const ages = await this.prismaService.age.findMany();
       let ageId: number | undefined;
-  
+
       for (const age of ages) {
-        if (age.name.includes("-")) {
+        if (age.name.includes('-')) {
           const matches = age.name.match(/\b[1-9]\b/g);
           if (matches) {
             const [startAge, endAge] = matches.map(Number);
-            const allPeriodAges = Array.from({ length: endAge - startAge + 1 }, (_, i) => startAge + i);
-  
+            const allPeriodAges = Array.from(
+              { length: endAge - startAge + 1 },
+              (_, i) => startAge + i,
+            );
+
             if (allPeriodAges.includes(+maxAge)) {
               ageId = age.id;
               break;
@@ -423,9 +425,11 @@ export class ProductService {
           const matches = age.name.match(/\b\d+\b/g);
           if (matches) {
             const numbers = matches.map(Number);
-  
-            const validNumber = numbers.find((num) => (num >= 0 && num <= 3) || (num >= 15 && num <= 100));
-  
+
+            const validNumber = numbers.find(
+              (num) => (num >= 0 && num <= 3) || (num >= 15 && num <= 100),
+            );
+
             if (
               (validNumber && validNumber <= 3 && +maxAge <= 3) ||
               (validNumber && validNumber >= 15 && +maxAge >= 15)
@@ -439,10 +443,10 @@ export class ProductService {
 
       if (!ageId) {
         throw {
-          message: "Неверный возраст"
-        } 
+          message: 'Неверный возраст',
+        };
       }
-  
+
       let products = await this.prismaService.product.findMany({
         where: {
           defaultPrice: {
@@ -461,7 +465,7 @@ export class ProductService {
         },
         take: 3,
       });
-  
+
       if (products.length === 0) {
         products = await this.prismaService.product.findMany({
           where: { categoryId },
@@ -476,7 +480,7 @@ export class ProductService {
           take: 3,
         });
       }
-  
+
       return products;
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
@@ -486,5 +490,4 @@ export class ProductService {
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }
-  
 }

@@ -27,10 +27,10 @@ export class AgeService {
     try {
       const lastCreatedAge = await this.prismaService.age.findFirst({
         orderBy: {
-          index: 'desc'
+          index: 'desc',
         },
-        take: 1
-      })
+        take: 1,
+      });
 
       let age: Age;
 
@@ -38,14 +38,14 @@ export class AgeService {
         age = await this.prismaService.age.create({
           data: {
             name: createAgeDto.name,
-            index: lastCreatedAge.index + 1
+            index: lastCreatedAge.index + 1,
           },
         });
       } else {
         age = await this.prismaService.age.create({
           data: {
             name: createAgeDto.name,
-            index: 0
+            index: 0,
           },
         });
       }
@@ -61,8 +61,8 @@ export class AgeService {
     try {
       const ages = await this.prismaService.age.findMany({
         orderBy: {
-          index: 'asc'
-        }
+          index: 'asc',
+        },
       });
 
       return ages;

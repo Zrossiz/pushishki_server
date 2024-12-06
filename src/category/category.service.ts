@@ -297,15 +297,14 @@ export class CategoryService {
   }
 
   async getSubCategoriesByCategory(
-    categoryId: number
+    categoryId: number,
   ): Promise<SubCategory[] | { message: string }> {
     try {
       return await this.prismaService.subCategory.findMany({
         where: {
-          categoryId
-        }
+          categoryId,
+        },
       });
-      
     } catch (err) {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);

@@ -174,11 +174,12 @@ export class DashbordController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("average-sum")
+  @Get('average-sum')
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Получить среднюю сумму заказов за указанный период',
-    description: 'Возвращает среднюю сумму всех заказов за период между датами "dayFrom" и "dayTo".',
+    description:
+      'Возвращает среднюю сумму всех заказов за период между датами "dayFrom" и "dayTo".',
   })
   @ApiQuery({
     name: 'dayFrom',
@@ -222,6 +223,6 @@ export class DashbordController {
 
     const sum = await this.dashbordService.getAverageSum(dayFrom, dayTo);
 
-    return res.status(200).json(sum)
+    return res.status(200).json(sum);
   }
 }
