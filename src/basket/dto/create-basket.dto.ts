@@ -13,6 +13,7 @@ export class CreateBasketDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => BasketDto)
+  @IsNotEmpty()
   objects: BasketDto[];
 }
 

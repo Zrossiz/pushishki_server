@@ -16,16 +16,31 @@ export class OrderService {
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     try {
-      const order: Order = await this.prismaService.order.create({
-        data: createOrderDto,
-      });
+      const { basket, ...orderData } = createOrderDto;
 
-      return order;
+      return await this.prismaService.$transaction(async (tx) => {
+        const order = await tx.order.create({
+          data: orderData,
+        });
+
+        const basketData = basket.objects.map(item => {
+          return {
+            ...item,
+            orderId: order.id
+          }
+        })
+
+        await tx.basket.createMany({
+          data: basketData,
+        });
+  
+        return order;
+      });
     } catch (err) {
-      if (`${err.status}`.startsWith('4')) {
-        throw new HttpException(err.response, err.status);
+      if (err?.status?.toString().startsWith('4')) {
+        throw new HttpException(err.response || 'Некорректный запрос', err.status);
       }
-      console.log(err);
+      console.error('Server error:', err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
   }

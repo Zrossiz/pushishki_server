@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
+import { CreateBasketDto } from 'src/basket/dto/create-basket.dto';
 
 export class CreateOrderDto {
   @ApiProperty({ example: 'Иван' })
@@ -26,4 +27,6 @@ export class CreateOrderDto {
   @IsNotEmpty({ message: 'Стоимость не может быть пустым значением' })
   @IsNumber({}, { message: 'Стоимость должна быть числовым значением' })
   price: number;
+
+  basket: CreateBasketDto
 }
