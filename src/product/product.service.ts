@@ -11,6 +11,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { Brand, Country, Product, Category, SubCategoryProduct } from '@prisma/client';
 import { generateSlug } from 'src/shared/helpers';
 import { AddSubCategoriesForProductDto } from './dto/add-sub-categories-for-product';
+import axios from 'axios';
 
 @Injectable()
 export class ProductService {
@@ -219,6 +220,17 @@ export class ProductService {
           category: true,
         },
       });
+
+      const isUpdatedPrice = updateProductDto.defaultPrice && 
+        product.defaultPrice != updatedProduct.defaultPrice
+
+      if (isUpdatedPrice) {
+        await axios.post(`${process.env.BOT_IP}/bot/new-price`, {
+          oldPrice: product.defaultPrice,
+          newPrice: updatedProduct.defaultPrice,
+          productName: updateProductDto.name
+        })
+      }
 
       return updatedProduct;
     } catch (err) {
