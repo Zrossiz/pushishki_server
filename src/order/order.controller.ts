@@ -16,6 +16,8 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { OneClickOrderDTO } from './dto/one-click-order.dto';
+import { QuestionOrderDTO } from './dto/question.dto';
 
 @ApiTags('Order')
 @Controller('order')
@@ -42,6 +44,18 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   async getAll(@Query('page') page: string) {
     return await this.orderService.getAll(+page);
+  }
+
+  @ApiOperation({ summary: 'Купить в один клик' })
+  @Post("one-click")
+  async oneClick(@Body() dto: OneClickOrderDTO) {
+    return await this.orderService.oneClick(dto);
+  }
+
+  @ApiOperation({ summary: 'Задать вопрос' })
+  @Post("question")
+  async sendQuestion(@Body() body: QuestionOrderDTO) {
+    return await this.orderService.sendQuestion(body);
   }
 
   @ApiOperation({ summary: 'Получить заказ по id' })

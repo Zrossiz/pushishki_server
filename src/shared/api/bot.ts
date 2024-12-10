@@ -49,7 +49,7 @@ export const orderNotify = async (
     })
 }
 
-export const oneClickOrderNoftify = async (
+export const oneClickOrderNotify = async (
     name: string,
     phone: string,
     productName: string,
@@ -100,13 +100,13 @@ export const reviewNotify = async (
 export const questionNotify = async (
     name: string, 
     phone: string, 
-    quesiton: string, 
+    question: string, 
     link: string
 ) => {
     const body = {
         name,
         phone,
-        quesiton,
+        question,
         link,
     }
 

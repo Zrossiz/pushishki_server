@@ -9,6 +9,7 @@ import { CreateReviewDto } from 'src/review/dto/create-review-dto';
 import { IReview } from 'src/shared/interfaces';
 import { UpdateReviewDto } from 'src/review/dto/update-review-dto';
 import { Product, Review } from '@prisma/client';
+import { reviewNotify } from 'src/shared/api';
 
 @Injectable()
 export class ReviewService {
@@ -23,6 +24,14 @@ export class ReviewService {
       if (!review) {
         throw new BadRequestException('Ошибка при публикации отзыва');
       }
+
+      await reviewNotify(
+        review.id,
+        createReviewDto.username,
+        createReviewDto.rating,
+        createReviewDto.title,
+        createReviewDto.description
+      )
 
       return review;
     } catch (err) {

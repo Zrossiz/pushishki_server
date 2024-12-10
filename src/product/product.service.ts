@@ -12,6 +12,7 @@ import { Brand, Country, Product, Category, SubCategoryProduct } from '@prisma/c
 import { generateSlug } from 'src/shared/helpers';
 import { AddSubCategoriesForProductDto } from './dto/add-sub-categories-for-product';
 import axios from 'axios';
+import { newPriceNotify } from 'src/shared/api';
 
 @Injectable()
 export class ProductService {
@@ -225,11 +226,7 @@ export class ProductService {
         product.defaultPrice != updatedProduct.defaultPrice
 
       if (isUpdatedPrice) {
-        await axios.post(`${process.env.BOT_IP}/bot/new-price`, {
-          oldPrice: product.defaultPrice,
-          newPrice: updatedProduct.defaultPrice,
-          productName: updateProductDto.name
-        })
+        await newPriceNotify(product.name, product.defaultPrice, updatedProduct.defaultPrice)
       }
 
       return updatedProduct;

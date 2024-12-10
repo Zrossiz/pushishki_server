@@ -9,6 +9,9 @@ import { IOrderWithLength } from 'src/shared/interfaces';
 import { Order } from '@prisma/client';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { oneClickOrderNotify, orderNotify, questionNotify } from 'src/shared/api';
+import { OneClickOrderDTO } from './dto/one-click-order.dto';
+import { QuestionOrderDTO } from './dto/question.dto';
 
 @Injectable()
 export class OrderService {
@@ -18,8 +21,10 @@ export class OrderService {
     try {
       const { basket, ...orderData } = createOrderDto;
 
-      return await this.prismaService.$transaction(async (tx) => {
-        const order = await tx.order.create({
+      let order: Order;
+
+      await this.prismaService.$transaction(async (tx) => {
+        order = await tx.order.create({
           data: orderData,
         });
 
@@ -34,8 +39,18 @@ export class OrderService {
           data: basketData,
         });
   
-        return order;
       });
+
+      await orderNotify(
+        createOrderDto.name,
+        createOrderDto.lastname,
+        createOrderDto.address,
+        createOrderDto.phone,
+        createOrderDto.address,
+        createOrderDto.price
+      )
+      
+      return order;
     } catch (err) {
       if (err?.status?.toString().startsWith('4')) {
         throw new HttpException(err.response || 'Некорректный запрос', err.status);
@@ -170,6 +185,27 @@ export class OrderService {
       if (`${err.status}`.startsWith('4')) {
         throw new HttpException(err.response, err.status);
       }
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
+
+  async oneClick(dto: OneClickOrderDTO): Promise<boolean> {
+    try {
+      await oneClickOrderNotify(dto.name, dto.phone, dto.productName, dto.link)
+
+      return true
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerErrorException('Ошибка сервера');
+    }
+  }
+
+  async sendQuestion(dto: QuestionOrderDTO): Promise<boolean> {
+    try {
+      await questionNotify(dto.name, dto.phone, dto.question, dto.link)
+      return true;
+    } catch (err) {
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
     }
