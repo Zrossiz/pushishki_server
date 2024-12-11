@@ -1,42 +1,41 @@
-### REST API для pushishki.ru
+# REST API для pushishki.ru
 
-## Для начала разработки
+## Описание приложения
+Pushishki состоят из 4 частей:
+1. Client
+2. Server
+3. Bot
+4. File server
 
-```bash
-npm i
-npm run start:dev
-```
-
-Откройте [http://localhost:9000](http://localhost:9000) в браузере. Для корректной работы требуется создать и запустить SQL базу pushishki, либо подключиться к удаленной.
-
-### .env файл должен содержать следующие поля:
+## .env файл должен содержать следующие поля:
 
 ```bash
 DATABASE_URL="postgresql://{DB_USER}:{DB_PASSWORD}@localhost:5432/{DB_NAME}?schema=public"
--DB_USER={DB_USER}
--DB_PASSWORD={DB_PASSWORD}
--DB_NAME={DB_NAME}
-PORT=9000
-JWT_SECRET={SECRET_KEY}
+-DB_USER имя пользователя
+-DB_PASSWORD пароль от бд
+-DB_NAME имя бд
+PORT порт приложения
+JWT_SECRET секретный ключ для шифрования jwt
+API_KEY ключ для регистрации
+NODE_ENV режим работы приложения
+FILE_SERVER_URL адрес файл сервера
+CLIENT_IP адрес клиента
+BOT_IP адреса бота
+BOT_SECRET_TOKEN симметричные с ботом ключи для шифрования
 ```
-
-DATABASE_URL - ссылка для подключения к БД
-
-DB_USER - имя базы данных(логин) пример: admin
-
-DB_PASSWORD - пароль от базы данны
-
-DB_NAME - имя базы данных для подключения к ней. пример: pushishki
-
-JWT_SECRET - Секретный ключ JWT
-
-PORT - порт, на котором запустится приложение
 
 ## Для запуска продакшен-билда
 
 ```bash
+npm install
+npx prisma migrate deploy
 npm run build
 npm run start:prod
 ```
 
-Приложение так же запустится на 9000 порту.
+## Для запуска в девелоп режиме
+```bash
+npm install
+npx prisma migrate dev
+npm run start:dev
+```
