@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtAuthGuard } from './auth.guard';
 import { Response } from 'express';
+import { ApiKeyGuard } from './api-key.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -25,6 +26,7 @@ export class AuthController {
   @ApiBody({ type: CreateUserDto })
   @UsePipes(ValidationPipe)
   @Post('signup')
+  @UseGuards(ApiKeyGuard)
   async registration(@Body() createUserDto: CreateUserDto) {
     return await this.authService.registration(createUserDto);
   }

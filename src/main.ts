@@ -13,6 +13,8 @@ async function bootstrap() {
   });
   app.use(cookieParser());
 
+  app.enableShutdownHooks();
+
   const config = new DocumentBuilder()
     .setTitle('Pushishki API')
     .setDescription('Документация для api Pushishki')

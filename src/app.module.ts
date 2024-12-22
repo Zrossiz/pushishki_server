@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, OnApplicationShutdown, RequestMethod } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -19,7 +19,6 @@ import { BasketService } from './basket/basket.service';
 import { BasketController } from './basket/basket.controller';
 import { BasketModule } from './basket/basket.module';
 import { ColorModule } from './color/color.module';
-import { CheckApiKey } from './shared/middleware';
 import { NotifyServiceModule } from './notify-service/notify-service.module';
 import { AgeModule } from './age/age.module';
 import { VoltageModule } from './voltage/voltage.module';
@@ -61,11 +60,8 @@ import { DashbordModule } from './dashbord/dashbord.module';
   ],
   providers: [ReviewService, OrderService, BasketService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CheckApiKey).forRoutes({
-      path: 'auth/signup',
-      method: RequestMethod.POST,
-    });
+export class AppModule implements OnApplicationShutdown {
+  async onApplicationShutdown(signal?: string) {
+    console.log(`Shutting down... Signal: ${signal}`);
   }
 }
