@@ -43,6 +43,7 @@ export class AuthController {
       sameSite: 'lax',
       path: '/',
       maxAge: 1000 * 60 * 60 * 24,
+      domain: '.pushishki.ru',
     });
 
     return res.json(userWithToken);

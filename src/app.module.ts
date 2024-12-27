@@ -27,6 +27,7 @@ import { DriveModule } from './drive/drive.module';
 import { CronCleanerModule } from './cron-cleaner/cron-cleaner.module';
 import { ManufacturerModule } from './manufacturer/manufacturer.module';
 import { DashbordModule } from './dashbord/dashbord.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -49,6 +50,10 @@ import { DashbordModule } from './dashbord/dashbord.module';
     CronCleanerModule,
     ManufacturerModule,
     DashbordModule,
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 150,
+    }]),
   ],
   controllers: [
     AuthController,
