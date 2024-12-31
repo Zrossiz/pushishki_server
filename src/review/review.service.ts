@@ -30,8 +30,8 @@ export class ReviewService {
         createReviewDto.username,
         createReviewDto.rating,
         createReviewDto.title,
-        createReviewDto.description
-      )
+        createReviewDto.description,
+      );
 
       return review;
     } catch (err) {

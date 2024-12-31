@@ -9,7 +9,7 @@ export class JwtAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     try {
       const req = context.switchToHttp().getRequest();
-      let token = req.cookies['access_token'];
+      const token = req.cookies['access_token'];
 
       if (!token) {
         throw new UnauthorizedException('Token not found in cookies');

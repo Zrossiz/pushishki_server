@@ -11,8 +11,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { Brand, Country, Product, Category, SubCategoryProduct } from '@prisma/client';
 import { generateSlug } from 'src/shared/helpers';
 import { AddSubCategoriesForProductDto } from './dto/add-sub-categories-for-product';
-import axios from 'axios';
-import { newPriceNotify } from 'src/shared/api';
+import { newPriceNotify, notifyNewProduct } from 'src/shared/api';
 
 @Injectable()
 export class ProductService {
@@ -62,6 +61,9 @@ export class ProductService {
           slug,
         },
       });
+
+      const productUrl = `${process.env.CLIENT_IP}/categories/${category.slug}/${product.slug}`;
+      notifyNewProduct(product.name, product.defaultPrice, productUrl);
 
       const res = {
         ...product,
@@ -222,11 +224,11 @@ export class ProductService {
         },
       });
 
-      const isUpdatedPrice = updateProductDto.defaultPrice && 
-        product.defaultPrice != updatedProduct.defaultPrice
+      const isUpdatedPrice =
+        updateProductDto.defaultPrice && product.defaultPrice != updatedProduct.defaultPrice;
 
       if (isUpdatedPrice) {
-        await newPriceNotify(product.name, product.defaultPrice, updatedProduct.defaultPrice)
+        await newPriceNotify(product.name, product.defaultPrice, updatedProduct.defaultPrice);
       }
 
       return updatedProduct;

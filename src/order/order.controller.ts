@@ -47,13 +47,13 @@ export class OrderController {
   }
 
   @ApiOperation({ summary: 'Купить в один клик' })
-  @Post("one-click")
+  @Post('one-click')
   async oneClick(@Body() dto: OneClickOrderDTO) {
     return await this.orderService.oneClick(dto);
   }
 
   @ApiOperation({ summary: 'Задать вопрос' })
-  @Post("question")
+  @Post('question')
   async sendQuestion(@Body() body: QuestionOrderDTO) {
     return await this.orderService.sendQuestion(body);
   }

@@ -1,4 +1,10 @@
-import { MiddlewareConsumer, Module, NestModule, OnApplicationShutdown, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  OnApplicationShutdown,
+  RequestMethod,
+} from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -50,10 +56,12 @@ import { ThrottlerModule } from '@nestjs/throttler';
     CronCleanerModule,
     ManufacturerModule,
     DashbordModule,
-    ThrottlerModule.forRoot([{
-      ttl: 60000,
-      limit: 150,
-    }]),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 150,
+      },
+    ]),
   ],
   controllers: [
     AuthController,

@@ -28,5 +28,5 @@ export class CreateOrderDto {
   @IsNumber({}, { message: 'Стоимость должна быть числовым значением' })
   price: number;
 
-  basket: CreateBasketDto
+  basket: CreateBasketDto;
 }

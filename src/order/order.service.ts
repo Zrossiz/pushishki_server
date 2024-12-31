@@ -28,17 +28,16 @@ export class OrderService {
           data: orderData,
         });
 
-        const basketData = basket.objects.map(item => {
+        const basketData = basket.objects.map((item) => {
           return {
             ...item,
-            orderId: order.id
-          }
-        })
+            orderId: order.id,
+          };
+        });
 
         await tx.basket.createMany({
           data: basketData,
         });
-  
       });
 
       await orderNotify(
@@ -47,9 +46,9 @@ export class OrderService {
         createOrderDto.address,
         createOrderDto.phone,
         createOrderDto.address,
-        createOrderDto.price
-      )
-      
+        createOrderDto.price,
+      );
+
       return order;
     } catch (err) {
       if (err?.status?.toString().startsWith('4')) {
@@ -192,9 +191,9 @@ export class OrderService {
 
   async oneClick(dto: OneClickOrderDTO): Promise<boolean> {
     try {
-      await oneClickOrderNotify(dto.name, dto.phone, dto.productName, dto.link)
+      await oneClickOrderNotify(dto.name, dto.phone, dto.productName, dto.link);
 
-      return true
+      return true;
     } catch (err) {
       console.log(err);
       throw new InternalServerErrorException('Ошибка сервера');
@@ -203,7 +202,7 @@ export class OrderService {
 
   async sendQuestion(dto: QuestionOrderDTO): Promise<boolean> {
     try {
-      await questionNotify(dto.name, dto.phone, dto.question, dto.link)
+      await questionNotify(dto.name, dto.phone, dto.question, dto.link);
       return true;
     } catch (err) {
       console.log(err);
