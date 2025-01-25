@@ -139,7 +139,7 @@ export class CategoryService {
   async getProductsBySlug(
     slug: string,
     page: number,
-    sort: string,
+    sort: string = "0",
     priceFrom: number,
     priceTo: number,
     brands: string,
