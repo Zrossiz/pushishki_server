@@ -37,13 +37,19 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto, @Res() res: Response) {
     const userWithToken = await this.authService.login(loginUserDto);
+
+    const isProduction = process.env.NODE_ENV === 'production';
+    const domain = isProduction ? '.pushishki.ru' : 'localhost';
+    const secure = isProduction;
+    const maxAge = 1000 * 60 * 60 * 24;
+
     res.cookie('access_token', userWithToken.token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure,
       sameSite: 'lax',
       path: '/',
-      maxAge: 1000 * 60 * 60 * 24,
-      domain: '.pushishki.ru',
+      maxAge,
+      domain,
     });
 
     return res.json(userWithToken);

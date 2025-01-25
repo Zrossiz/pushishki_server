@@ -239,7 +239,7 @@ export class CategoryService {
         skip,
         orderBy: [
           {
-            defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
+            defaultPrice: sort === '1' || !sort ? 'asc' : 'desc',
           },
         ],
         include: {
