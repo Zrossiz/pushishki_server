@@ -13,7 +13,7 @@ import { Category, SubCategory } from '@prisma/client';
 
 @Injectable()
 export class CategoryService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async create(createCategoryDto: CreateCategoryDto): Promise<ICategory> {
     try {
@@ -238,6 +238,9 @@ export class CategoryService {
         where: filter,
         skip,
         orderBy: [
+          {
+            inStock: 'desc'
+          },
           {
             defaultPrice: sort === '1' || !sort ? 'desc' : 'asc',
           },
