@@ -11,7 +11,7 @@ export const newPriceNotify = async (productName: string, oldPrice: number, newP
   const bodyString = JSON.stringify(body);
   const computedHash = await sha256(bodyString);
 
-  await axios.post(`${process.env.BOT_IP}/bot/new-price`, body, {
+  await axios.post(`${process.env.BOT_IP}/api/update-notification/new-price`, body, {
     headers: {
       computed: computedHash,
     },
@@ -38,7 +38,7 @@ export const orderNotify = async (
   const bodyString = JSON.stringify(body);
   const computedHash = await sha256(bodyString);
 
-  await axios.post(`${process.env.BOT_IP}/bot/order`, body, {
+  await axios.post(`${process.env.BOT_IP}/api/order/`, body, {
     headers: {
       computed: computedHash,
     },
@@ -61,7 +61,7 @@ export const oneClickOrderNotify = async (
   const bodyString = JSON.stringify(body);
   const computedHash = await sha256(bodyString);
 
-  await axios.post(`${process.env.BOT_IP}/bot/order/oneClick`, body, {
+  await axios.post(`${process.env.BOT_IP}/api/order/one-сlick`, body, {
     headers: {
       computed: computedHash,
     },
@@ -86,7 +86,7 @@ export const reviewNotify = async (
   const bodyString = JSON.stringify(body);
   const computedHash = await sha256(bodyString);
 
-  await axios.post(`${process.env.BOT_IP}/bot/review`, body, {
+  await axios.post(`${process.env.BOT_IP}/api/review/`, body, {
     headers: {
       computed: computedHash,
     },
@@ -109,7 +109,7 @@ export const questionNotify = async (
   const bodyString = JSON.stringify(body);
   const computedHash = await sha256(bodyString);
 
-  await axios.post(`${process.env.BOT_IP}/bot/question`, body, {
+  await axios.post(`${process.env.BOT_IP}/api/question/`, body, {
     headers: {
       computed: computedHash,
     },

@@ -34,6 +34,7 @@ import { CronCleanerModule } from './cron-cleaner/cron-cleaner.module';
 import { ManufacturerModule } from './manufacturer/manufacturer.module';
 import { DashbordModule } from './dashbord/dashbord.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { FileGeneratorModule } from './file-generator/file-generator.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
         limit: 150,
       },
     ]),
+    FileGeneratorModule,
   ],
   controllers: [
     AuthController,
