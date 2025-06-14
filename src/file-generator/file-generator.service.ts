@@ -79,11 +79,11 @@ export class FileGeneratorService {
             const ctx = outputCanvas.getContext('2d');
 
             ctx.drawImage(background, 0, 0, outputCanvas.width, outputCanvas.height);
-            ctx.drawImage(faceCanvas, 80, 170, 250, 280);
+            ctx.drawImage(faceCanvas, 80, 176, 250, 270);
 
-            ctx.font = 'normal 26px Arial';
+            ctx.font = 'normal 28px Arial';
             ctx.fillStyle = 'black';
-            ctx.fillText(payload.surname, 480, 192);
+            ctx.fillText(payload.surname, 480, 190);
             ctx.fillText(payload.name, 425, 247);
             ctx.fillText(payload.birthDate, 542, 296);
             ctx.fillText(payload.city, 446, 350);

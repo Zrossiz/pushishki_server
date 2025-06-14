@@ -6,7 +6,6 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { diskStorage } from 'multer';
-import fs from 'fs';
 
 @ApiTags('File generator')
 @Controller('file-generator')
@@ -15,7 +14,7 @@ export class FileGeneratorController {
 
   @ApiOperation({ summary: 'Создать права' })
   @ApiBearerAuth()
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post("/license")
   @ApiConsumes('multipart/form-data')
